@@ -10,10 +10,12 @@ FFLAGS=-c -free -O3
 #FFLAGS=-c --free-form -std=f2003 -O3
 #F90FLAGS :=-std=f2008 $(F90FLAGS)
 
-MODFLAG := $(MODFLAG) -I ../../mod
+#MODFLAG := $(MODFLAG) -I ../../mod
+MODFLAG := -I ../../MPP -I ../../mod
+#MODFLAG := -I ../../MPP -I /mod
 
 %.o : %.F
-	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) $<
+	$(COMPILER90) $(FPPFLAGS) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) $<
 
 .PHONY: all mod
 
@@ -21,11 +23,12 @@ all: mod
 
 mod:
 	#Build each sub module then build the module that depends on all sub modules
-	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) module_io_utilities.F
+	$(COMPILER90) $(FPPFLAGS) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) module_io_utilities.F
 
 	ar -r ../../lib/libHYDRO.a module_io_utilities.o
 
 	cp *.mod ../../mod
+	#cp *.mod /mod
 
 
 clean:

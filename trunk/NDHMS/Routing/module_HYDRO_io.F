@@ -5790,7 +5790,7 @@ end subroutine mpp_output_chrt
 
 
     real, allocatable, dimension(:) :: temp_machine_learning_current_time_storage_array
-    integer :: lake_index
+    integer :: ml_lake_index
 
 
     integer :: aa, bb, cc, dd, ee
@@ -5800,21 +5800,21 @@ end subroutine mpp_output_chrt
 
     temp_machine_learning_current_time_storage_array = 0.0
 
-    do lake_index = 1, rt_domain(did)%nlakes
-        if (rt_domain(did)%q_type(lake_index) == 2.0) then
+    do ml_lake_index = 1, rt_domain(did)%nlakes
+        if (rt_domain(did)%q_type(ml_lake_index) == 2.0) then
 
-            !temp_current_storage_array(lake_index) = rt_domain(did)%reservoirs(lake_index)%ptr%reservoir_base_state_struct%current_storage
+            !temp_current_storage_array(ml_lake_index) = rt_domain(did)%reservoirs(ml_lake_index)%ptr%reservoir_base_state_struct%current_storage
 
             !builds
-            !temp_machine_learning_current_time_storage_array(lake_index) = rt_domain(did)%reservoirs(lake_index)%ptr%input%inflow
+            !temp_machine_learning_current_time_storage_array(ml_lake_index) = rt_domain(did)%reservoirs(ml_lake_index)%ptr%input%inflow
 
-            print *, 'restart setting storage for reservoir at index: ', lake_index
+            print *, 'restart setting storage for reservoir at index: ', ml_lake_index
 
-            select type (ml => rt_domain(did)%reservoirs(lake_index)%ptr)
+            select type (ml => rt_domain(did)%reservoirs(ml_lake_index)%ptr)
                 type is (machine_learning_struct)
                     print *, 'entered select'
 
-                    temp_machine_learning_current_time_storage_array(lake_index) = ml%state%current_time_storage
+                    temp_machine_learning_current_time_storage_array(ml_lake_index) = ml%state%current_time_storage
             end select
 
 
@@ -5949,9 +5949,42 @@ end subroutine mpp_output_chrt
             iret = nf_def_var(ncid,"qlakei",NF_FLOAT,1,(/dimid_lakes/),varid)
             !iret = nf_def_var(ncid,"machine_learning_current_time_storage",NF_FLOAT,1,(/dimid_lakes/),varid)
 
+            !iret = nf90_def_var(ncid, "machine_learning_current_time_storage", NF_FLOAT, (/dimid_lakes(1)/), varid)
+            iret = nf90_def_var(ncid, "machine_learning_current_time_storage", NF_FLOAT, (/dimid_lakes/), varid)
+
+
             !dd = nf_def_var(aa,"machine_learning_current_time_storage",ff,1,(/bb/),cc)
 
-            dd = nf90_def_var(aa,"machine_learning_current_time_storage",ee,1,cc) ! builds okay
+            !dd = nf90_def_var(aa,"machine_learning_current_time_storage",ee,1,cc) ! builds okay
+
+
+                 do ml_lake_index = 1, rt_domain(did)%nlakes
+                    if (rt_domain(did)%q_type(ml_lake_index) == 2.0) then
+
+                        !temp_current_storage_array(ml_ml_lake_index) = rt_domain(did)%reservoirs(ml_lake_index)%ptr%reservoir_base_state_struct%current_storage
+
+                        !builds
+                        !temp_machine_learning_current_time_storage_array(ml_lake_index) = rt_domain(did)%reservoirs(ml_lake_index)%ptr%input%inflow
+
+                        !print *, 'restart setting storage for reservoir at index: ', ml_lake_index
+
+                        select type (ml => rt_domain(did)%reservoirs(ml_lake_index)%ptr)
+                            type is (machine_learning_struct)
+                                print *, 'entered select'
+
+                                !call ml%write_to_restart_file(iret, ncid, NF_FLOAT, dimid_lakes, varid, rt_domain(did)%nlakes, rt_domain(did)%lake_index)
+
+
+
+                                !call ml%write_to_restart_file(iret, ncid, dimid_lakes, varid, rt_domain(did)%nlakes, rt_domain(did)%lake_index)
+
+
+                        end select
+
+
+                    end if
+                 end do
+
 
 
          endif
@@ -6529,29 +6562,29 @@ end if  ! end if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
            return
         end subroutine w_rst_nc3
 
-        subroutine w_rst_crt_nc1_lake(ncid,n,inVar,varName &
-#ifdef MPP_LAND
-                 ,nodelist     &
-#endif
-                  )
-           implicit none
-           integer:: ncid,n,varid , iret
-           character(len=*) varName
-           real inVar(n)
-#ifdef MPP_LAND
-           integer:: nodelist(n)
-           if(n .eq. 0) return
+!        subroutine w_rst_crt_nc1_lake(ncid,n,inVar,varName &
+!#ifdef MPP_LAND
+!                 ,nodelist     &
+!#endif
+!                  )
+!           implicit none
+!           integer:: ncid,n,varid , iret
+!           character(len=*) varName
+!           real inVar(n)
+!#ifdef MPP_LAND
+!           integer:: nodelist(n)
+!           if(n .eq. 0) return
 
-           call write_lake_real(inVar,nodelist,n)
-           if(my_id .eq. IO_id) then
-#endif
-              iret = nf_inq_varid(ncid,varName, varid)
-              iret = nf_put_vara_real(ncid, varid, (/1/), (/n/),inVar)
-#ifdef MPP_LAND
-           endif
-#endif
-           return
-        end subroutine w_rst_crt_nc1_lake
+!           call write_lake_real(inVar,nodelist,n)
+!           if(my_id .eq. IO_id) then
+!#endif
+!              iret = nf_inq_varid(ncid,varName, varid)
+!              iret = nf_put_vara_real(ncid, varid, (/1/), (/n/),inVar)
+!#ifdef MPP_LAND
+!           endif
+!#endif
+!           return
+!        end subroutine w_rst_crt_nc1_lake
 
         subroutine w_rst_crt_reach_real(ncid,inVar,varName &
 #ifdef MPP_LAND
@@ -6719,7 +6752,7 @@ integer :: i, j
 
 
     real, allocatable, dimension(:) :: temp_machine_learning_current_time_storage_array
-    integer :: lake_index
+    integer :: ml_lake_index
 
 
     allocate (temp_machine_learning_current_time_storage_array(rt_domain(did)%nlakes))
@@ -6891,33 +6924,32 @@ if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
          call read_rst_crt_nc(ncid,rt_domain(did)%RESHT,rt_domain(did)%NLAKES,"resht")
          call read_rst_crt_nc(ncid,rt_domain(did)%QLAKEO,rt_domain(did)%NLAKES,"qlakeo")
          call read_rst_crt_nc(ncid,rt_domain(did)%QLAKEI,rt_domain(did)%NLAKES,"qlakei")
-         call read_rst_crt_nc(ncid,temp_machine_learning_current_time_storage_array,rt_domain(did)%NLAKES,"machine_learning_current_time_storage")
-      endif
+         !call read_rst_crt_nc(ncid,temp_machine_learning_current_time_storage_array,rt_domain(did)%NLAKES,"machine_learning_current_time_storage")
 
+!         do ml_lake_index = 1, rt_domain(did)%nlakes
+!            if (rt_domain(did)%q_type(ml_lake_index) == 2.0) then
 
-
-        do lake_index = 1, rt_domain(did)%nlakes
-            if (rt_domain(did)%q_type(lake_index) == 2.0) then
-
-                !temp_current_storage_array(lake_index) = rt_domain(did)%reservoirs(lake_index)%ptr%reservoir_base_state_struct%current_storage
+                !temp_current_storage_array(ml_ml_lake_index) = rt_domain(did)%reservoirs(ml_lake_index)%ptr%reservoir_base_state_struct%current_storage
 
                 !builds
-                !temp_machine_learning_current_time_storage_array(lake_index) = rt_domain(did)%reservoirs(lake_index)%ptr%input%inflow
+                !temp_machine_learning_current_time_storage_array(ml_lake_index) = rt_domain(did)%reservoirs(ml_lake_index)%ptr%input%inflow
 
-                print *, 'restart read at index: ', lake_index
+                !print *, 'restart setting storage for reservoir at index: ', ml_lake_index
 
-                select type (ml => rt_domain(did)%reservoirs(lake_index)%ptr)
-                    type is (machine_learning_struct)
-                        print *, 'entered select on read'
+!                select type (ml => rt_domain(did)%reservoirs(ml_lake_index)%ptr)
+!                    type is (machine_learning_struct)
+!                        print *, 'entered select'
 
-                        ml%state%current_time_storage = temp_machine_learning_current_time_storage_array(lake_index)
-                end select
+!                        call ml%write_to_restart_file(iret, ncid, NF_FLOAT, dimid_lakes, varid, rt_domain(did)%nlakes, rt_domain(did)%lake_index)
+
+!                end select
 
 
-            end if
-        end do
+!            end if
+!         end do
 
-        if(allocated(temp_machine_learning_current_time_storage_array)) deallocate(temp_machine_learning_current_time_storage_array)
+
+      endif
 
 
 
