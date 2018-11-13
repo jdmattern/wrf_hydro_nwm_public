@@ -9,7 +9,7 @@ module module_io_utilities
 
    contains
 
-
+            ! Originally from HYDRO_io.F
             subroutine w_rst_crt_nc1_lake(ncid,n,inVar,varName &
 #ifdef MPP_LAND
                      ,nodelist     &
