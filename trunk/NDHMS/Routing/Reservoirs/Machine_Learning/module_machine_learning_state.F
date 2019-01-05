@@ -386,8 +386,140 @@ print *, '----------------------------------------------------------------------
         storage_monthly_average = storage_monthly_averages(lake_id_index, start_month)
 
 
+        print *, 'lake_id_index'
 
-        this%previous_time_release = release_monthly_average
+        print *, lake_id_index
+
+
+        print *, 'gage_ids_of_ML_lakes1(lake_id_index)'
+
+
+        print *, gage_ids_of_ML_lakes1(lake_id_index)
+
+
+
+
+        !integer :: gage1_id_integer, gage2_id_integer, timeslice_gage1_id_index, timeslice_gage2_id_index
+
+
+!IF ML RESERVOIR IS SET TO READ FROM TIMESLCE THEN USE THAT FOR PREV TIME RELEASE INSTEAD OF HISTORICAL
+
+        ! If cold start
+        !if (restart_flag == 1) then
+
+                    !BEST TO USE -999????????????
+            if (gage_ids_of_ML_lakes1(lake_id_index) /= -999) then
+
+                print *, 'not null'
+
+                print *, 'size(gage_ids)'
+
+                print *, size(gage_ids)
+
+                do timeslice_gage1_id_index = 1, size(gage_ids)
+
+                    print *, 'timeslice_gage1_id_index'
+
+                    print *, timeslice_gage1_id_index
+
+                    read(gage_ids(timeslice_gage1_id_index), *) timeslice_gage_id_integer
+
+                    print *, 'timeslice_gage_id_integer'
+                    print *,timeslice_gage_id_integer
+
+                    if (gage_ids_of_ML_lakes1(lake_id_index) == timeslice_gage_id_integer) then
+
+                        !if (gage_qualities(timeslice_gage1_id_index) == 100) then
+
+                        !    gage1_discharge = gage_discharges(timeslice_gage_id_index)
+
+                        !else
+
+
+                        gage1_discharge = gage_discharges(timeslice_gage1_id_index)
+
+                            print *, 'gage1_discharge'
+                            print *, gage1_discharge
+
+
+                    end if
+
+                end do
+
+
+                !if (gage_ids_of_ML_lakes2(lake_id_index) /= -999) then
+                !    print *, 'second gage id loop'
+
+                !    do timeslice_gage2_id_index = 1, size(gage_ids)
+
+                !        print *, 'timeslice_gage2_id_index'
+                !        print *, timeslice_gage2_id_index
+
+
+                !        read(gage_ids(timeslice_gage2_id_index), *) timeslice_gage_id_integer
+
+                !        if (gage_ids_of_ML_lakes2(lake_id_index) == timeslice_gage_id_integer) then
+
+                !            gage2_discharge = gage_discharges(timeslice_gage2_id_index)
+
+
+                !            print *, 'gage2_discharge'
+                !            print *, gage2_discharge
+
+                !        end if
+
+                !    end do
+
+                !    if (gage_qualities(timeslice_gage1_id_index) == 100 .and. gage_qualities(timeslice_gage2_id_index) == 100) then
+
+                !        this%previous_time_release = gage2_discharge - gage1_discharge
+
+                !        print *, 'this%previous_time_release = gage2_discharge - gage1_discharge'
+
+
+                !    else
+                !        this%previous_time_release = release_monthly_average
+
+                !        print *, 'this%previous_time_release = release_monthly_average'
+
+                !    end if
+
+
+
+                !else
+
+
+                    if (gage_qualities(timeslice_gage1_id_index) == 100) then
+
+                        this%previous_time_release = gage1_discharge
+
+                        this%previous_release_set_from_timeslice = .true.
+
+
+                    else
+                        this%previous_time_release = release_monthly_average
+
+                    end if
+
+
+                !end if
+
+
+
+                print *, '(gage_qualities(timeslice_gage1_id_index))'
+                print *, (gage_qualities(timeslice_gage1_id_index))
+
+
+
+            else
+
+                print *, 'null'
+
+
+                this%previous_time_release = release_monthly_average
+
+            end if
+
 
             print *, 'this%previous_time_release'
 
