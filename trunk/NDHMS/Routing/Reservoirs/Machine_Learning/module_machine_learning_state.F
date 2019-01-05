@@ -60,25 +60,25 @@ contains
 !!!!!!
 
 
-            subroutine machine_learning_state_init(this, water_elevation, start_date, restart_flag, lake_number)
+            !subroutine machine_learning_state_init(this, water_elevation, start_date, restart_flag, lake_number)
 
     !Machine Learning State Constructor
-    !subroutine machine_learning_state_init(this, water_elevation, start_date, &
-    !    machine_learning_parameter_file, restart_flag, lake_number, gage_ids, &
-     !   gage_qualities, gage_discharges)
+    subroutine machine_learning_state_init(this, water_elevation, start_date, &
+        machine_learning_parameter_file, restart_flag, lake_number, gage_ids, &
+        gage_qualities, gage_discharges)
         use netcdf
         implicit none
         class(machine_learning_state_interface), intent(inout) :: this ! the type object being initialized
         real, intent(inout) :: water_elevation
         character(len=19), intent(in) :: start_date
-        !character(len=256), intent(in) :: machine_learning_parameter_file
+        character(len=256), intent(in) :: machine_learning_parameter_file
         integer, intent(in) :: restart_flag              ! signals if NWM is on a restart or not
                                                          ! 1 is cold start and 99 is restart
         integer, intent(in) :: lake_number              ! lake number
 
 
-        !character(len=15), intent(in), dimension(:) :: gage_ids
-        !real, intent(in), dimension(:) :: gage_qualities, gage_discharges
+        character(len=15), intent(in), dimension(:) :: gage_ids
+        real, intent(in), dimension(:) :: gage_qualities, gage_discharges
 
 
         integer :: time_interval

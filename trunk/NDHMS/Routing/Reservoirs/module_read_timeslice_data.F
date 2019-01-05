@@ -1,3 +1,7 @@
+#define days_in_year 365
+#define days_in_leap_year 366
+
+
 module module_read_timeslice_data
 
     !use module_namelist,      only: nlst_rt
@@ -226,6 +230,8 @@ real, allocatable, dimension(:) :: chanlen_image0    !A global version kept on i
     real,               allocatable, dimension(:) :: gageQC
     real,               allocatable, dimension(:) :: gageDischarge
 
+    character(len=256), allocatable, dimension(:) :: timeslice_file_names
+
 
 
 
@@ -264,10 +270,10 @@ contains
             print *, 'timeslice path passed'
             print *, timeslice_path
 
-            !this%timeslice_path = timeslice_path
+            this%timeslice_path = timeslice_path
 
 
-            this%timeslice_path = '/home/jdmattern/Documents/test_runs/run_without_restart_david2/Timeslices/'
+            !this%timeslice_path = '/home/jdmattern/Documents/test_runs/run_without_restart_david2/Timeslices/'
 
             print *, 'start date'
 
@@ -325,6 +331,28 @@ subroutine setup_read_timeslice(this, hydroDT)
 
     character(len=256) :: timeslice_file_name  !! the corresponding obs file.
 
+    character(len=256), allocatable, dimension(:) :: timeslice_file_names_to_check  !! the corresponding obs file.
+
+
+    integer :: observation_year, observation_month, observation_day, observation_hour, observation_minute, observation_second
+
+    character(len=2) :: observation_year_string
+    character(len=2) :: observation_month_string, observation_day_string, observation_hour_string, observation_second_string
+    character(len=1) :: observation_minute_string
+
+    integer :: timeslice_file_counter
+    real :: read_file_list_check
+    integer :: reason, total_timeslice_files, iStation
+
+    !set to len 45 or trim??
+    character(LEN=45), dimension(:), allocatable :: timeslice_file_names2
+
+    integer, dimension(:), allocatable :: timeslice_date_list
+
+    character(LEN=12) :: temp_timeslice_date_string
+    !integer :: temp_timeslice_date_integer
+
+    real*4 :: temp_timeslice_date_real
 
     integer :: obsResolutionInt
 
@@ -356,6 +384,10 @@ subroutine setup_read_timeslice(this, hydroDT)
     !INCLUDE??????
     !if(flushAll) flush(flushUnit)
 
+    if ( .not. allocated(this%timeslice_file_names) ) then
+        allocate(this%timeslice_file_names(96))
+    end if
+
 
     obsResolutionInt = 15
 
@@ -364,6 +396,7 @@ subroutine setup_read_timeslice(this, hydroDT)
 
     print *, 'timeslice path in setup read'
     print *, this%timeslice_path
+
 
 
     !call geth_newdate(hydroTime, initTime, hydroDT)
@@ -384,9 +417,134 @@ subroutine setup_read_timeslice(this, hydroDT)
 
 
 
+    read (initTime(1:4), *) observation_year
+    read (initTime(6:7), *) observation_month
+    read (initTime(9:10), *) observation_day
+    read (initTime(12:13), *) observation_hour
+    read (initTime(15:16), *) observation_minute
+    read (initTime(18:19), *) observation_second
+
+
+
+    !while (observation_minute .ne. 0 .or.  mod(observation_minute, 15) .ne. 0)
+
+    do while (mod(observation_minute, 15) .ne. 0)
+        observation_minute = observation_minute - 1
+
+    end do
+
+
+
+        !write(observation_year_string, "(I4)") observation_year
+
+        write(observation_month_string, "(I2)") observation_month
+        write(observation_day_string, "(I2)") observation_day
+        write(observation_hour_string, "(I2)") observation_hour
+        !write(observation_minute_string, "(I2)") observation_minute
+        write(observation_second_string, "(I2)") observation_second
+
+
+
+
+!print *, observation_year_string
+print *, observation_month_string
+print *, observation_day_string
+!print *, observation_minute_string
+print *, observation_hour_string
+
+
 
     print *, 'hydrotime'
     print *, hydroTime
+
+
+
+    print *, observation_year
+    print *, observation_month
+    print *, observation_day
+    print *, observation_hour
+    print *, observation_minute
+    print *, observation_second
+
+
+
+    call system('ls ' // this%timeslice_path // '> Timeslice_list.txt')
+
+    !call system('ls ' // this%timeslice_path // '> ' this%timeslice_file_names)
+
+    !print *, this%timeslice_file_names
+
+
+  open(31,FILE='Timeslice_list.txt',action="read")
+
+
+  timeslice_file_counter = 0
+  do
+   read(31,FMT='(a)',iostat=reason) read_file_list_check
+   if (reason/=0) EXIT
+   timeslice_file_counter = timeslice_file_counter + 1
+  end do
+
+print *, 'timeslice_file_counter'
+
+print *, timeslice_file_counter
+
+
+
+  total_timeslice_files = timeslice_file_counter
+
+  allocate(timeslice_file_names2(total_timeslice_files))
+  rewind(31)
+
+  do timeslice_file_counter = 1, total_timeslice_files
+   read(31,'(a)') timeslice_file_names2(timeslice_file_counter)
+  end do
+
+
+
+print *, timeslice_file_names2
+
+  allocate(timeslice_date_list(total_timeslice_files))
+
+
+  do timeslice_file_counter = 1, total_timeslice_files
+
+    read (timeslice_file_names2(timeslice_file_counter)(3:4), *) observation_year_string
+    read (timeslice_file_names2(timeslice_file_counter)(6:7), *) observation_month_string
+    read (timeslice_file_names2(timeslice_file_counter)(9:10), *) observation_day_string
+    read (timeslice_file_names2(timeslice_file_counter)(12:13), *) observation_hour_string
+    read (timeslice_file_names2(timeslice_file_counter)(15:15), *) observation_minute_string
+
+
+    temp_timeslice_date_string = observation_year_string // observation_month_string // observation_day_string // observation_hour_string // observation_minute_string
+
+    read (temp_timeslice_date_string, *) temp_timeslice_date_real
+
+    print *, temp_timeslice_date_real
+    timeslice_date_list(timeslice_file_counter) = temp_timeslice_date_real
+
+
+    print *, observation_year_string
+    print *, observation_month_string
+    print *, observation_day_string
+    print *, observation_hour_string
+    print *, observation_minute_string
+
+
+  end do
+
+print * , 'timeslice_date_list'
+
+print * , timeslice_date_list
+
+
+
+
+
+
+
+
+
 
 
 

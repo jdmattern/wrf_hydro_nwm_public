@@ -855,16 +855,16 @@ print *, '1.1'
                  rt_domain(did)%HRZAREA(lake_index),            &
                  nlst_rt(did)%startdate(1:19),                  &
                  rt_domain(did)%timestep_flag,                  &
-                 rt_domain(did)%LAKEIDM(lake_index))!,            &
+                 rt_domain(did)%LAKEIDM(lake_index),            &
 
 
 
-   !nlst_rt(did)%machine_learning_parameter_file,   &
+   nlst_rt(did)%machine_learning_parameter_file,   &
 
 
-                                  !rt_domain(did)%read_timeslice_data(1)%ptr%gageId,    &
-                 !rt_domain(did)%read_timeslice_data(1)%ptr%gageQC, &
-                 !rt_domain(did)%read_timeslice_data(1)%ptr%gageDischarge    )
+                                  rt_domain(did)%read_timeslice_data(1)%ptr%gageId,    &
+                 rt_domain(did)%read_timeslice_data(1)%ptr%gageQC, &
+                 rt_domain(did)%read_timeslice_data(1)%ptr%gageDischarge    )
        end select
 
      !else if (rt_domain(did)%q_type(lake_index) == 3) then

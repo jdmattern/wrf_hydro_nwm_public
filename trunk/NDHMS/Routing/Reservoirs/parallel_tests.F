@@ -58,6 +58,13 @@
 
     num_char = '    89'
 
+
+
+    call system('/home/jdmattern/Documents/wrf_hydro_nwm_public/trunk/NDHMS/Routing/' 'ls')
+
+
+
+
     print *, num_int
 
     read(num_char,*)num_int
