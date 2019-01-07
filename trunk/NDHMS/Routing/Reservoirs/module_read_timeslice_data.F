@@ -955,6 +955,10 @@ print *, 'gageQC'
 !call flush(6)!
 !#endif
 
+print *, 'this%gageQC'
+
+print *, this%gageQC
+
 end subroutine read_timeslice_file
 
 

@@ -127,6 +127,21 @@ contains
         this%previous_release_set_from_timeslice = .false.
 
 
+
+
+
+print *, '--------------------------------------------------------------------------------------'
+print *, '--------------------------------------------------------------------------------------'
+print *, '--------------------------------------------------------------------------------------'
+
+print *, 'gage_qualities'
+print *, gage_qualities
+
+print *, '--------------------------------------------------------------------------------------'
+print *, '--------------------------------------------------------------------------------------'
+print *, '--------------------------------------------------------------------------------------'
+
+
         !Reservoir Parm NC file
         status = nf90_open(path = "ML_RESERVOIR_PARM.nc", mode = nf90_nowrite, ncid = ncid)                 ! open existing netCDF dataset
         !status = nf90_open(path = machine_learning_parameter_file, mode = nf90_nowrite, ncid = ncid)                 ! open existing netCDF dataset
@@ -442,6 +457,26 @@ print *, '----------------------------------------------------------------------
                             print *, gage1_discharge
 
 
+                        print *, 'gage_qualities(timeslice_gage1_id_index)'
+                        print *, gage_qualities(timeslice_gage1_id_index)
+
+
+                        if (gage_qualities(timeslice_gage1_id_index) == 1.0) then
+
+
+
+                            this%previous_time_release = gage1_discharge
+
+                            this%previous_release_set_from_timeslice = .true.
+
+                            print *, 'set w/ timeslice'
+                        else
+                            this%previous_time_release = release_monthly_average
+
+                        end if
+
+
+
                     end if
 
                 end do
@@ -489,17 +524,6 @@ print *, '----------------------------------------------------------------------
                 !else
 
 
-                    if (gage_qualities(timeslice_gage1_id_index) == 100) then
-
-                        this%previous_time_release = gage1_discharge
-
-                        this%previous_release_set_from_timeslice = .true.
-
-
-                    else
-                        this%previous_time_release = release_monthly_average
-
-                    end if
 
 
                 !end if

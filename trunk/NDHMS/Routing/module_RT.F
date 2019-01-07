@@ -797,6 +797,10 @@ if (nlst_rt(did)%SUBRTSWCRT  .eq.1 .or. &
 
 
 
+print *, 'rt_domain(did)%read_timeslice_data(1)%ptr%gageQC'
+
+print *, rt_domain(did)%read_timeslice_data(1)%ptr%gageQC
+
    !call rt_domain(did)%read_timeslice_data%ptr%init(nlst_rt(did)%startdate(1:19))
    !call rt_domain(did)%read_timeslice_data%init(nlst_rt(did)%startdate(1:19))
 
@@ -872,6 +876,11 @@ print *, '1.1'
      end if
 
    end do
+
+
+print *, 'rt_domain(did)%read_timeslice_data(1)%ptr%gageQC'
+
+print *, rt_domain(did)%read_timeslice_data(1)%ptr%gageQC
 
    !ADCHANGE: Add lake reach output
 #ifdef HYDRO_D
