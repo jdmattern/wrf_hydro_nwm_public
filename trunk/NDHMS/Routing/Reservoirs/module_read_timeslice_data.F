@@ -8,124 +8,9 @@ module module_read_timeslice_data
 
     use netcdf
 
-
     implicit none
 
 
-!========================
-! lastObs structure, corresponding to nudgingLastObs.YYYY-mm-dd_HH:MM:ss.nc
-! How observations from the past are carried forward.
-! This type is extended in module_stream_nudging
-type lastObsStructure
-   character(len=15)                            :: usgsId
-   real,              allocatable, dimension(:) :: lastObsDischarge
-   real,              allocatable, dimension(:) :: lastObsModelDischarge
-   character(len=19), allocatable, dimension(:) :: lastObsTime
-   real,              allocatable, dimension(:) :: lastObsQuality
-end type lastObsStructure
-
-
-type obsStructure
-   character(len=15) :: usgsId        ! the 15 char USGS identifier.
-   character(len=19) :: obsTime       ! observation at gage dims: nGages
-   real              :: obsDischarge  ! observation at gage dims: nGages
-   real              :: obsQC         ! quality control factpr [0,1]
-   integer           :: obsStaticInd  ! the index to the obsStaticStr where static info is kept
-   real              :: innov         ! obs-modeled
-end type obsStructure
-
-type obsTimeStructure
-   character(len=19) :: time
-   character(len=19) :: updateTime
-   integer, allocatable, dimension(:) :: allCellInds  ! cell indices affected at this time
-   integer, allocatable, dimension(:) :: nGageCell    ! number of gages for each affected cell ind
-   type(obsStructure),   allocatable, dimension(:) :: obsStr ! the obs at this file time / timeslice
-end type obsTimeStructure
-
-! The top level structure used to solve the nudges
-type(obsTimeStructure), allocatable, dimension(:) :: obsTimeStr ! size=nObsTimes
-
-!========================
-! lastObs structure, corresponding to nudgingLastObs.YYYY-mm-dd_HH:MM:ss.nc
-! How observations from the past are carried forward.
-! Type defined in module_nudging_io.F
-type(lastObsStructure), allocatable, dimension(:) :: lastObsStr
-
-!========================
-! This holds static information for a given gage for a given cycle (when R, G, and tau) do not
-! change.
-! The "lastObs" variables are not exactly static... they were an afterthought and this was
-! by far the best place for them to live.
-type, extends(lastObsStructure) :: obsStaticStructure
-   !! Inherited components
-   !!character(len=15) :: usgsId        ! the 15 char USGS identifier.
-   !!real              :: lastObsDischarge(:)       ! last observed discharge
-   !!character(len=19) :: lastObsTime(:)            ! time of last obs discharge (.le.hydroTime)
-   !!real              :: lastObsQuality(:)         ! quality of the last obs discharge
-   !!real              :: lastObsModelDischarge(:)  ! the modeled discharge value at the time of the last obs
-   !! New components
-   integer :: obsCellInd    ! index of obs on model channel network, for distance calc
-   real    :: R, G, tau     ! the nudging parameters at this gage.
-   integer, allocatable, dimension(:) ::  cellsAffected  ! indices of cells affected
-   real,    allocatable, dimension(:) ::  dist           ! optional: dist to affected cells, optional
-   real,    allocatable, dimension(:) ::  ws             ! spatial cressman weights at affected cells discharge.
-end type obsStaticStructure
-
-! The static obs/gage information - store here to perform calculations
-! only once per cycle.
-! Currently the dimensions of this are fixed to 10000 which should
-! work for the forseeable future. May want to consider some routine for
-! augmenting this size if necessary.
-type(obsStaticStructure), allocatable, dimension(:) :: obsStaticStr
-
-!! The number of up/down stream links which can be collected
-!! using R to solve which links are "neighboring".
-!! This value applies to both directions, it's the number
-!! of links per R.
-integer, parameter :: maxNeighLinksDim=5000
-
-!========================
-! Node and gage collocation - For reach based routing, corresponds to the "gage" column
-! of RouteLink.nc.
-type nodeGageStructure
-   integer,           allocatable, dimension(:) :: nodeId
-   character(len=15), allocatable, dimension(:) :: usgsId
-end type nodeGageStructure
-type(nodeGageStructure) :: nodeGageTmp, nodeGageStr
-integer :: nGagesDomain   ! the number of gages specified
-
-!========================
-! Nudging parameters structure, corresponding to NudgeParams.nc file.
-!! for dealloction purposes, might be better to put the dimension onthe derived type.
-type nudgingParamStructure
-   character(len=15), allocatable, dimension(:)     :: usgsId
-   real,              allocatable, dimension(:)     :: R
-   real,              allocatable, dimension(:)     :: G
-   real,              allocatable, dimension(:)     :: tau
-   real,              allocatable, dimension(:,:,:) :: qThresh  !! gage, month, nThresh
-   real,              allocatable, dimension(:,:,:) :: expCoeff !! gage, month, nThresh
-end type nudgingParamStructure
-type(nudgingParamStructure) :: nudgingParamsTmp, nudgingParamsStr
-
-!========================
-! Network reExpression structure, corresponding to netwkReExFile.nc
-type netwkReExpStructure
-   integer*4, allocatable, dimension(:) :: go
-   integer*4, allocatable, dimension(:) :: start
-   integer*4, allocatable, dimension(:) :: end
-end type netwkReExpStructure
-type(netwkReExpStructure) :: downNetwkStr, upNetwkStr
-
-!========================
-! Track gages from NWIS not in our param file and not in the intersection or
-! the Route_Link gages and the gages in the parameter file.
-integer, parameter :: maxNwisNotRLAndParamsCount=20000
-character(len=15), dimension(maxNwisNotRLAndParamsCount) :: nwisNotRLAndParams
-integer :: nwisNotRLAndParamsCount
-
-!========================
-! Random data
-real, allocatable, dimension(:) :: t0Discharge
 
 !========================
 ! Control book keeping
@@ -206,9 +91,6 @@ real, allocatable, dimension(:) :: chanlen_image0    !A global version kept on i
         character(len=19) :: start_date
         character(len=256) :: timeslice_path
 
-
-
-
         integer :: nGages
         integer, allocatable, dimension(:) :: whSliceInDom
         integer :: nWhSliceInDom
@@ -222,7 +104,6 @@ real, allocatable, dimension(:) :: chanlen_image0    !A global version kept on i
         !character(len=15), allocatable, dimension(:) :: usgsIdIn        !! USGS ID
         !real,              allocatable, dimension(:) :: gageDischargeIn !! m3/s
 
-
         logical          :: readTimesliceErrFatal = .false.
 
     character(len=15),  allocatable, dimension(:) :: gageId
@@ -231,8 +112,6 @@ real, allocatable, dimension(:) :: chanlen_image0    !A global version kept on i
     real,               allocatable, dimension(:) :: gageDischarge
 
     character(len=256), allocatable, dimension(:) :: timeslice_file_names
-
-
 
 
     contains
@@ -244,43 +123,28 @@ real, allocatable, dimension(:) :: chanlen_image0    !A global version kept on i
 
     end type read_timslice_data_struct
 
-
-
-
 contains
 
-
         subroutine read_timslice_data_struct_init(this, start_date, timeslice_path)
-
             implicit none
             class(read_timslice_data_struct), intent(inout) :: this ! object being initialized
-
             character(len=19), intent(in) :: start_date
-
             character(len=256), intent(in) :: timeslice_path
 
-
-            print *, 'in timeslice object init'
-
             this%start_date = start_date
-
             this%current_date = start_date
-
 
             print *, 'timeslice path passed'
             print *, timeslice_path
 
             this%timeslice_path = timeslice_path
 
-
             !this%timeslice_path = '/home/jdmattern/Documents/test_runs/run_without_restart_david2/Timeslices/'
 
             print *, 'start date'
-
             print *, start_date
 
             print *, 'timeslice path'
-
             print *, this%timeslice_path
 
 
@@ -340,6 +204,7 @@ subroutine setup_read_timeslice(this, hydroDT)
     character(len=2) :: observation_month_string, observation_day_string, observation_hour_string, observation_second_string
     character(len=1) :: observation_minute_string
 
+
     integer :: timeslice_file_counter
     real :: read_file_list_check
     integer :: reason, total_timeslice_files, iStation
@@ -398,20 +263,17 @@ subroutine setup_read_timeslice(this, hydroDT)
     print *, this%timeslice_path
 
 
-
     !call geth_newdate(hydroTime, initTime, hydroDT)
-
 
     !print *, 'hydrotime'
     !print *, hydroTime
 
-
     !initTime(11) = '_'
     !initTime(14) = '_'
 
-
     !print *, 'start date new'
     !print *, initTime
+
 
     hydroTime = initTime(:13) // '_' // initTime(15:16) // '_' // initTime(18:)
 
@@ -434,7 +296,6 @@ subroutine setup_read_timeslice(this, hydroDT)
     end do
 
 
-
         !write(observation_year_string, "(I4)") observation_year
 
         write(observation_month_string, "(I2)") observation_month
@@ -443,16 +304,11 @@ subroutine setup_read_timeslice(this, hydroDT)
         !write(observation_minute_string, "(I2)") observation_minute
         write(observation_second_string, "(I2)") observation_second
 
-
-
-
 !print *, observation_year_string
 print *, observation_month_string
 print *, observation_day_string
 !print *, observation_minute_string
 print *, observation_hour_string
-
-
 
     print *, 'hydrotime'
     print *, hydroTime
@@ -469,14 +325,10 @@ print *, observation_hour_string
 
 
     call system('ls ' // this%timeslice_path // '> Timeslice_list.txt')
-
     !call system('ls ' // this%timeslice_path // '> ' this%timeslice_file_names)
-
     !print *, this%timeslice_file_names
 
-
   open(31,FILE='Timeslice_list.txt',action="read")
-
 
   timeslice_file_counter = 0
   do
@@ -486,9 +338,7 @@ print *, observation_hour_string
   end do
 
 print *, 'timeslice_file_counter'
-
 print *, timeslice_file_counter
-
 
 
   total_timeslice_files = timeslice_file_counter
@@ -536,10 +386,6 @@ print *, timeslice_file_names2
 print * , 'timeslice_date_list'
 
 print * , timeslice_date_list
-
-
-
-
 
 
 
@@ -960,15 +806,6 @@ print *, 'this%gageQC'
 print *, this%gageQC
 
 end subroutine read_timeslice_file
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1570,6 +1407,9 @@ end subroutine get_1d_netcdf_text
 
 
 
+
+
+
 integer function nfeb(year)
 !
 ! Compute the number of days in February for the given year.
@@ -1591,6 +1431,9 @@ if (mod(year,4).eq.0) then
    endif
 endif
 end function nfeb
+
+
+
 
 
 
