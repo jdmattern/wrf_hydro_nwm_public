@@ -20,6 +20,7 @@ module module_levelpool
     use module_levelpool_parameters
     use module_levelpool_state
     use module_reservoir_base
+    use module_reservoir_utilities
     implicit none
 
     ! Extend/derive level pool struct from the abstract base
@@ -60,6 +61,13 @@ contains
         real, intent(in)    :: orifice_area              ! orifice area (meters^2)
         real, intent(in)    :: max_depth                 ! max depth of reservoir before overtop (meters)
         integer, intent(in) :: lake_number               ! lake number
+
+
+        if (lake_number == 14785127) then
+
+            call create_hybrid_diagnostic_log_file(lake_number)
+        end if
+
 
         if (this%pointer_allocation_guard .eqv. .false. ) then
             ! try to allocate input
@@ -164,6 +172,21 @@ contains
 
         ! Update water_elevation variable returned from this subroutine
         water_elevation = reservoir_data%state%water_elevation
+
+
+        if (reservoir_data%parameters%lake_number == 14785127) then
+
+            ! Log diagnostic data
+            ! Uncomment this call only for development/debugging purposes
+            call log_hybrid_diagnostic_data(reservoir_data%parameters%lake_number, 0, &
+            0, 0, 0, &
+            0, 0, &
+            0.0, reservoir_data%input%inflow, 0.0, &
+            reservoir_data%state%water_elevation, 0.0, 0.0, &
+            0.0, reservoir_data%output%outflow)
+
+        end if
+
 
     end subroutine run_levelpool_release
 

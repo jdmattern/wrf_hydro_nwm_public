@@ -769,6 +769,10 @@ if (nlst_rt(did)%SUBRTSWCRT  .eq.1 .or. &
 
    end do
 
+
+   rt_domain(did)%q_type = 1
+
+
    ! For loop to cycle array of pointers to reservoirs
    do lake_index = 1, NLAKES_total
 
