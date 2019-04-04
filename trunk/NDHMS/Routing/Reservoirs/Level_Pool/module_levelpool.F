@@ -63,7 +63,7 @@ contains
         integer, intent(in) :: lake_number               ! lake number
 
 
-        if (lake_number == 14785127) then
+        if (lake_number == 14785127 .or. lake_number == 16944276) then
 
             call create_hybrid_diagnostic_log_file(lake_number)
         end if
@@ -174,7 +174,7 @@ contains
         water_elevation = reservoir_data%state%water_elevation
 
 
-        if (reservoir_data%parameters%lake_number == 14785127) then
+        if (reservoir_data%parameters%lake_number == 14785127 .or. reservoir_data%parameters%lake_number == 16944276) then
 
             ! Log diagnostic data
             ! Uncomment this call only for development/debugging purposes
