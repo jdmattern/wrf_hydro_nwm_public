@@ -150,6 +150,9 @@ contains
     end subroutine read_timeslice_data_struct_destroy
 
 
+!Create and call a different subroutine for setup_read_timeslice that is called from hybrid instead
+
+
     ! Set up list of timeslice files to read
     ! The timeslices are read only once on each processor at each timeslice update time
     subroutine setup_read_timeslice(this, update_interval_seconds, current_reservoir_time_seconds, &

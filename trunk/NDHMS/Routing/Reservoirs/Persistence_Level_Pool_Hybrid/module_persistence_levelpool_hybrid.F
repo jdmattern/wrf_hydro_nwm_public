@@ -78,7 +78,7 @@ contains
 
         ! Create diagnostic log file
         ! Uncomment this call only for development/debugging purposes
-        !call create_hybrid_diagnostic_log_file(lake_number)
+        call create_hybrid_diagnostic_log_file(lake_number)
 
         ! Call to initialize read timeslice data object
         call read_timeslice_data%init(start_date, &
@@ -208,6 +208,27 @@ contains
             call read_timeslice_data%setup_read_timeslice(reservoir_data%parameters%observation_update_time_interval_seconds, &
             reservoir_data%state%current_time, reservoir_data%parameters%gage_id, gage_lookback_seconds, reservoir_data%state%gage_discharge)
 
+!Probably comment out above call to read timeslice data
+
+!!!!!!
+!Can hard code gage_lookback_seconds here to one day.
+!!!!!
+
+!We have lake ids, reservoir_data%parameters%lake_number. I can hard code if lake id == lake id list of discharges, then look
+!for the current index in that array of discharge. Indexed by reservoir_data%parameters%observation_update_time_interval_seconds
+
+
+
+!!!!!!!!!!!!!!!!!!!
+!index = reservoir_data%state%current_time / reservoir_data%parameters%observation_update_time_interval_seconds
+! index can be a local var
+
+!OR -------
+
+!index = reservoir_data%state%current_time / gage_time_spacing
+!!!!!!!!!!!!!!!!!!!
+
+
             ! If no good quality gage discharge was found in the given lookback period, the gage discharge is returned
             ! as -1.0. The persistence weight index will be set out of bounds larger than the array. This causes the
             ! the weight update logic to set the persistence weight to 0.0. Therefore, only levelpool calculations will be used.
@@ -329,12 +350,12 @@ contains
 
         ! Log diagnostic data
         ! Uncomment this call only for development/debugging purposes
-        !call log_hybrid_diagnostic_data(reservoir_data%parameters%lake_number, reservoir_data%state%current_time, &
-        !reservoir_data%state%timeslice_update_time, reservoir_data%state%weight_update_time, gage_lookback_seconds, &
-        !reservoir_data%parameters%gage_id, reservoir_data%state%persistence_weight_index, &
-        !reservoir_data%state%persistence_current_weight, reservoir_data%input%inflow, reservoir_data%state%current_storage, &
-        !reservoir_data%state%water_elevation, reservoir_data%state%gage_discharge, reservoir_data%state%persisted_outflow, &
-        !levelpool_outflow, reservoir_data%output%outflow)
+        call log_hybrid_diagnostic_data(reservoir_data%parameters%lake_number, reservoir_data%state%current_time, &
+        reservoir_data%state%timeslice_update_time, reservoir_data%state%weight_update_time, gage_lookback_seconds, &
+        reservoir_data%parameters%gage_id, reservoir_data%state%persistence_weight_index, &
+        reservoir_data%state%persistence_current_weight, reservoir_data%input%inflow, reservoir_data%state%current_storage, &
+        reservoir_data%state%water_elevation, reservoir_data%state%gage_discharge, reservoir_data%state%persisted_outflow, &
+        levelpool_outflow, reservoir_data%output%outflow)
 
     end subroutine run_hybrid_release
 
