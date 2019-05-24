@@ -185,7 +185,7 @@ contains
     !! ----------------------------  argument variables
     !! All elevations should be relative to a common base (often belev(k))
 
-    real, intent(INOUT) :: H       ! water elevation height (m)
+    real, intent(INOUT) :: H      ! water elevation height (m)
     real, intent(IN)    :: dt      ! routing period [s]
     real, intent(IN)    :: qi0     ! inflow at previous timestep (cms)
     real, intent(IN)    :: qi1     ! inflow at current timestep (cms)
@@ -216,6 +216,24 @@ contains
     !! ----------------------------  subroutine body: from chow, mad mays. pg. 252
     !! -- determine from inflow hydrograph
 
+    !real :: maxh, H
+    !real*8 :: height, dh
+
+!print *, 'qi1 at beginning of function'
+!print *, qi1
+print *, '-------------------------------------------'
+print *, '-------------------------------------------'
+print *, '-------------------------------------------'
+!print *, 'H', H
+
+!H = 2752.64990234
+
+
+!H = 2752.68
+!maxh = 2752.68
+
+print *, 'H', H
+
 
     !!DJG Set hardwire for LAKE_OPT...move specification of this to namelist in
     !future versions...
@@ -231,7 +249,13 @@ contains
        qo1 = qi1                 ! Set outflow equal to inflow at current time
        H = Htmp                  ! Set new lake water elevation to incoming lake el.
 
+
+                              print *, 'opt1'
+
     else if (LAKE_OPT.eq.2) then   ! If-block for Chow et al level pool scheme
+
+                              print *, 'opt2'
+
 
        It = qi0
        Itdt_3   = qi0 + ((qi1 + ql - qi0) * 0.33)
@@ -241,22 +265,56 @@ contains
        !assume vertically walled reservoir
        !remove this when moving to a variable head area volume
        sap = ar * 1.0E6
+!H = 2752.64990234
 
        !-- determine Q(dh) from elevation-discharge relationship
        !-- and dh1
        dh = H - we
+!H = 2752.64990234
+
+print *, 'H at dh', H
+print *, 'maxh at dh', maxh
+!H = 2752.64990234
+
+           !height = 2752.64990234
+
+           !dh = height - we
+
+                           print *, 'dh 1', dh
+
+
        if (dh .gt. maxWeirDepth) then
           dh = maxWeirDepth
+
+                    print *, 'dh 2', dh
+
        endif
 
        if (dh .gt. 0.0 ) then              !! orifice and overtop discharge
           tmp1 = oc * oa * sqrt(2. * 9.81 * ( H - oe ) )
+
+                              print *, 'tmp1', tmp1
+
+
           tmp2 = wc * wl * (dh ** (3./2.))
+
+                                        print *, 'tmp2', tmp2
+
           discharge = tmp1 + tmp2
+
+          print *, 'discharge 1', discharge
+
+
        else if ( H .gt. oe ) then     !! only orifice flow,not full
           discharge = oc * oa * sqrt(2. * 9.81 * ( H - oe ) )
+
+                    print *, 'discharge 2', discharge
+
        else
           discharge = 0.0
+
+                    print *, 'discharge 3', discharge
+
        endif
 
        if (sap .gt. 0) then
@@ -276,10 +334,19 @@ contains
           tmp1 = oc * oa * sqrt(2. * 9.81 * ( (H+dh1/3.) - oe ) )
           tmp2 = wc * wl * (dh ** (3./2.))
           discharge = tmp1 + tmp2
+
+                    print *, 'discharge 4', discharge
+
        else if ( (H+dh1/3) .gt. oe ) then     !! only orifice flow,not full
           discharge = oc * oa * sqrt(2. * 9.81 * ( (H+dh1/3.) - oe ) )
+
+                    print *, 'discharge 5', discharge
+
        else
           discharge = 0.0
+
+                    print *, 'discharge 6', discharge
+
        endif
 
        if (sap .gt. 0.0) then
@@ -299,10 +366,19 @@ contains
           tmp1 = oc * oa * sqrt(2. * 9.81 * ( (H+dh2*0.667) - oe ) )
           tmp2 = wc * wl * (dh ** (3./2.))
           discharge = tmp1 + tmp2
+
+                    print *, 'discharge 7', discharge
+
        else if ( (H+dh2*0.667) .gt. oe ) then     !! only orifice flow,not full
           discharge = oc * oa * sqrt(2. * 9.81 * ( (H+dh2*0.667) - oe ) )
+
+                    print *, 'discharge 8', discharge
+
        else
           discharge = 0.0
+
+                    print *, 'discharge 9', discharge
+
        endif
 
        if (sap .gt. 0.0) then
@@ -324,15 +400,59 @@ contains
           tmp1 = oc * oa * sqrt(2. * 9.81 * ( H - oe ) )
           tmp2 = wc * wl * (dh ** (3./2.))
           discharge = tmp1 + tmp2
+
+                    print *, 'discharge 10', discharge
+
        else if ( H .gt. oe ) then     !! only orifice flow,not full
           discharge = oc * oa * sqrt(2. * 9.81 * ( H - oe ) )
+
+                    print *, 'discharge 11', discharge
+
        else
           discharge = 0.0
+
+                    print *, 'discharge 12', discharge
+
        endif
+
+
+print *, 'H right before overtop', H
+print *, 'maxh', maxh
 
        if(H .ge. maxh) then  ! overtop condition
           discharge = qi1 - (((maxh - Htmp) * sap) / dt)
           H = maxh
+
+            if (maxH > Htmp) then
+                print *, 'DIFF!!!'
+
+            end if
+
+
+
+
+print *, '----------OVERTOP------------'
+
+
+print *, 'qi1'
+print *, qi1
+
+
+
+          print *, 'maxh'
+          print *, maxh
+
+
+
+          print *, 'Htmp'
+                    print *, Htmp
+
+
+print *, 'discharge'
+print *, discharge
+
+print *, '----------------------'
+
        endif
 
        qo1  = discharge  ! return the flow rate from reservoir
@@ -357,7 +477,25 @@ contains
     else   ! ELSE for LAKE_OPT....
     endif  ! ENDIF for LAKE_OPT....
 
+
+!print *, 'qi1 at end of LP'
+!print *, qi1
+
+
+!print *, '--------------'
+
+print *, 'qo1 at end of LP', qo1
+!print *, qo1
+print *, 'H at end', H
+
+
+print *, '-------------------------------------------'
+print *, '-------------------------------------------'
+print *, '-------------------------------------------'
+
     return
+
+
 
     ! ----------------------------------------------------------------
     end subroutine LEVELPOOL

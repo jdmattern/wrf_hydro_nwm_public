@@ -112,11 +112,12 @@ contains
 
     ! Checks and modifies for boundary conditions of negative outflow or exceeding min or max storage
     subroutine modify_for_projected_storage(inflow, previous_time_storage, min_storage, max_storage, &
-        lake_number, current_time, time_interval, outflow, water_elevation, lake_max_water_elevation)
-        real, intent(in)    :: inflow, previous_time_storage, min_storage, max_storage, lake_max_water_elevation
-        integer, intent(in) :: lake_number, current_time, time_interval
-        real, intent(inout) :: outflow, water_elevation
-        real                :: excess, projected_next_time_interval_storage
+        lake_number, current_time, time_interval, outflow, max_storage_reached)
+        real, intent(in)        :: inflow, previous_time_storage, min_storage, max_storage
+        integer, intent(in)     :: lake_number, current_time, time_interval
+        real, intent(inout)     :: outflow
+        logical, intent(inout)  :: max_storage_reached
+        real                    :: excess, projected_next_time_interval_storage
 
         if (outflow < 0.0) then
             write(log_warning,*) "Calculations return a negative outflow for reservoir ", lake_number
@@ -140,7 +141,7 @@ contains
 
             outflow = excess
 
-            water_elevation = lake_max_water_elevation
+            max_storage_reached = .true.
 
             write(log_warning,*) "Modified release to prevent maximum storage exceedance for reservoir ", lake_number
             write(log_warning,*) "at ", current_time, " seconds after model start time."
@@ -402,7 +403,7 @@ contains
         open (113, file=filename_string, status="unknown", access = 'append')
 
         write (113, "(I20, A1, I20, A1, I20, A1, I20, A1, I20, A1, I20, A1, F15.5, A1, F15.5, &
-        A1, F15.15, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5)") &
+        A1, F13.2, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5)") &
         current_time, ',', timeslice_update_time, ',', weight_update_time, ',', &
         gage_lookback_seconds, ',', gage_id, ',', persistence_weight_index, ',', &
         persistence_current_weight, ',', inflow, ',', current_storage, ',', &
@@ -411,6 +412,8 @@ contains
 
         close (113)
 
+
+print *, current_storage
     end subroutine log_hybrid_diagnostic_data
 
     ! Create Levelpool Release Function Diagnostic Log CSV File
