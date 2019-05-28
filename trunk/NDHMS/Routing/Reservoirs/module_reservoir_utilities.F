@@ -134,7 +134,7 @@ contains
 
             ! This releases only the excess water. If the new outflow is added to the existing outflow,
             ! then the reservoir maintains storage at the last value before exceeding maximum.
-            outflow = (projected_next_time_interval_storage - max_storage) / time_interval
+            !outflow = (projected_next_time_interval_storage - max_storage) / time_interval
 
             ! Calculate and release excess water.
             excess = inflow - (max_storage - previous_time_storage) / time_interval

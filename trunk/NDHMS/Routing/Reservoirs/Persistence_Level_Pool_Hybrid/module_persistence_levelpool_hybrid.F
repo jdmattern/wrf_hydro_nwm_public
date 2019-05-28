@@ -199,9 +199,20 @@ contains
             reservoir_data%state%current_storage = (reservoir_data%state%water_elevation - reservoir_data%parameters%orifice_elevation) * &
             reservoir_data%parameters%lake_area
 
+            if (reservoir_data%state%water_elevation >= reservoir_data%state%levelpool_ptr%parameters%max_depth) then
+                reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+
+                reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
+            end if
+
         end if
 
+        !end if
+
         local_water_elevation = reservoir_data%state%water_elevation
+        if (local_water_elevation >= reservoir_data%state%levelpool_ptr%parameters%max_depth)
+            local_water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
+        end if
 
         ! If update time to read new timeslice gage discharges. This condition is only met in retrospective runs.
         if (reservoir_data%state%current_time >= reservoir_data%state%timeslice_update_time) then
@@ -311,14 +322,9 @@ print *, inflow
         !    reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
 
 
-        ! If max storage has been reached, then set storage and water elevation to max
-        if (max_storage_reached) then
-            reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
 
-            reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
 
-        else
-            ! Calculate change in storage
+        ! Calculate change in storage
             delta_storage = (reservoir_data%input%inflow - reservoir_data%output%outflow) * routing_period
 
             ! Update storage from the most recent model states
@@ -330,11 +336,25 @@ print *, inflow
 
             ! In theory this shouldn't happen, but due to floating point arithmetic, this is double checked to prevent
             ! propagation of error.
-            if (reservoir_data%state%water_elevation > reservoir_data%state%levelpool_ptr%parameters%max_depth) then
-                reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
-            end if
+            !if (reservoir_data%state%water_elevation > reservoir_data%state%levelpool_ptr%parameters%max_depth) then
+            !    reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
+            !end if
+
+            !if (reservoir_data%state%current_storage > reservoir_data%parameters%max_storage) then
+            !    reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+            !end if
+
+            ! If max storage has been reached, then set storage and water elevation to max
+        if (max_storage_reached)
+            reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+
+            reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
 
         end if
+        if reservoir_data%state%water_elevation >= reservoir_data%state%levelpool_ptr%parameters%max_depth) then
+            reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+            reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
+        endif
 
         ! Update output variable returned from this subroutine
         outflow = reservoir_data%output%outflow
