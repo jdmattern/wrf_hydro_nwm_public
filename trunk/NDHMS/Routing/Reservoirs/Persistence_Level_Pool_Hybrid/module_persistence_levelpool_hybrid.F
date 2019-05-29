@@ -78,7 +78,7 @@ contains
 
         ! Create diagnostic log file
         ! Uncomment this call only for development/debugging purposes
-        !call create_hybrid_diagnostic_log_file(lake_number)
+        call create_hybrid_diagnostic_log_file(lake_number)
 
         ! Call to initialize read timeslice data object
         call read_timeslice_data%init(start_date, &
@@ -208,7 +208,20 @@ contains
             call read_timeslice_data%setup_read_timeslice(reservoir_data%parameters%observation_update_time_interval_seconds, &
             reservoir_data%state%current_time, reservoir_data%parameters%gage_id, gage_lookback_seconds, reservoir_data%state%gage_discharge)
 
-reservoir_data%state%gage_discharge = 0.0
+
+if (reservoir_data%parameters%lake_number == 1312051) then
+
+    reservoir_data%state%gage_discharge = 10.0
+
+print *, '10'
+else
+
+reservoir_data%state%gage_discharge = 114.11751
+
+
+
+print *, '114'
+end if
 
 
             ! If no good quality gage discharge was found in the given lookback period, the gage discharge is returned
@@ -302,7 +315,11 @@ reservoir_data%state%gage_discharge = 0.0
         reservoir_data%state%water_elevation, reservoir_data%state%levelpool_ptr%parameters%max_depth)
 
         ! If max water elevation reached, then set storage to max
-        if (reservoir_data%state%water_elevation == reservoir_data%state%levelpool_ptr%parameters%max_depth) then
+        !if (reservoir_data%state%water_elevation == reservoir_data%state%levelpool_ptr%parameters%max_depth) then
+        !    reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+
+        if (reservoir_data%state%water_elevation == reservoir_data%state%levelpool_ptr%parameters%max_depth &
+            .and. reservoir_data%output%outflow <= reservoir_data%input%inflow) then
             reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
 
         else
@@ -327,17 +344,21 @@ reservoir_data%state%gage_discharge = 0.0
         ! Update water_elevation variable returned from this subroutine
         water_elevation = reservoir_data%state%water_elevation
 
+
+!print *, reservoir_data%state%current_time
+
+
         ! Update the current time
         reservoir_data%state%current_time = reservoir_data%state%current_time + int(routing_period)
 
         ! Log diagnostic data
         ! Uncomment this call only for development/debugging purposes
-        !call log_hybrid_diagnostic_data(reservoir_data%parameters%lake_number, reservoir_data%state%current_time, &
-        !reservoir_data%state%timeslice_update_time, reservoir_data%state%weight_update_time, gage_lookback_seconds, &
-        !reservoir_data%parameters%gage_id, reservoir_data%state%persistence_weight_index, &
-        !reservoir_data%state%persistence_current_weight, reservoir_data%input%inflow, reservoir_data%state%current_storage, &
-        !reservoir_data%state%water_elevation, reservoir_data%state%gage_discharge, reservoir_data%state%persisted_outflow, &
-        !levelpool_outflow, reservoir_data%output%outflow)
+        call log_hybrid_diagnostic_data(reservoir_data%parameters%lake_number, reservoir_data%state%current_time, &
+        reservoir_data%state%timeslice_update_time, reservoir_data%state%weight_update_time, gage_lookback_seconds, &
+        reservoir_data%parameters%gage_id, reservoir_data%state%persistence_weight_index, &
+        reservoir_data%state%persistence_current_weight, reservoir_data%input%inflow, reservoir_data%state%current_storage, &
+        reservoir_data%state%water_elevation, reservoir_data%state%gage_discharge, reservoir_data%state%persisted_outflow, &
+        levelpool_outflow, reservoir_data%output%outflow)
 
     end subroutine run_hybrid_release
 

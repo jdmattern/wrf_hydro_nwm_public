@@ -133,17 +133,19 @@ contains
 
             ! This releases only the excess water. If the new outflow is added to the existing outflow,
             ! then the reservoir maintains storage at the last value before exceeding maximum.
-            outflow = (projected_next_time_interval_storage - max_storage) / time_interval
+            !outflow = (projected_next_time_interval_storage - max_storage) / time_interval
 
             ! Calculate and release excess water.
-            excess = inflow - (max_storage - previous_time_storage) / time_interval
+            !excess = inflow - (max_storage - previous_time_storage) / time_interval
 
-            outflow = excess
+            !outflow = outflow + excess
+
+            outflow = inflow - (max_storage - previous_time_storage) / time_interval
 
             water_elevation = lake_max_water_elevation
 
-            write(log_warning,*) "Modified release to prevent maximum storage exceedance for reservoir ", lake_number
-            write(log_warning,*) "at ", current_time, " seconds after model start time."
+            !write(log_warning,*) "Modified release to prevent maximum storage exceedance for reservoir ", lake_number
+            !write(log_warning,*) "at ", current_time, " seconds after model start time."
 
         else if (projected_next_time_interval_storage < min_storage .AND. projected_next_time_interval_storage > 0.0) then
 

@@ -217,12 +217,19 @@ contains
     !! -- determine from inflow hydrograph
 
 
+    real :: htmp5, htmp6, fill_to_top
+
+
     !!DJG Set hardwire for LAKE_OPT...move specification of this to namelist in
     !future versions...
     LAKE_OPT = 2
     Htmp = H   !temporary set of incoming lake water elevation...
     !hdiff_vol = 0.0
     !qdiff_vol = 0.0
+
+
+htmp5 = H
+
 
     !!DJG IF-block for lake model option  1 - outflow=inflow, 2 - Chow et al level
     !pool, .....
@@ -245,6 +252,13 @@ contains
        !-- determine Q(dh) from elevation-discharge relationship
        !-- and dh1
        dh = H - we
+
+       if (dh < 0) then
+        print *, 'dh LESS THAN ZERO'
+        print *, dh
+
+        end if
+
        if (dh .gt. maxWeirDepth) then
           dh = maxWeirDepth
        endif
@@ -272,6 +286,14 @@ contains
           dh = maxWeirDepth
        endif
 
+       if (dh < 0) then
+        print *, 'dh LESS THAN ZERO'
+        print *, dh
+
+        end if
+
+
+
        if (dh .gt. 0.0 ) then              !! orifice and overtop discharge
           tmp1 = oc * oa * sqrt(2. * 9.81 * ( (H+dh1/3.) - oe ) )
           tmp2 = wc * wl * (dh ** (3./2.))
@@ -281,6 +303,13 @@ contains
        else
           discharge = 0.0
        endif
+
+          if (discharge < 0) then
+            print *, 'DISCHARGE < 0 at 296'
+            print *, discharge
+
+       endif
+
 
        if (sap .gt. 0.0) then
           dh2 = ((Itdt_3 - discharge)/sap)*dt
@@ -295,6 +324,15 @@ contains
           dh = maxWeirDepth
        endif
 
+
+       if (dh < 0) then
+        print *, 'dh LESS THAN ZERO'
+        print *, dh
+
+        end if
+
+
+
        if (dh .gt. 0.0 ) then              !! orifice and overtop discharge
           tmp1 = oc * oa * sqrt(2. * 9.81 * ( (H+dh2*0.667) - oe ) )
           tmp2 = wc * wl * (dh ** (3./2.))
@@ -305,6 +343,14 @@ contains
           discharge = 0.0
        endif
 
+
+          if (discharge < 0) then
+            print *, 'DISCHARGE < 0 at 324'
+            print *, discharge
+
+       endif
+
+
        if (sap .gt. 0.0) then
           dh3 = ((Itdt_2_3 - discharge)/sap)*dt
        else
@@ -314,6 +360,8 @@ contains
        !-- determine dh and H
        dh = (dh1/4.) + (0.75*dh3)
        H = H + dh
+
+htmp6 = H
 
        !-- compute final discharge
        dh = H - we
@@ -330,10 +378,74 @@ contains
           discharge = 0.0
        endif
 
-       if(H .ge. maxh) then  ! overtop condition
-          discharge = qi1 - (((maxh - Htmp) * sap) / dt)
-          H = maxh
+          if (discharge < 0) then
+            print *, 'DISCHARGE < 0 at 356'
+            print *, discharge
+
        endif
+
+       !if (H == maxh) then
+       !     discharge =
+
+        !if(H .ge. maxh) then  ! overtop condition
+       !else if(H .gt. maxh) then  ! overtop condition
+
+!!!!!!!!!!!!!!!!!!!!!1
+        if(H .gt. maxh) then  ! overtop condition
+        !if(H .ge. maxh) then  ! overtop condition
+!!!!!!!!!!!!!!!!!!!!!!
+          discharge = qi1 - (((maxh - Htmp) * sap) / dt) + discharge
+!!!!!!!!!!!!!!!!!!!!
+        !discharge = qi1 + discharge
+
+            !discharge = qi1 - (((maxh - H) * sap) / dt)
+
+
+
+        fill_to_top = (((maxh - Htmp) * sap) / dt)
+
+          !!!!!!!discharge = qi1 - (((maxh - H) * sap) / dt)
+
+            !goes negative whenever the difference in the max height and the incoming water elev mult by area/dt is larger than the inflow
+            !
+            !as if there is no excess leading to negative excess
+
+
+        !print *, 'OVERTOP'
+
+          if (discharge < 0) then
+            print *, '----------------------------'
+
+            print *, 'DISCHARGE < 0 at overtop'
+            print *, 'discharge', discharge
+            print *, 'qi1', qi1
+            print *, 'fill_to_top', fill_to_top
+
+            print *, 'H', H
+            print *, 'Htmp', Htmp
+            print *, 'maxh', maxh
+
+            print *, 'Htmp5', Htmp5
+            print *, 'Htmp6', Htmp6
+            print *, 'dh', dh
+            print *, 'we', we
+            print *, 'oe', oe
+
+            print *, '----------------------------'
+
+
+
+            end if
+
+
+          H = maxh
+
+
+       endif
+
+
+            !print *, 'we', we
+            !print *, 'oe', oe
 
        qo1  = discharge  ! return the flow rate from reservoir
 
