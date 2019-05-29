@@ -25,7 +25,7 @@ program reservoir_unit_tests
 
     !rv1 = test_levelpool()
 
-    !rv2 = test_levelpool_overflow_max_height()
+    rv2 = test_levelpool_overflow_max_height()
 
     !rv3 = test_persistence_levelpool_hybrid()
 
