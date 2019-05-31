@@ -500,7 +500,7 @@ CONTAINS
     write(6,*) " nlst%route_link_f ", route_link_f
     write(6,*) " nlst%compound_channel ", compound_channel
     write(6,*) " nlst%route_lake_f ",route_lake_f
-    write(6,*) " nlst%reservoir_persistence_parameter_file ", persistence_parameter_file
+    write(6,*) " nlst%reservoir_persistence_parameter_file ", reservoir_persistence_parameter_file
     write(6,*) " nlst%reservoir_timeslice_path ", reservoir_timeslice_path
     write(6,*) " nlst%reservoir_observation_lookback_hours ", nlst%reservoir_observation_lookback_hours
     write(6,*) " nlst%reservoir_observation_update_time_interval_seconds ", nlst%reservoir_observation_update_time_interval_seconds
@@ -773,7 +773,7 @@ subroutine rt_nlst_check(nlst)
 
    if(nlst%reservoir_persistence) then
       if(len(trim(nlst%reservoir_persistence_parameter_file)) .eq. 0) then
-         call hydro_stop('hydro.namelist ERROR: You MUST specify a reservoir persistence_parameter_file for &
+         call hydro_stop('hydro.namelist ERROR: You MUST specify a reservoir_persistence_parameter_file for &
          inputs to persistence type reservoirs.')
       endif
       if(len(trim(nlst%reservoir_timeslice_path)) .eq. 0) then
@@ -782,7 +782,7 @@ subroutine rt_nlst_check(nlst)
       endif
       if(len(trim(nlst%reservoir_persistence_parameter_file)) .ne. 0) then
         inquire(file=trim(nlst%reservoir_persistence_parameter_file),exist=fileExists)
-        if (.not. fileExists) call hydro_stop('hydro.namelist ERROR: persistence_parameter_file not found.')
+        if (.not. fileExists) call hydro_stop('hydro.namelist ERROR: reservoir_persistence_parameter_file not found.')
       endif
       ! Can leave both blocks below commented out because the reservoir module_read_timeslice_data.F will
       ! look for timeslice files in the reservoir_timeslice_path but not cause errors nor call hydro_stop
