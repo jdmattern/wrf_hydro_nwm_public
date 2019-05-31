@@ -134,6 +134,8 @@ contains
 
             ! This releases only the excess water. If the new outflow is added to the existing outflow,
             ! then the reservoir maintains storage at the last value before exceeding maximum.
+
+            ! This releases only the excess water minus the available storage.
             outflow = inflow - (max_storage - previous_time_storage) / time_interval
 
             max_storage_reached = .true.
