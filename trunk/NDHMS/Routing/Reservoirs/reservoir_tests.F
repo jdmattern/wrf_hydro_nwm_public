@@ -29,12 +29,12 @@ program reservoir_unit_tests
 
     rv3 = test_persistence_levelpool_hybrid3()
 
-    !rv4 = test_persistence_levelpool_hybrid8()
+    rv4 = test_persistence_levelpool_hybrid8()
 
-    !rv5 = test_persistence_levelpool_hybrid9()
+    rv5 = test_persistence_levelpool_hybrid9()
 
 
-    !rv6 = test_persistence_levelpool_hybrid5()
+    rv6 = test_persistence_levelpool_hybrid5()
 
 
     if (rv1 .and. rv2 .and. rv3) then
