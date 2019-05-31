@@ -112,10 +112,11 @@ contains
 
     ! Checks and modifies for boundary conditions of negative outflow or exceeding min or max storage
     subroutine modify_for_projected_storage(inflow, previous_time_storage, min_storage, max_storage, &
-        lake_number, current_time, time_interval, outflow, water_elevation, lake_max_water_elevation)
-        real, intent(in)    :: inflow, previous_time_storage, min_storage, max_storage, lake_max_water_elevation
+        lake_number, current_time, time_interval, outflow, max_storage_reached)
+        real, intent(in)    :: inflow, previous_time_storage, min_storage, max_storage
         integer, intent(in) :: lake_number, current_time, time_interval
-        real, intent(inout) :: outflow, water_elevation
+        real, intent(inout) :: outflow
+        logical, intent(inout)  :: max_storage_reached
         real                :: excess, projected_next_time_interval_storage
 
         if (outflow < 0.0) then
@@ -142,10 +143,12 @@ contains
 
             outflow = inflow - (max_storage - previous_time_storage) / time_interval
 
-            water_elevation = lake_max_water_elevation
 
-            !write(log_warning,*) "Modified release to prevent maximum storage exceedance for reservoir ", lake_number
-            !write(log_warning,*) "at ", current_time, " seconds after model start time."
+            max_storage_reached = .true.
+
+
+            write(log_warning,*) "Modified release to prevent maximum storage exceedance for reservoir ", lake_number
+            write(log_warning,*) "at ", current_time, " seconds after model start time."
 
         else if (projected_next_time_interval_storage < min_storage .AND. projected_next_time_interval_storage > 0.0) then
 

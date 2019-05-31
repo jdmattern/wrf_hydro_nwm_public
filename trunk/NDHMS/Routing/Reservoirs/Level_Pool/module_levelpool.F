@@ -391,18 +391,30 @@ htmp6 = H
        !else if(H .gt. maxh) then  ! overtop condition
 
 !!!!!!!!!!!!!!!!!!!!!1
-        !if(H .gt. maxh) then  ! overtop condition
-        if(H .ge. maxh) then  ! overtop condition
+        if(H .gt. maxh) then  ! overtop condition
+        !if(H .ge. maxh) then  ! overtop condition
+
+!       print *, '--------------'
+!print *, 'discharge before overtop', discharge
+
 !!!!!!!!!!!!!!!!!!!!!!
           !discharge = qi1 - (((maxh - Htmp) * sap) / dt) + discharge
 !!!!!!!!!!!!!!!!!!!!
         !discharge = qi1 + discharge
 
-            discharge = qi1 - (((maxh - H) * sap) / dt)
+!print *, 'qi1', qi1
 
+            discharge = qi1 - (((maxh - Htmp) * sap) / dt)
 
+!print *, 'discharge', discharge
 
         fill_to_top = (((maxh - Htmp) * sap) / dt)
+
+!print *, 'fill_to_top', fill_to_top
+!print *, '--------------'
+
+
+
 
           !!!!!!!discharge = qi1 - (((maxh - H) * sap) / dt)
 
@@ -411,7 +423,7 @@ htmp6 = H
             !as if there is no excess leading to negative excess
 
 
-        !print *, 'OVERTOP'
+        print *, 'OVERTOP'
 
           if (discharge < 0) then
             print *, '----------------------------'

@@ -176,10 +176,11 @@ contains
         real                :: delta_storage            ! timestep change in storage (cubic meters)
         real                :: local_water_elevation    ! water elevation passed to levelpool (meters AMSL)
         real                :: levelpool_outflow        ! cubic meters per second (cms)
+        logical             :: max_storage_reached      ! flag for when max storage is reached
         integer             :: gage_lookback_seconds    ! seconds between current model
                                                         ! time and the time a gage
                                                         ! discharge is read
-
+        max_storage_reached = .false.
         gage_lookback_seconds = 0
 
         ! Update input variables
@@ -213,15 +214,17 @@ if (reservoir_data%parameters%lake_number == 1312051) then
 
     reservoir_data%state%gage_discharge = 10.0
 
-print *, '10'
+    print *, '10'
+
 else
 
-reservoir_data%state%gage_discharge = 114.11751
+    reservoir_data%state%gage_discharge = 114.11751
 
-
-
-print *, '114'
+    print *, '114'
 end if
+
+
+    reservoir_data%state%gage_discharge = 0.0
 
 
             ! If no good quality gage discharge was found in the given lookback period, the gage discharge is returned
@@ -311,16 +314,21 @@ end if
         call modify_for_projected_storage(reservoir_data%input%inflow, &
         reservoir_data%state%current_storage, reservoir_data%parameters%min_storage, &
         reservoir_data%parameters%max_storage, reservoir_data%parameters%lake_number, &
-        reservoir_data%state%current_time, int(routing_period), reservoir_data%output%outflow, &
-        reservoir_data%state%water_elevation, reservoir_data%state%levelpool_ptr%parameters%max_depth)
+        reservoir_data%state%current_time, int(routing_period), reservoir_data%output%outflow, max_storage_reached)
 
         ! If max water elevation reached, then set storage to max
         !if (reservoir_data%state%water_elevation == reservoir_data%state%levelpool_ptr%parameters%max_depth) then
         !    reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
 
-        if (reservoir_data%state%water_elevation == reservoir_data%state%levelpool_ptr%parameters%max_depth &
-            .and. reservoir_data%output%outflow <= reservoir_data%input%inflow) then
+        !if (reservoir_data%state%water_elevation == reservoir_data%state%levelpool_ptr%parameters%max_depth &
+        !    .and. reservoir_data%output%outflow <= reservoir_data%input%inflow) then
+        !    reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+
+        ! If max storage has been reached, then set storage and water elevation to max
+        if (max_storage_reached) then
             reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
+
+            reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
 
         else
             ! Calculate change in storage
@@ -332,6 +340,14 @@ end if
             ! Calculate new water elevation. Delta storage is used as opposed to calculating from current storage in
             ! order to minimize floating point error because current storage is a much larger magnitude than water elevation.
             reservoir_data%state%water_elevation = reservoir_data%state%water_elevation + delta_storage / reservoir_data%parameters%lake_area
+
+
+            ! In theory this shouldn't happen, but due to floating point arithmetic, this is double checked to prevent
+            ! propagation of error.
+            if (reservoir_data%state%water_elevation > reservoir_data%state%levelpool_ptr%parameters%max_depth) then
+                reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
+            end if
+
 
         end if
 
