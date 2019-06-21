@@ -64,7 +64,7 @@ contains
 
         ! Create diagnostic log file
         ! Uncomment this call only for development/debugging purposes
-        !call create_levelpool_diagnostic_log_file(lake_number)
+        call create_levelpool_diagnostic_log_file(lake_number)
 
         if (this%pointer_allocation_guard .eqv. .false. ) then
             ! try to allocate input
@@ -172,7 +172,7 @@ contains
 
         ! Log diagnostic data
         ! Uncomment this call only for development/debugging purposes
-        !call log_levelpool_diagnostic_data(reservoir_data%parameters%lake_number, inflow, water_elevation, outflow)
+        call log_levelpool_diagnostic_data(reservoir_data%parameters%lake_number, inflow, water_elevation, outflow)
 
     end subroutine run_levelpool_release
 
@@ -330,7 +330,7 @@ contains
           discharge = 0.0
        endif
 
-       if(H .ge. maxh) then  ! overtop condition
+       if(H .gt. maxh) then  ! overtop condition
           discharge = qi1 - (((maxh - Htmp) * sap) / dt)
           H = maxh
        endif
