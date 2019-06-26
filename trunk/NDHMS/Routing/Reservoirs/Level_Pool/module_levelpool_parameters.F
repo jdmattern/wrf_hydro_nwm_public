@@ -59,6 +59,15 @@ contains
         this%max_depth = max_depth
         this%lake_number = lake_number
 
+
+print *, 'this%max_depth'
+
+print *, this%max_depth
+
+print *, 'this%weir_length'
+
+print *, this%weir_length
+
     end subroutine levelpool_parameters_init
 
     !Level Pool Parameters Destructor

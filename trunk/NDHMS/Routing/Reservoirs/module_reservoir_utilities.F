@@ -424,7 +424,9 @@ contains
 
         open (113, file=filename_string, status="unknown")
 
-        write (113, "(A256)") "Inflow, Water Elevation, Outflow"
+        !write (113, "(A256)") "Inflow, Water Elevation, Outflow"
+
+        write (113, "(A30)") "Inflow,Water Elevation,Outflow"
 
         close(113)
 

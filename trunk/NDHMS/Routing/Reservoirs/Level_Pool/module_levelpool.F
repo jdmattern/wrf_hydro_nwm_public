@@ -331,8 +331,14 @@ contains
        endif
 
        if(H .gt. maxh) then  ! overtop condition
-          discharge = qi1 - (((maxh - Htmp) * sap) / dt)
+       !if(H .ge. maxh) then  ! overtop condition
+          !discharge = qi1 - (((maxh - Htmp) * sap) / dt)
           H = maxh
+
+
+
+          discharge = -100.0
+
        endif
 
        qo1  = discharge  ! return the flow rate from reservoir
