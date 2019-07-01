@@ -330,14 +330,15 @@ contains
           discharge = 0.0
        endif
 
-       if(H .gt. maxh) then  ! overtop condition
-       !if(H .ge. maxh) then  ! overtop condition
+       !if(H .gt. maxh) then  ! overtop condition
+       if(H .ge. maxh) then  ! overtop condition
           !discharge = qi1 - (((maxh - Htmp) * sap) / dt)
+          discharge = qi1
           H = maxh
 
 
 
-          discharge = -100.0
+          !discharge = -100.0
 
        endif
 
