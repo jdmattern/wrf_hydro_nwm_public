@@ -29,7 +29,7 @@ ax = fig.add_subplot(gs[0,:])
 df[['Inflow', 'Outflow']].plot(ax=ax)
 ax2 = fig.add_subplot(gs[1,:])
 df[['Water Elevation']].plot(ax=ax2)
-ax.set_ylim([100, 900])
+#ax.set_ylim([100, 900])
 #plt.suptitle('LP With Mods')
 
 plt.suptitle('3528295')
@@ -63,7 +63,7 @@ ax = fig.add_subplot(gs[0,:])
 df[['Inflow', 'Outflow']].plot(ax=ax)
 ax2 = fig.add_subplot(gs[1,:])
 df[['Water Elevation']].plot(ax=ax2)
-ax.set_ylim([100, 900])
+#ax.set_ylim([100, 900])
 #plt.suptitle('LP With Mods')
 
 plt.suptitle('166758723')
@@ -98,7 +98,7 @@ ax = fig.add_subplot(gs[0,:])
 df[['Inflow', 'Outflow']].plot(ax=ax)
 ax2 = fig.add_subplot(gs[1,:])
 df[['Water Elevation']].plot(ax=ax2)
-ax.set_ylim([100, 900])
+#ax.set_ylim([100, 900])
 #plt.suptitle('LP With Mods')
 
 plt.suptitle('16944276')
@@ -106,5 +106,40 @@ plt.suptitle('16944276')
 #plt.savefig('LP_powell')
 
 plt.savefig('16944276')
+
+
+##########################
+df = pd.read_csv("levelpool_logs_1312051.csv", header=0)
+
+print(df.columns)
+
+#df[['Inflow', 'Water Elevation', 'Outflow']].plot()
+
+#df[['Inflow', 'Outflow']].plot()
+
+#plt.savefig('fs_plot_3528295')
+
+
+fig = plt.figure()
+
+
+gs = gridspec.GridSpec(2, 1)
+
+
+#df['delta_h_in'].plot()
+ax = fig.add_subplot(gs[0,:])
+df[['Inflow', 'Outflow']].plot(ax=ax)
+ax2 = fig.add_subplot(gs[1,:])
+df[['Water Elevation']].plot(ax=ax2)
+#ax.set_ylim([100, 900])
+#plt.suptitle('LP With Mods')
+
+plt.suptitle('1312051')
+
+#plt.savefig('LP_powell')
+
+plt.savefig('1312051')
+
+
 
 
