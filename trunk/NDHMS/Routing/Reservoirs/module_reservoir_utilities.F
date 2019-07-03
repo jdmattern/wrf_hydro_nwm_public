@@ -134,7 +134,7 @@ contains
 
             ! This releases only the excess water. If the new outflow is added to the existing outflow,
             ! then the reservoir maintains storage at the last value before exceeding maximum.
-            outflow = inflow - (max_storage - previous_time_storage) / time_interval
+            !outflow = inflow - (max_storage - previous_time_storage) / time_interval
 
             max_storage_reached = .true.
 
@@ -400,7 +400,7 @@ contains
         open (113, file=filename_string, status="unknown", access = 'append')
 
         write (113, "(I20, A1, I20, A1, I20, A1, I20, A1, I20, A1, I20, A1, F15.5, A1, F15.5, &
-        A1, F15.15, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5)") &
+        A1, F12.2, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5, A1, F15.5)") &
         current_time, ',', timeslice_update_time, ',', weight_update_time, ',', &
         gage_lookback_seconds, ',', gage_id, ',', persistence_weight_index, ',', &
         persistence_current_weight, ',', inflow, ',', current_storage, ',', &
