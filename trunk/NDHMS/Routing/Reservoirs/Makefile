@@ -32,6 +32,7 @@ test:
 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) module_reservoir_utilities.F
 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) module_reservoir_base.F
 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) module_read_timeslice_data.F
+	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) testing_inflows.F
 
 	make -C Level_Pool
 	make -C Persistence_Level_Pool_Hybrid
@@ -40,6 +41,7 @@ test:
 
 
 	$(COMPILER90) $(NETCDFLIB) -o reservoir_tests \
+		testing_inflows.o \
 		hydro_stop.o \
 		module_reservoir_utilities.o \
 		module_reservoir_base.o \

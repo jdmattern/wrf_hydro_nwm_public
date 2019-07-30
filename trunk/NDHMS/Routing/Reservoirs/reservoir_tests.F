@@ -7,12 +7,28 @@
 program reservoir_unit_tests
     use module_levelpool_tests
     use module_persistence_levelpool_hybrid_tests
-
+    use testing_inflows
     implicit none
 
     logical :: rv1 = .false.
     logical :: rv2 = .false.
     logical :: rv3 = .false.
+
+    logical :: rv4 = .false.
+    logical :: rv5 = .false.
+    logical :: rv6 = .false.
+    logical :: rv7 = .false.
+    logical :: rv8 = .false.
+    logical :: rv9 = .false.
+    logical :: rv10 = .false.
+    logical :: rv11 = .false.
+    logical :: rv12 = .false.
+    logical :: rv13 = .false.
+    logical :: rv14 = .false.
+    logical :: rv15 = .false.
+
+
+
 
     rv1 = .false.
     rv2 = .false.
@@ -22,7 +38,36 @@ program reservoir_unit_tests
 
     rv2 = test_levelpool_overflow_max_height()
 
-    rv3 = test_persistence_levelpool_hybrid()
+    !rv3 = test_persistence_levelpool_hybrid()
+
+
+
+
+
+  !  rv4 = lake_5843642_gage_1069500_cast_2017040800()
+
+
+!    rv5 = lake_6074765_gage_1096500_cast_2017040800()
+
+
+ !   rv6 = lake_6743056_gage_1100505_cast_2016101306()
+
+    rv7 = lake_24245783_gage_14220500_cast_2017031612()
+
+  !  rv8 = lake_120052938_gage_13183000_cast_2017042918()
+
+   ! rv9 = lake_120052939_gage_13077000_cast_2017061600()
+
+
+  !  rv10 = lake_22294608_gage_1325000_cast_2017050712()
+
+
+   ! rv11 = lake_3247302_gage_1350180_cast_2017040712()
+
+
+
+
+
 
     if (rv1 .and. rv2 .and. rv3) then
         print *, "========================================================================"
@@ -34,7 +79,6 @@ program reservoir_unit_tests
         print *, 'Not All Reservoir Tests Passed'
         print *, "========================================================================"
     end if
-
 
     contains
 
@@ -239,4 +283,698 @@ program reservoir_unit_tests
 
     end function test_persistence_levelpool_hybrid
 
+
+
+
+    ! Peak
+    ! Water elev 72.00267
+    ! gage discharge 37.09527
+    function lake_5843642_gage_1069500_cast_2017040800() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 72.00267
+
+        !water_elevation = 70.31999969
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 1.44050002
+        weir_elevation = 69.67499962
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 66.01999919
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 70.31999969
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 5843642
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_5843642_gage_1069500_cast_2017040612_inflows(timestep_count)
+
+            !inflow = lake_5843642_gage_1069500_cast_2017040800_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_5843642_gage_1069500_cast_2017040800
+
+
+
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 89.24817
+    ! gage discharge 111.00264
+    function lake_6074765_gage_1096500_cast_2017040800() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 89.24817
+
+
+        !water_elevation = 66.83999634
+
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 1.15998006
+        weir_elevation = 66.73999634
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 66.17332967
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 66.83999634
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 6074765
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_6074765_gage_1096500_cast_2017040800_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_6074765_gage_1096500_cast_2017040800
+
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 61.56126
+    ! gage discharge 4.5024
+    function lake_6743056_gage_1100505_cast_2016101306() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 61.56126
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 2.10215998
+        weir_elevation = 65.70899925
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 61.45333354
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 66.45999908
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 6743056
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_6743056_gage_1100505_cast_2016101306_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_6743056_gage_1100505_cast_2016101306
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 59.64768
+    ! gage discharge 736.242
+    function lake_24245783_gage_14220500_cast_2017031612() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 59.64768
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 13.97229958
+        weir_elevation = 83.66200142
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 59.64666748
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 87.90000153
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 24245783
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_24245783_gage_14220500_cast_2017031612_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_24245783_gage_14220500_cast_2017031612
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 872.35754
+    ! gage discharge 37.09527
+    function lake_120052938_gage_13183000_cast_2017042918() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 872.35754
+
+        !water_elevation = 868.82000732
+
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 43.44800186
+        weir_elevation = 856.14900513
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 784.34665934
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 868.82000732
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 120052938
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_120052938_gage_13183000_cast_2017042918_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_120052938_gage_13183000_cast_2017042918
+
+
+
+
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 1340.97095
+    ! gage discharge 767.39069
+    function lake_120052939_gage_13077000_cast_2017061600() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 1340.97095
+
+        !water_elevation = 1335.18005371
+
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 209.63200378
+        weir_elevation = 1332.07404785
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 1314.47334798
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 1335.18005371
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 120052939
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_120052939_gage_13077000_cast_2017061600_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_120052939_gage_13077000_cast_2017061600
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 460.72165
+    ! gage discharge 260.79956
+    function lake_22294608_gage_1325000_cast_2017050712() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 460.72165
+
+        !water_elevation = 223.6499939
+
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 1.69660997
+        weir_elevation = 220.26199493
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 201.06333415
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 223.6499939
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 22294608
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_22294608_gage_1325000_cast_2017050712_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_22294608_gage_1325000_cast_2017050712
+
+
+
+
+
+
+
+
+
+    ! Peak
+    ! Water elev 392.00372
+    ! gage discharge 221.43893
+    function lake_3247302_gage_1350180_cast_2017040712() result(rv)
+        implicit none
+        logical rv                        ! test result
+
+        type (persistence_levelpool_hybrid_struct) :: persistence_levelpool_hybrid_reservoir_data
+
+        real :: inflow, water_elevation, outflow
+        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: weir_length, orifice_elevation, orifice_coefficient
+        real :: orifice_area, max_depth, initial_fractional_depth
+        integer :: lake_number
+        integer :: timestep_count, total_timesteps
+
+
+    !Hard code gage discharge at line 210 in main hybrid module
+
+    !Set array dimension here
+    !!!!!!!!!!!!!!!!!
+        !real, dimension(100) :: inflow_array
+
+        total_timesteps = 2880
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set initial water elevation here
+    !!!!!!!!!!!!!!!!!
+        water_elevation = 392.00372
+
+        !water_elevation = 274.61999512
+    !!!!!!!!!!!!!!!!!
+
+
+    !Set static params here
+    !!!!!!!!!!!!!!!!!
+        lake_area = 1.08456004
+        weir_elevation = 271.947995
+        weir_coeffecient = 4.000000000000000222e-01
+        weir_length = 1.000000000000000000e+01
+        orifice_elevation = 256.80666097
+        orifice_coefficient = 1.000000000000000056e-01
+        orifice_area = 1.0
+        max_depth = 274.61999512
+        initial_fractional_depth = 8.999999761581420898e-01
+        lake_number = 3247302
+    !!!!!!!!!!!!!!!!!
+
+
+    !Copy inflow array here with ", &"
+    !!!!!!!!!!!!!!!!!
+        !inflow_array = (/0.000000000	, &
+
+
+        !0.000000000	 /)
+    !!!!!!!!!!!!!!!!!
+
+
+    ! Do not modify
+    !!!!!!!!!!!!!!!!!
+        timestep_count = 0
+
+        call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
+        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/persistence_reservoir_using_usgs_gages.nc", &
+        "2010-10-01_07:00:00", "./Testing_Files/", 12, 1000000000)
+
+        do timestep_count = 1, total_timesteps
+
+            inflow = lake_3247302_gage_1350180_cast_2017040712_inflows(timestep_count)
+            call persistence_levelpool_hybrid_reservoir_data%run_release(inflow, &
+            inflow, 0.0, water_elevation, outflow, 300.0)
+
+        end do
+
+        rv = .true.
+    !!!!!!!!!!!!!!!!!
+
+    end function lake_3247302_gage_1350180_cast_2017040712
+
+
 end program
+
