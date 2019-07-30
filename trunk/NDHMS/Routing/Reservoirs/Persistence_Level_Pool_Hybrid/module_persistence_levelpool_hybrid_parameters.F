@@ -87,7 +87,13 @@ contains
         status = nf90_get_var(ncid, var_id, temp_real_2D_array)
         if (status /= nf90_noerr) call handle_err(status, "persistence_coefficients")
 
-        this%persistence_weighted_coefficients(:) = temp_real_2D_array(:, lake_id_index)
+        !this%persistence_weighted_coefficients(:) = temp_real_2D_array(:, lake_id_index)
+
+this%persistence_weighted_coefficients(:) = 1
+
+
+print *, 'this%persistence_weighted_coefficients'
+print *, this%persistence_weighted_coefficients
 
         if(allocated(temp_real_2D_array)) deallocate(temp_real_2D_array)
 

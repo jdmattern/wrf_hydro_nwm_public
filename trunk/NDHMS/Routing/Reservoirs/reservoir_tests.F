@@ -38,31 +38,31 @@ program reservoir_unit_tests
 
     rv2 = test_levelpool_overflow_max_height()
 
-    !rv3 = test_persistence_levelpool_hybrid()
+    rv3 = test_persistence_levelpool_hybrid()
 
 
 
 
 
-  !  rv4 = lake_5843642_gage_1069500_cast_2017040800()
+    rv4 = lake_5843642_gage_1069500_cast_2017040800()
 
 
-!    rv5 = lake_6074765_gage_1096500_cast_2017040800()
+    rv5 = lake_6074765_gage_1096500_cast_2017040800()
 
 
- !   rv6 = lake_6743056_gage_1100505_cast_2016101306()
+    rv6 = lake_6743056_gage_1100505_cast_2016101306()
 
     rv7 = lake_24245783_gage_14220500_cast_2017031612()
 
-  !  rv8 = lake_120052938_gage_13183000_cast_2017042918()
+    rv8 = lake_120052938_gage_13183000_cast_2017042918()
 
-   ! rv9 = lake_120052939_gage_13077000_cast_2017061600()
-
-
-  !  rv10 = lake_22294608_gage_1325000_cast_2017050712()
+    rv9 = lake_120052939_gage_13077000_cast_2017061600()
 
 
-   ! rv11 = lake_3247302_gage_1350180_cast_2017040712()
+    rv10 = lake_22294608_gage_1325000_cast_2017050712()
+
+
+    rv11 = lake_3247302_gage_1350180_cast_2017040712()
 
 
 

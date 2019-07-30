@@ -216,6 +216,7 @@ contains
             reservoir_data%state%current_time, reservoir_data%parameters%gage_id, gage_lookback_seconds, reservoir_data%state%gage_discharge)
 
 
+
             ! If no good quality gage discharge was found in the given lookback period, the gage discharge is returned
             ! as -1.0. The persistence weight index will be set out of bounds larger than the array. This causes the
             ! the weight update logic to set the persistence weight to 0.0. Therefore, only levelpool calculations will be used.
@@ -236,6 +237,7 @@ contains
 
                 else
                     reservoir_data%state%persistence_current_weight = reservoir_data%parameters%persistence_weighted_coefficients(reservoir_data%state%persistence_weight_index)
+
                 end if
 
             else
@@ -300,47 +302,47 @@ contains
         call warn_negative_inflow(reservoir_data%input%inflow, reservoir_data%parameters%lake_number, reservoir_data%state%current_time)
 
         ! Modify if exceeding storage boundary conditions
-        call modify_for_projected_storage(reservoir_data%input%inflow, &
-        reservoir_data%state%current_storage, reservoir_data%parameters%min_storage, &
-        reservoir_data%parameters%max_storage, reservoir_data%parameters%lake_number, &
-        reservoir_data%state%current_time, int(routing_period), reservoir_data%output%outflow, max_storage_reached)
+!        call modify_for_projected_storage(reservoir_data%input%inflow, &
+!        reservoir_data%state%current_storage, reservoir_data%parameters%min_storage, &
+!        reservoir_data%parameters%max_storage, reservoir_data%parameters%lake_number, &
+!        reservoir_data%state%current_time, int(routing_period), reservoir_data%output%outflow, max_storage_reached)
 
         ! If max storage has been reached, then set storage and water elevation to max
-        if (max_storage_reached) then
+!        if (max_storage_reached) then
 
             !reservoir_data%state%current_storage = reservoir_data%parameters%max_storage
 
             !reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
 
 
-            if (reservoir_data%output%outflow < levelpool_outflow) then
-                reservoir_data%output%outflow = levelpool_outflow
+!            if (reservoir_data%output%outflow < levelpool_outflow) then
+!                reservoir_data%output%outflow = levelpool_outflow
 
-            end if
+!            end if
 
 
             ! Calculate change in storage
-            delta_storage = (reservoir_data%input%inflow - reservoir_data%output%outflow) * routing_period
+!            delta_storage = (reservoir_data%input%inflow - reservoir_data%output%outflow) * routing_period
 
             ! Update storage from the most recent model states
-            reservoir_data%state%current_storage = reservoir_data%state%current_storage + delta_storage
+!            reservoir_data%state%current_storage = reservoir_data%state%current_storage + delta_storage
 
             ! Calculate new water elevation. Delta storage is used as opposed to calculating from current storage in
             ! order to minimize floating point error because current storage is a much larger magnitude than water elevation.
-            reservoir_data%state%water_elevation = reservoir_data%state%water_elevation + delta_storage / reservoir_data%parameters%lake_area
+!            reservoir_data%state%water_elevation = reservoir_data%state%water_elevation + delta_storage / reservoir_data%parameters%lake_area
 
 
 
-        else
+!        else
             ! Calculate change in storage
-            delta_storage = (reservoir_data%input%inflow - reservoir_data%output%outflow) * routing_period
+!            delta_storage = (reservoir_data%input%inflow - reservoir_data%output%outflow) * routing_period
 
             ! Update storage from the most recent model states
-            reservoir_data%state%current_storage = reservoir_data%state%current_storage + delta_storage
+!            reservoir_data%state%current_storage = reservoir_data%state%current_storage + delta_storage
 
             ! Calculate new water elevation. Delta storage is used as opposed to calculating from current storage in
             ! order to minimize floating point error because current storage is a much larger magnitude than water elevation.
-            reservoir_data%state%water_elevation = reservoir_data%state%water_elevation + delta_storage / reservoir_data%parameters%lake_area
+!            reservoir_data%state%water_elevation = reservoir_data%state%water_elevation + delta_storage / reservoir_data%parameters%lake_area
 
             ! In theory this shouldn't happen, but due to floating point arithmetic, this is double checked to prevent
             ! propagation of error.
@@ -348,7 +350,7 @@ contains
             !    reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
             !end if
 
-        end if
+!        end if
 
         ! Update output variable returned from this subroutine
         outflow = reservoir_data%output%outflow
@@ -356,6 +358,10 @@ contains
         ! Set current inflow to previous_timestep_inflow
         reservoir_data%input%previous_timestep_inflow = inflow
 
+
+        !!!!!!!!!!!!!!!!!!!!!!!!
+        reservoir_data%state%water_elevation = local_water_elevation
+        !!!!!!!!!!!!!!!!!!!!!!!!!!
         ! Update water_elevation variable returned from this subroutine
         water_elevation = reservoir_data%state%water_elevation
 
