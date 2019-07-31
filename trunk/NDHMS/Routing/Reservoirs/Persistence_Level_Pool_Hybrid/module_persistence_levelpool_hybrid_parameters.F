@@ -80,7 +80,7 @@ contains
 
 !        call read_persistence_netcdf_real_2D_parameters(ncid, lake_id_index, "persistence_coefficients", var_id, number_of_weights, number_of_lakes)
 
-        number_of_weights = 12
+        number_of_weights = 11
 
         allocate(this%persistence_weighted_coefficients(number_of_weights))
 
