@@ -216,49 +216,6 @@ contains
             reservoir_data%state%current_time, reservoir_data%parameters%gage_id, gage_lookback_seconds, reservoir_data%state%gage_discharge)
 
 
-
-            if (reservoir_data%parameters%lake_number == 5843642) then
-                reservoir_data%state%gage_discharge = 37.09527
-
-            else if (reservoir_data%parameters%lake_number == 6074765) then
-                reservoir_data%state%gage_discharge = 111.00264
-
-
-            else if (reservoir_data%parameters%lake_number == 6743056) then
-                reservoir_data%state%gage_discharge = 4.5024
-
-            else if (reservoir_data%parameters%lake_number == 24245783) then
-                reservoir_data%state%gage_discharge = 736.242
-
-
-            else if (reservoir_data%parameters%lake_number == 120052938) then
-                reservoir_data%state%gage_discharge = 148.38107
-
-
-            else if (reservoir_data%parameters%lake_number == 120052939) then
-                reservoir_data%state%gage_discharge = 767.39069
-
-
-            else if (reservoir_data%parameters%lake_number == 22294608) then
-                reservoir_data%state%gage_discharge = 260.79956
-
-
-            else if (reservoir_data%parameters%lake_number == 3247302) then
-                reservoir_data%state%gage_discharge = 221.43893
-
-
-
-
-
-
-
-
-
-            end if
-
-
-
-
             ! If no good quality gage discharge was found in the given lookback period, the gage discharge is returned
             ! as -1.0. The persistence weight index will be set out of bounds larger than the array. This causes the
             ! the weight update logic to set the persistence weight to 0.0. Therefore, only levelpool calculations will be used.
