@@ -313,10 +313,10 @@ contains
             !reservoir_data%state%water_elevation = reservoir_data%state%levelpool_ptr%parameters%max_depth
 
 
-            if (reservoir_data%output%outflow < levelpool_outflow) then
-                reservoir_data%output%outflow = levelpool_outflow
+            !if (reservoir_data%output%outflow < levelpool_outflow) then
+            !    reservoir_data%output%outflow = levelpool_outflow
 
-            end if
+            !end if
 
 
             ! Calculate change in storage
