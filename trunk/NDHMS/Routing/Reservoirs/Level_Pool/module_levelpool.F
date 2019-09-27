@@ -52,7 +52,7 @@ contains
 
     !Level Pool Constructor
     subroutine levelpool_init(this, water_elevation,  &
-        lake_area, weir_elevation, weir_coeffecient, &
+        lake_area, weir_elevation, weir_coefficient, &
         weir_length, orifice_elevation, orifice_coefficient, &
         orifice_area, max_depth, lake_number)
         implicit none
@@ -60,7 +60,7 @@ contains
         real, intent(inout) :: water_elevation           ! meters AMSL
         real, intent(in)    :: lake_area      		 ! area of lake (km^2)
         real, intent(in)    :: weir_elevation            ! bottom of weir elevation (meters AMSL)
-        real, intent(in)    :: weir_coeffecient          ! weir coefficient
+        real, intent(in)    :: weir_coefficient          ! weir coefficient
         real, intent(in)    :: weir_length               ! weir length (meters)
         real, intent(in)    :: orifice_elevation         ! orifice elevation (meters AMSL)
         real, intent(in)    :: orifice_coefficient       ! orifice coefficient
@@ -102,7 +102,7 @@ contains
             else
                 ! initialize levelpool properties
                 call this%properties%init( lake_area,  &
-                    weir_elevation, weir_coeffecient, weir_length, &
+                    weir_elevation, weir_coefficient, weir_length, &
                     orifice_elevation, orifice_coefficient, &
                     orifice_area, max_depth, lake_number )
             end if
@@ -161,7 +161,7 @@ contains
         this%properties%lake_area,          		    &
         this%properties%weir_elevation,               &
         this%properties%max_depth,                    &
-        this%properties%weir_coeffecient,             &
+        this%properties%weir_coefficient,             &
         this%properties%weir_length,                  &
         this%properties%orifice_elevation,            &
         this%properties%orifice_coefficient,          &

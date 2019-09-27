@@ -393,7 +393,7 @@ contains
 
         print *, "Checking read on persistence_weighted_coefficients"
         print *, o%persistence_weighted_coefficients
-        if ( o%persistence_weighted_coefficients(1) .lt. 0.867803931 - epsilon(0.867803931) .or. o%persistence_weighted_coefficients(1) .gt. 0.867803931 + epsilon(0.867803931) )then
+        if ( o%persistence_weighted_coefficients(1) .lt. 1.0 - epsilon(1.0) .or. o%persistence_weighted_coefficients(1) .gt. 1.0 + epsilon(1.0) )then
             rv = .false.
             print *, "FAILED"
         end if
@@ -510,9 +510,9 @@ contains
         end if
         print *, " "
 
-        print *, "Checking read on weir_coeffecient"
-        print *, o%levelpool_ptr%properties%weir_coeffecient
-        if ( o%levelpool_ptr%properties%weir_coeffecient .lt. 0.400000006 - epsilon(0.400000006) .or. o%levelpool_ptr%properties%weir_coeffecient .gt. 0.400000006 + epsilon(0.400000006) ) then
+        print *, "Checking read on weir_coefficient"
+        print *, o%levelpool_ptr%properties%weir_coefficient
+        if ( o%levelpool_ptr%properties%weir_coefficient .lt. 0.400000006 - epsilon(0.400000006) .or. o%levelpool_ptr%properties%weir_coefficient .gt. 0.400000006 + epsilon(0.400000006) ) then
             rv = .false.
             print *, "FAILED"
         end if

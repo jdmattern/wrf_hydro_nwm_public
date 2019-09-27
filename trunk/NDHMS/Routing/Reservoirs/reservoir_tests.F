@@ -75,7 +75,7 @@ program reservoir_unit_tests
         real :: outflow, inflow
         real :: water_elevation
         real :: prev_time_inflow
-        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
         integer :: lake_number
@@ -108,7 +108,7 @@ program reservoir_unit_tests
 
         lake_area = 2.096320037841796875e+02
         weir_elevation = 1.332074047851562455e+03
-        weir_coeffecient = 4.000000000000000222e-01
+        weir_coefficient = 4.000000000000000222e-01
         weir_length = 1.000000000000000000e+01
         orifice_elevation = 1.314473347981770758e+03
         orifice_coefficient = 1.000000000000000056e-01
@@ -122,7 +122,7 @@ program reservoir_unit_tests
         cwd_full = "./Testing_Files/"
 
         call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
-        weir_coeffecient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/reservoir_index_usgs_rfc_usace.nc", &
+        weir_coefficient, weir_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, initial_fractional_depth, lake_number, "Testing_Files/reservoir_index_usgs_rfc_usace.nc", &
         "2010-10-01_07:00:00", cwd_full, 12, 1000000000)
 
         print *, "testing data in persistence_levelpool_hybrid"
@@ -143,8 +143,7 @@ program reservoir_unit_tests
             print *, outflow
         end do
 
-        !if (outflow .gt. 13.7336712 - epsilon(13.7336712) .and. outflow .lt. 13.7336712 + epsilon(13.7336712) ) then
-if (outflow .lt. 13.7336712 + epsilon(13.7336712)) then
+        if ((outflow .ge. 13.7336712 - epsilon(13.7336712)) .and. (outflow .le. 13.7336712 + epsilon(13.7336712)) ) then
 
             rv2 = .true.
             print *, "========================================================================"
