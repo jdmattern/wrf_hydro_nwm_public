@@ -793,6 +793,13 @@ subroutine LandRT_ini(did)
 
    end do
 
+print *, '!!!!!!!!!!!!!!!!!!!!!!!!!!!1'
+print *, 'nlst(did)%reservoir_persistence_usace'
+print *, nlst(did)%reservoir_persistence_usace
+
+!print *, rt_domain(did)%LAKEIDM
+
+
    ! For loop to cycle array of pointers to reservoirs
    do lake_index = 1, NLAKES_total
 
@@ -804,6 +811,13 @@ subroutine LandRT_ini(did)
 
        else if (rt_domain(did)%reservoir_type(lake_index) == 3 .and. nlst(did)%reservoir_persistence_usace) then
           allocate(persistence_levelpool_hybrid :: rt_domain(did)%reservoirs(lake_index)%ptr)
+
+print *, '-----------------'
+print *, 'ace'
+print *, rt_domain(did)%reservoir_type(lake_index)
+
+print *, '-----------------'
+
 
        else if (rt_domain(did)%reservoir_type(lake_index) == 4 .and. nlst(did)%reservoir_rfc_forecasts) then
           allocate(rfc_forecasts :: rt_domain(did)%reservoirs(lake_index)%ptr)

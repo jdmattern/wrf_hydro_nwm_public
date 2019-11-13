@@ -228,10 +228,15 @@ contains
                     timeslice_file_name = trim(this%timeslice_path) // old_date // "." // &
                             observation_resolution_string // 'min.' // ADJUSTL(trim(this%data_source)) // 'TimeSlice.ncdf'
 
+print *, 'timeslice_file_name'
+print *, timeslice_file_name
+
+
                     ! Check if file exists
                     inquire(FILE = timeslice_file_name, EXIST = file_exists)
                     if (file_exists) then
                         ! Call subroutine to read a particular timeslice file
+                        print *, 'timeslice file exists'
                         call this%read_timeslice_file(timeslice_file_name)
                     end if
 
