@@ -527,7 +527,7 @@ program reservoir_unit_tests
 
             inflow = inflow_array(timestep_count)
             call rfc_forecasts_reservoir_data%run(inflow, &
-            inflow, 0.0, water_elevation, outflow, 300.0)
+            inflow, 0.0, water_elevation, outflow, 3600.0)
             !inflow, 0.0, water_elevation, outflow, 86400.0)
 
             prev_time_inflow = inflow
