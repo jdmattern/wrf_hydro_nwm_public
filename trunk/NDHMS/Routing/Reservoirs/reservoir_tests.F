@@ -23,9 +23,7 @@ program reservoir_unit_tests
     logical :: rv10 = .false.
 
 
-    !real, dimension(120) :: inflow_array
-
-    real, dimension(360) :: inflow_array
+    real, dimension(120) :: inflow_array
 
     inflow_array = (/189.22899, 189.27005, 189.31049, 189.35042, 189.38965, 189.42819, 189.46588, 189.50273, &
     189.53859, 189.57346, 189.60719, 189.63979, 189.6711, 189.7011, 189.72968, &
@@ -41,40 +39,7 @@ program reservoir_unit_tests
     172.75417, 172.03389, 171.3011, 170.55634, 169.79997, 169.03255, 168.25441, 167.46616, &
     166.66815, 165.86099, 165.04509, 164.22101, 163.38913, 162.55011, 161.70428, 160.85229, &
     159.99452, 159.13156, 158.26382, 157.39188, 156.51611, 155.63715, 154.75531, 153.8712, 152.98517, &
-    152.09779, 151.2094, 150.32057, 149.43166, 148.54315, 147.6554, 146.76892, 145.88405, 145.00128, 144.12091, &
-
-189.22899, 189.27005, 189.31049, 189.35042, 189.38965, 189.42819, 189.46588, 189.50273, &
-    189.53859, 189.57346, 189.60719, 189.63979, 189.6711, 189.7011, 189.72968, &
-    189.75679, 189.7823, 189.80617, 189.82822, 189.84842, 189.86653, 189.88255, 189.89622, &
-    189.90752, 189.91612, 189.922, 189.92482, 189.92447, 189.92067, 189.91319, 189.90175, &
-    189.88611, 189.86592, 189.84088, 189.81064, 189.77487, 189.73317, 189.6852, 189.63051, &
-    189.56873, 189.49939, 189.42207, 189.33635, 189.24176, 189.13782, 189.02408, &
-    188.90009, 188.76535, 188.61945, 188.46188, 188.29224, 188.11006, 187.91493, 187.70644, &
-    187.48419, 187.24779, 186.9969, 186.73119, 186.45035, 186.15407, 185.84213, 185.51424, &
-    185.17023, 184.80989, 184.43312, 184.03975, 183.62973, 183.20296, 182.75943, 182.29909, &
-    181.82205, 181.32828, 180.81792, 80.29099, 179.74774, 179.1882, 178.61267, 178.02129, &
-    177.41437, 176.79207, 176.15475, 175.50269, 174.83627, 174.15576, 173.46162, &
-    172.75417, 172.03389, 171.3011, 170.55634, 169.79997, 169.03255, 168.25441, 167.46616, &
-    166.66815, 165.86099, 165.04509, 164.22101, 163.38913, 162.55011, 161.70428, 160.85229, &
-    159.99452, 159.13156, 158.26382, 157.39188, 156.51611, 155.63715, 154.75531, 153.8712, 152.98517, &
-    152.09779, 151.2094, 150.32057, 149.43166, 148.54315, 147.6554, 146.76892, 145.88405, 145.00128, 144.12091, &
-
-    189.22899, 189.27005, 189.31049, 189.35042, 189.38965, 189.42819, 189.46588, 189.50273, &
-    189.53859, 189.57346, 189.60719, 189.63979, 189.6711, 189.7011, 189.72968, &
-    189.75679, 189.7823, 189.80617, 189.82822, 189.84842, 189.86653, 189.88255, 189.89622, &
-    189.90752, 189.91612, 189.922, 189.92482, 189.92447, 189.92067, 189.91319, 189.90175, &
-    189.88611, 189.86592, 189.84088, 189.81064, 189.77487, 189.73317, 189.6852, 189.63051, &
-    189.56873, 189.49939, 189.42207, 189.33635, 189.24176, 189.13782, 189.02408, &
-    188.90009, 188.76535, 188.61945, 188.46188, 188.29224, 188.11006, 187.91493, 187.70644, &
-    187.48419, 187.24779, 186.9969, 186.73119, 186.45035, 186.15407, 185.84213, 185.51424, &
-    185.17023, 184.80989, 184.43312, 184.03975, 183.62973, 183.20296, 182.75943, 182.29909, &
-    181.82205, 181.32828, 180.81792, 80.29099, 179.74774, 179.1882, 178.61267, 178.02129, &
-    177.41437, 176.79207, 176.15475, 175.50269, 174.83627, 174.15576, 173.46162, &
-    172.75417, 172.03389, 171.3011, 170.55634, 169.79997, 169.03255, 168.25441, 167.46616, &
-    166.66815, 165.86099, 165.04509, 164.22101, 163.38913, 162.55011, 161.70428, 160.85229, &
-    159.99452, 159.13156, 158.26382, 157.39188, 156.51611, 155.63715, 154.75531, 153.8712, 152.98517, &
     152.09779, 151.2094, 150.32057, 149.43166, 148.54315, 147.6554, 146.76892, 145.88405, 145.00128, 144.12091/)
-
 
     rv1 = test_levelpool()
 
@@ -92,9 +57,9 @@ program reservoir_unit_tests
 
     rv8 = test_rfc_forecasts_time_series_output_with_lookback_and_offset()
 
-    !rv9 = test_rfc_forecasts_time_series_output_with_negative_data()
+    rv9 = test_rfc_forecasts_time_series_output_with_negative_data()
 
-    !rv10 = test_rfc_forecasts_time_series_output_all_synthetic_data()
+    rv10 = test_rfc_forecasts_time_series_output_all_synthetic_data()
 
     if (rv1 .and. rv2 .and. rv3 .and. rv4 .and. rv5 .and. rv6 .and. rv7 .and. rv8 .and. rv9 .and. rv10) then
         print *, "========================================================================"
@@ -417,7 +382,7 @@ program reservoir_unit_tests
         logical :: call_status
         type (time_series_data_type) :: time_series_data, time_series_data_second
         character*256 :: cwd_full
-        integer :: lookback_seconds, forecast_counts, time_step_seconds
+        integer :: lookback_seconds, total_counts, observed_counts, time_step_seconds
         integer :: timeslice_offset_hours
         real, allocatable, dimension(:) :: forecast_discharges
         logical :: forecast_found
@@ -430,7 +395,7 @@ program reservoir_unit_tests
 
         timeslice_offset_hours = 3
 
-        call time_series_data%init("2019-08-18_07:00:00", cwd_full, 24, timeslice_offset_hours, "CCHC1", 3745478, lookback_seconds, forecast_counts, time_step_seconds, forecast_discharges, forecast_found)
+        call time_series_data%init("2019-08-18_07:00:00", cwd_full, 24, timeslice_offset_hours, "CCHC1", 3745478, lookback_seconds, total_counts, observed_counts, time_step_seconds, forecast_discharges, forecast_found)
 
         print *, "Checking reading of time series file"
         if ( forecast_discharges(8) .ge. 0.8 - epsilon(0.8) .and. forecast_discharges(8) .le. 0.8 + epsilon(0.8) ) then
@@ -553,13 +518,12 @@ program reservoir_unit_tests
 
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
-        call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, 17609317, &
+        call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-08-18_09:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
 
-        !do timestep_count = 1, 120
-        do timestep_count = 1, 360
+        do timestep_count = 1, 80
 
             inflow = inflow_array(timestep_count)
             call rfc_forecasts_reservoir_data%run(inflow, &
@@ -571,7 +535,7 @@ program reservoir_unit_tests
             print *, outflow
         end do
 
-        if (outflow .ge. 5.9 - epsilon(5.9) .and. outflow .le. 5.9 + epsilon(5.9) ) then
+        if (outflow .ge. 3.5 - epsilon(3.5) .and. outflow .le. 3.5 + epsilon(3.5) ) then
             rv = .true.
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output Test Passed'
@@ -579,7 +543,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output Test Failed'
-            print *, 'Outflow should be 5.9'
+            print *, 'Outflow should be 3.5'
             print *, "========================================================================"
 
         end if
@@ -685,11 +649,11 @@ program reservoir_unit_tests
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
         initial_fractional_depth = 8.999999761581420898e-01
-        lake_number = 3745478
+        lake_number = 17609317
 
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
-        call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, 17609317, &
+        call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-10-18_09:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
