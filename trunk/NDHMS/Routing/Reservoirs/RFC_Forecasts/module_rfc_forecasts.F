@@ -151,6 +151,14 @@ contains
             this%state%time_series_index = this%properties%lookback_seconds / this%properties%time_step_seconds + 1 &
 
             + this%properties%observed_counts - this%properties%rfc_timeslice_offset_hours
+
+            if (this%state%time_series_index .lt. 0 .or. this%state%time_series_index .ge. this%properties%total_counts) then
+
+                this%state%forecast_found = .false.
+
+                this%state%time_series_index = 1
+
+            end if
         end if
 
     end subroutine rfc_forecasts_init
