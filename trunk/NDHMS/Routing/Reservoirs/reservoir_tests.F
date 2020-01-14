@@ -57,9 +57,9 @@ program reservoir_unit_tests
 
     rv8 = test_rfc_forecasts_time_series_output_with_lookback_and_offset()
 
-    rv9 = test_rfc_forecasts_time_series_output_with_negative_data()
+    !rv9 = test_rfc_forecasts_time_series_output_with_negative_data()
 
-    rv10 = test_rfc_forecasts_time_series_output_all_synthetic_data()
+    !rv10 = test_rfc_forecasts_time_series_output_all_synthetic_data()
 
     if (rv1 .and. rv2 .and. rv3 .and. rv4 .and. rv5 .and. rv6 .and. rv7 .and. rv8 .and. rv9 .and. rv10) then
         print *, "========================================================================"
@@ -519,8 +519,10 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, &
-        "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-08-18_09:00:00", cwd_full, 24)
+        "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-08-17_21:00:00", cwd_full, 24)
 
+
+!2019-08-18_09:00:00
         water_elevation = 1331.18005
 
         do timestep_count = 1, 80

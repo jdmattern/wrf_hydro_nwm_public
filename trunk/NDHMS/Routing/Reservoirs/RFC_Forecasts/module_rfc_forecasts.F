@@ -143,17 +143,25 @@ contains
         this%properties%lake_number, this%properties%lookback_seconds, this%properties%total_counts, &
         this%properties%observed_counts, this%properties%time_step_seconds, this%state%discharges, this%state%forecast_found)
 
+print *, 'this%properties%observed_counts 1.1: ', this%properties%observed_counts
+
         if (this%state%forecast_found) then
             update_offset_seconds = mod(this%properties%lookback_seconds, this%properties%time_step_seconds)
 
             this%state%time_series_update_time = this%properties%time_step_seconds - update_offset_seconds
 
             this%state%time_series_index = this%properties%lookback_seconds / this%properties%time_step_seconds + 1 &
-
             + this%properties%observed_counts - this%properties%rfc_timeslice_offset_hours
 
+print *, this%properties%lookback_seconds
+print *, this%properties%time_step_seconds
+print *, this%properties%observed_counts
+print *, this%properties%rfc_timeslice_offset_hours
+
+print *, 'this%state%time_series_index ', this%state%time_series_index
             if (this%state%time_series_index .lt. 0 .or. this%state%time_series_index .ge. this%properties%total_counts) then
 
+print *, 'lt 0'
                 this%state%forecast_found = .false.
 
                 this%state%time_series_index = 1

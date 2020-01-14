@@ -213,7 +213,7 @@ contains
         if (status /= nf90_noerr) call handle_err(status, "Could not open time series file")
 
         call read_timeslice_netcdf_integer_variables(ncid, 'totalCounts', this%total_counts)
-
+print *, 'this%total_counts', this%total_counts
         allocate (this%discharges(this%total_counts))
 
         allocate (this%synthetic_values(this%total_counts))
@@ -221,7 +221,7 @@ contains
         allocate (this%synthetic_values_logical(this%total_counts))
 
         call read_timeslice_netcdf_integer_variables(ncid, 'observedCounts', this%observed_counts)
-
+print *, 'this%observed_counts ', this%observed_counts
         call read_timeslice_netcdf_integer_variables(ncid, 'timeSteps', this%time_step_seconds)
 
         call read_timeslice_netcdf_real_1D_variables(ncid, 'discharges', this%discharges)
