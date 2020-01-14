@@ -580,14 +580,40 @@ contains
 
 
     ! Create RFC Forecasts Reservoir Function Diagnostic Log CSV File
-    subroutine create_rfc_forecasts_diagnostic_log_file(lake_number)
+    subroutine create_rfc_forecasts_diagnostic_log_file_hourly(lake_number, gage_id)
         integer, intent(in) :: lake_number
         character(len=15)   :: lake_number_string, lake_number_string_trimmed
         character(len=50)   :: filename_string
+        character(len=*), intent(in)    :: gage_id
 
         write(lake_number_string, "(I15)") lake_number
         lake_number_string_trimmed = ADJUSTL(trim(lake_number_string))
-        filename_string = "rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//".csv"
+        !filename_string = "hourly_rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//".csv"
+
+        filename_string = "hourly_rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//"_"//ADJUSTL(trim(gage_id))//".csv"
+
+        open (113, file=filename_string, status="unknown")
+
+        write (113, "(A256)") "Current_Time, Time_Step, Time_Series_Update_Time, &
+        Lookback_Seconds, Time_Series_Index, Gage_ID, Inflow, Water_Elevation, &
+        Levelpool_Outflow, Outflow"
+
+        close(113)
+
+    end subroutine create_rfc_forecasts_diagnostic_log_file_hourly
+
+    ! Create RFC Forecasts Reservoir Function Diagnostic Log CSV File
+    subroutine create_rfc_forecasts_diagnostic_log_file(lake_number, gage_id)
+        integer, intent(in) :: lake_number
+        character(len=15)   :: lake_number_string, lake_number_string_trimmed
+        character(len=50)   :: filename_string
+        character(len=*), intent(in)    :: gage_id
+
+        write(lake_number_string, "(I15)") lake_number
+        lake_number_string_trimmed = ADJUSTL(trim(lake_number_string))
+        !filename_string = "rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//".csv"
+
+        filename_string = "rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//"_"//ADJUSTL(trim(gage_id))//".csv"
 
         open (113, file=filename_string, status="unknown")
 
@@ -613,7 +639,9 @@ contains
 
         write(lake_number_string, "(I15)") lake_number
         lake_number_string_trimmed = ADJUSTL(trim(lake_number_string))
-        filename_string = "rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//".csv"
+        !filename_string = "rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//".csv"
+
+        filename_string = "rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//"_"//ADJUSTL(trim(gage_id))//".csv"
 
         open (113, file=filename_string, status="unknown", access = 'append')
 
@@ -626,6 +654,37 @@ contains
         close (113)
 
     end subroutine log_rfc_forecasts_diagnostic_data
+
+    ! Log data to RFC Forecasts Reservoir Function Diagnostic Log CSV File
+    subroutine log_rfc_forecasts_diagnostic_data_hourly(lake_number, current_time, time_step, &
+        time_series_update_time, lookback_seconds, time_series_index, gage_id,  &
+        inflow, water_elevation, levelpool_outflow, outflow)
+        integer, intent(in) :: lake_number, current_time, time_step, time_series_update_time
+        integer, intent(in) :: lookback_seconds, time_series_index
+        character(len=*), intent(in) :: gage_id
+        real,    intent(in) :: inflow, water_elevation, levelpool_outflow, outflow
+        character(len=15)   :: lake_number_string, lake_number_string_trimmed
+        character(len=50)   :: filename_string
+
+        write(lake_number_string, "(I15)") lake_number
+        lake_number_string_trimmed = ADJUSTL(trim(lake_number_string))
+        !filename_string = "hourly_rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//".csv"
+
+        filename_string = "hourly_rfc_forecasts_logs_"//ADJUSTL(trim(lake_number_string_trimmed))//"_"//ADJUSTL(trim(gage_id))//".csv"
+
+        open (113, file=filename_string, status="unknown", access = 'append')
+
+        write (113, "(I20, A1, I20, A1, I20, A1, I20, A1, I20, A1, A5, A1, F15.5, A1, &
+        F15.5, A1, F15.5, A1, F15.5)") &
+        current_time, ',', time_step, ',', time_series_update_time, ',', &
+        lookback_seconds, ',', time_series_index, ',', gage_id, ',', &
+        inflow, ',', water_elevation, ',', levelpool_outflow, ',', outflow
+
+        close (113)
+
+    end subroutine log_rfc_forecasts_diagnostic_data_hourly
+
+
 
 
     ! Create Levelpool Reservoir Function Diagnostic Log CSV File
