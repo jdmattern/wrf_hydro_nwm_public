@@ -54,20 +54,38 @@ contains
 
         this%observation_hours = observation_hours
 
+print *, 'start reading reservoir param file for reservoir ', lake_number
+
+
         ! Open RFC Reservoir Parameter NetCDF file
         status = nf90_open(path = rfc_forecasts_parameter_file, mode = nf90_nowrite, ncid = ncid)
         if (status /= nf90_noerr) call handle_err(status, "Could not open rfc forecasts parameter file")
 
+print *, '1 reading reservoir param file for reservoir ', lake_number
+
+
         ! Read relevant properties from Persistence Parameter NetCDF
         call read_netcdf_lake_id(ncid, lake_number, "rfc_lake_id", lake_id_index)
 
+print *, '2 reading reservoir param file for reservoir ', lake_number
+
+
         call read_reservoir_parameters_netcdf_rfc_gage_id(ncid, lake_id_index, "rfc_gage_id", this%rfc_gage_id)
 
+print *, '3 reading reservoir param file for reservoir ', lake_number
+
+
         call read_reservoir_parameters_netcdf_rfc_integer(ncid, lake_id_index, "rfc_forecast_persist", this%rfc_forecast_persist_days)
+
+print *, '4 reading reservoir param file for reservoir ', lake_number
+
 
         this%rfc_forecast_persist_seconds = this%rfc_forecast_persist_days * seconds_in_day
 
         call read_reservoir_parameters_netcdf_rfc_integer(ncid, lake_id_index, "rfc_timeslice_offset", this%rfc_timeslice_offset_hours)
+
+print *, 'Done reading reservoir param file for reservoir ', lake_number
+
 
     end subroutine rfc_forecasts_properties_init
 

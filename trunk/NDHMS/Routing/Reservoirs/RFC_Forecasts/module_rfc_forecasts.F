@@ -84,6 +84,8 @@ contains
 !        call create_rfc_forecasts_diagnostic_log_file(lake_number)
 !#endif
 
+print *, 'Init RFC reservoir ', lake_number
+
         if (this%pointer_allocation_guard .eqv. .false. ) then
             ! try to allocate input
             allocate ( this%input )
@@ -130,6 +132,7 @@ contains
 
         end if
 
+print *, 'Init logs for RFC reservoir ', lake_number
 
         call create_rfc_forecasts_diagnostic_log_file(lake_number, this%properties%rfc_gage_id)
 
@@ -140,10 +143,16 @@ contains
         ! Allocate a single level pool reservoir
         allocate(levelpool :: this%state%levelpool_ptr)
 
+print *, 'Init LP reservoir for RFC reservoir ', lake_number
+
+
         ! Initialize level pool reservoir
         call this%state%levelpool_ptr%init(water_elevation, lake_area, &
         weir_elevation, weir_coeffecient, weir_length, dam_length, orifice_elevation, &
         orifice_coefficient, orifice_area, lake_max_water_elevation, lake_number)
+
+print *, 'Init time series for RFC reservoir ', lake_number
+
 
         ! Call to initialize time series data object. This object is a singleton,
         ! so if another reservoir has already initialized the object, it will return
@@ -153,6 +162,10 @@ contains
         this%properties%lake_number, this%properties%lookback_seconds, this%properties%total_counts, &
         this%properties%observed_counts, this%properties%time_step_seconds, this%state%discharges, &
         this%state%forecast_found, this%state%all_discharges_synthetic)
+
+
+print *, 'Finished init time series for RFC reservoir ', lake_number
+
 
         if (this%state%forecast_found) then
             update_offset_seconds = mod(this%properties%lookback_seconds, this%properties%time_step_seconds)
@@ -192,6 +205,9 @@ contains
         real                :: levelpool_outflow        ! cubic meters per second (cms)
         integer		        :: missing_outflow_index
         character(len=15)   :: lake_number_string
+
+
+print *, 'run function for reservoir ', this%properties%lake_number, ' at ', this%state%current_time
 
         ! If first timestep, then check forecast aspects
         if (this%state%current_time == 0) then
@@ -293,6 +309,9 @@ contains
         ! Update water_elevation variable returned from this subroutine
         water_elevation = this%state%water_elevation
 
+print *, 'start call logs in run function for reservoir ', this%properties%lake_number, ' at ', this%state%current_time
+
+
 !!Temp if statement to only output at the hour
 if (modulo(this%state%current_time, 3600) == 0) then
         call log_rfc_forecasts_diagnostic_data_hourly(this%properties%lake_number, this%state%current_time, &
@@ -308,6 +327,7 @@ end if
         this%state%time_series_index, this%properties%rfc_gage_id, this%input%inflow, this%state%water_elevation, &
         levelpool_outflow, this%output%outflow)
 
+print *, 'finished call logs in run function for reservoir ', this%properties%lake_number, ' at ', this%state%current_time
 
 
 
