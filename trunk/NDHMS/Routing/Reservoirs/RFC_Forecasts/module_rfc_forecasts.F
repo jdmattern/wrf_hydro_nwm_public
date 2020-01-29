@@ -75,7 +75,6 @@ contains
         character(len=19),  intent(in) :: start_date
         character(len=256), intent(in) :: time_series_path
         integer,            intent(in) :: forecast_lookback_hours
-        integer                        :: update_offset_seconds
 
 #ifdef RESERVOIR_D
         ! Create diagnostic log file only for development/debugging purposes
@@ -110,7 +109,8 @@ contains
                 write(0,*) "Failure to allocate rfc forecasts properties structure"
             else
                 ! initialize rfc forecasts properties
-                call this%properties%init(lake_number, rfc_forecasts_parameter_file)
+                call this%properties%init(lake_number, rfc_forecasts_parameter_file, start_date, time_series_path, &
+                forecast_lookback_hours)
 
             end if
             this%pointer_allocation_guard = .true.
@@ -136,31 +136,6 @@ contains
         weir_elevation, weir_coeffecient, weir_length, dam_length, orifice_elevation, &
         orifice_coefficient, orifice_area, lake_max_water_elevation, lake_number)
 
-        ! Call to initialize time series data object. This object is a singleton,
-        ! so if another reservoir has already initialized the object, it will return
-        ! immediately.
-        call time_series_data%init(start_date, time_series_path, forecast_lookback_hours, &
-        this%properties%rfc_timeslice_offset_hours, this%properties%rfc_gage_id, &
-        this%properties%lake_number, this%properties%lookback_seconds, this%properties%total_counts, &
-        this%properties%observed_counts, this%properties%time_step_seconds, this%state%discharges, &
-        this%state%forecast_found, this%state%all_discharges_synthetic)
-
-        if (this%state%forecast_found) then
-            update_offset_seconds = mod(this%properties%lookback_seconds, this%properties%time_step_seconds)
-
-            this%state%time_series_update_time = this%properties%time_step_seconds - update_offset_seconds
-
-            this%state%time_series_index = this%properties%lookback_seconds / this%properties%time_step_seconds + 1 &
-            + this%properties%observed_counts - this%properties%rfc_timeslice_offset_hours
-
-            ! Check if starting index is out of range of discharge array and set forecast_found to false if out of range.
-            if (this%state%time_series_index .le. 0 .or. this%state%time_series_index .ge. this%properties%total_counts) then
-                this%state%forecast_found = .false.
-
-                this%state%time_series_index = 1
-            end if
-        end if
-
     end subroutine rfc_forecasts_init
 
     ! RFC Forecasts Destructor
@@ -183,10 +158,35 @@ contains
         real                :: levelpool_outflow        ! cubic meters per second (cms)
         integer		        :: missing_outflow_index
         character(len=15)   :: lake_number_string
+        integer             :: update_offset_seconds
+
 
         ! If first timestep, then check forecast aspects
         if (this%state%current_time == 0) then
+
+            ! Call to initialize time series data object. This object is a singleton,
+            ! so if another reservoir has already initialized the object, it will return
+            ! immediately.
+            call time_series_data%init(this%properties%start_date, this%properties%time_series_path, &
+            this%properties%forecast_lookback_hours, this%properties%rfc_timeslice_offset_hours, &
+            this%properties%rfc_gage_id, this%properties%lake_number, this%properties%lookback_seconds, &
+            this%properties%total_counts, this%properties%observed_counts, this%properties%time_step_seconds, &
+            this%state%discharges, this%state%forecast_found, this%state%all_discharges_synthetic)
+
             if (this%state%forecast_found) then
+                update_offset_seconds = mod(this%properties%lookback_seconds, this%properties%time_step_seconds)
+
+                this%state%time_series_update_time = this%properties%time_step_seconds - update_offset_seconds
+
+                this%state%time_series_index = this%properties%lookback_seconds / this%properties%time_step_seconds + 1 &
+                + this%properties%observed_counts - this%properties%rfc_timeslice_offset_hours
+
+                ! Check if starting index is out of range of discharge array and set forecast_found to false if out of range.
+                if (this%state%time_series_index .le. 0 .or. this%state%time_series_index .ge. this%properties%total_counts) then
+                    this%state%forecast_found = .false.
+
+                    this%state%time_series_index = 1
+                end if
 
                 ! If all of the values are synthetic or any of the values are less than 0.0, then
                 ! do not use the time series

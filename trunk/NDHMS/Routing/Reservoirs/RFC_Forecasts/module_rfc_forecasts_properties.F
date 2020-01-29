@@ -18,16 +18,19 @@ module module_rfc_forecasts_properties
     ! Extend/derive rfc forecasts properties from the abstract base
     ! type for reservoir properties.
     type, extends(reservoir_properties) :: rfc_forecasts_properties_interface
-        integer           :: lake_number                  ! lake number
-        character(len=5)  :: rfc_gage_id
-        integer           :: lookback_seconds
-        integer           :: total_counts
-        integer           :: observed_counts
-        integer           :: time_step_seconds
-        integer           :: rfc_forecast_persist_days
-        integer           :: rfc_forecast_persist_seconds
-        integer           :: rfc_timeslice_offset_hours
-        integer           :: observation_hours
+        integer             :: lake_number         ! lake number
+        character(len=5)    :: rfc_gage_id
+        integer             :: lookback_seconds
+        integer             :: total_counts
+        integer             :: observed_counts
+        integer             :: time_step_seconds
+        integer             :: rfc_forecast_persist_days
+        integer             :: rfc_forecast_persist_seconds
+        integer             :: rfc_timeslice_offset_hours
+        integer             :: observation_hours
+        character(len=19)   :: start_date
+        character(len=256)  :: time_series_path
+        integer             :: forecast_lookback_hours
 
     contains
 
@@ -42,17 +45,27 @@ module module_rfc_forecasts_properties
 contains
 
     ! RFC Forecasts Properties Constructor
-    subroutine rfc_forecasts_properties_init(this, lake_number, rfc_forecasts_parameter_file)
+    subroutine rfc_forecasts_properties_init(this, lake_number, rfc_forecasts_parameter_file, start_date, &
+        time_series_path, forecast_lookback_hours)
         implicit none
         class(rfc_forecasts_properties_interface), intent(inout) :: this ! the type object being initialized
-        integer, intent(in)          :: lake_number                   ! lake number
-        character(len=*), intent(in) :: rfc_forecasts_parameter_file
-        integer                      :: ncid, var_id, lake_id_index
-        integer                      :: status                        ! status of reading NetCDF
+        integer, intent(in)             :: lake_number                   ! lake number
+        character(len=*), intent(in)    :: rfc_forecasts_parameter_file
+        character(len=19),  intent(in)  :: start_date
+        character(len=256), intent(in)  :: time_series_path
+        integer,            intent(in)  :: forecast_lookback_hours
+        integer                         :: ncid, var_id, lake_id_index
+        integer                         :: status                        ! status of reading NetCDF
 
         this%lake_number = lake_number
 
         this%observation_hours = observation_hours
+
+        this%start_date = start_date
+
+        this%time_series_path = time_series_path
+
+        this%forecast_lookback_hours = forecast_lookback_hours
 
         ! Open RFC Reservoir Parameter NetCDF file
         status = nf90_open(path = rfc_forecasts_parameter_file, mode = nf90_nowrite, ncid = ncid)
