@@ -42,11 +42,11 @@ module module_rfc_forecasts_properties
 contains
 
     ! RFC Forecasts Properties Constructor
-    subroutine rfc_forecasts_properties_init(this, lake_number, rfc_forecasts_parameter_file)
+    subroutine rfc_forecasts_properties_init(this, lake_number, reservoir_parameter_file)
         implicit none
         class(rfc_forecasts_properties_interface), intent(inout) :: this ! the type object being initialized
         integer, intent(in)          :: lake_number                   ! lake number
-        character(len=*), intent(in) :: rfc_forecasts_parameter_file
+        character(len=*), intent(in) :: reservoir_parameter_file
         integer                      :: ncid, var_id, lake_id_index
         integer                      :: status                        ! status of reading NetCDF
 
@@ -56,10 +56,9 @@ contains
 
 print *, 'start reading reservoir param file for reservoir ', lake_number
 
-
-        ! Open RFC Reservoir Parameter NetCDF file
-        status = nf90_open(path = rfc_forecasts_parameter_file, mode = nf90_nowrite, ncid = ncid)
-        if (status /= nf90_noerr) call handle_err(status, "Could not open rfc forecasts parameter file")
+        ! Open Reservoir Parameter NetCDF file
+        status = nf90_open(path = reservoir_parameter_file, mode = nf90_nowrite, ncid = ncid)
+        if (status /= nf90_noerr) call handle_err(status, "Could not open reservoir parameter file")
 
 print *, '1 reading reservoir param file for reservoir ', lake_number
 
@@ -86,6 +85,9 @@ print *, '4 reading reservoir param file for reservoir ', lake_number
 
 print *, 'Done reading reservoir param file for reservoir ', lake_number
 
+        ! Close Reservoir Parameter NetCDF file
+        status = nf90_close(ncid)
+        if (status /= nf90_noerr) call handle_err(status, "Could not close reservoir parameter file")
 
     end subroutine rfc_forecasts_properties_init
 

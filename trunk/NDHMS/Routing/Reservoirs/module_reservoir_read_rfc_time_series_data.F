@@ -193,7 +193,7 @@ print *, '1 reading time series file'
 
         ! Open Time Series NetCDF file
         status = nf90_open(path = trim(time_series_file), mode = nf90_nowrite, ncid = ncid)
-        if (status /= nf90_noerr) call handle_err(status, "Could not open time series file")
+        if (status /= nf90_noerr) call handle_err(status, "Could not open RFC time series file")
 
 print *, '2 reading time series file'
 
@@ -230,6 +230,10 @@ print *, '7 done reading time series file'
         this%synthetic_values_logical = this%synthetic_values
 
         this%forecast_found = .true.
+
+        ! Close Time Series NetCDF file
+        status = nf90_close(ncid)
+        if (status /= nf90_noerr) call handle_err(status, "Could not close RFC time series file")
 
     end subroutine read_time_series_file
 
