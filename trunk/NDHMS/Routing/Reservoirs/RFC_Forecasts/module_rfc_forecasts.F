@@ -17,7 +17,9 @@ module module_rfc_forecasts
     use module_rfc_forecasts_state, only: rfc_forecasts_state_interface
     use module_levelpool, only: levelpool
     use module_reservoir_utilities, only: create_rfc_forecasts_diagnostic_log_file, &
-                                          log_rfc_forecasts_diagnostic_data
+                                          log_rfc_forecasts_diagnostic_data, &
+                                          create_rfc_forecasts_diagnostic_log_file_hourly, &
+                                          log_rfc_forecasts_diagnostic_data_hourly
     use module_reservoir, only: reservoir, reservoir_input, reservoir_output
     use module_reservoir_read_rfc_time_series_data, only: time_series_data
     implicit none
@@ -76,10 +78,12 @@ contains
         character(len=256), intent(in) :: time_series_path
         integer,            intent(in) :: forecast_lookback_hours
 
-#ifdef RESERVOIR_D
+!#ifdef RESERVOIR_D
         ! Create diagnostic log file only for development/debugging purposes
-        call create_rfc_forecasts_diagnostic_log_file(lake_number)
-#endif
+!        call create_rfc_forecasts_diagnostic_log_file(lake_number)
+!#endif
+
+print *, 'Init RFC reservoir ', lake_number
 
         if (this%pointer_allocation_guard .eqv. .false. ) then
             ! try to allocate input
@@ -128,8 +132,19 @@ contains
 
         end if
 
+print *, 'Init logs for RFC reservoir ', lake_number
+
+        call create_rfc_forecasts_diagnostic_log_file(lake_number, this%properties%rfc_gage_id)
+
+
+        call create_rfc_forecasts_diagnostic_log_file_hourly(lake_number, this%properties%rfc_gage_id)
+
+
         ! Allocate a single level pool reservoir
         allocate(levelpool :: this%state%levelpool_ptr)
+
+print *, 'Init LP reservoir for RFC reservoir ', lake_number
+
 
         ! Initialize level pool reservoir
         call this%state%levelpool_ptr%init(water_elevation, lake_area, &
@@ -161,8 +176,12 @@ contains
         integer             :: update_offset_seconds
 
 
+print *, 'run function for reservoir ', this%properties%lake_number, ' at ', this%state%current_time
+
         ! If first timestep, then check forecast aspects
         if (this%state%current_time == 0) then
+
+print *, 'Init time series for RFC reservoir ', this%properties%lake_number
 
             ! Call to initialize time series data object. This object is a singleton,
             ! so if another reservoir has already initialized the object, it will return
@@ -172,6 +191,9 @@ contains
             this%properties%rfc_gage_id, this%properties%lake_number, this%properties%lookback_seconds, &
             this%properties%total_counts, this%properties%observed_counts, this%properties%time_step_seconds, &
             this%state%discharges, this%state%forecast_found, this%state%all_discharges_synthetic)
+
+print *, 'Finished init time series for RFC reservoir ', this%properties%lake_number
+
 
             if (this%state%forecast_found) then
                 update_offset_seconds = mod(this%properties%lookback_seconds, this%properties%time_step_seconds)
@@ -284,13 +306,27 @@ contains
         ! Update water_elevation variable returned from this subroutine
         water_elevation = this%state%water_elevation
 
-#ifdef RESERVOIR_D
+print *, 'start call logs in run function for reservoir ', this%properties%lake_number, ' at ', this%state%current_time
+
+
+!!Temp if statement to only output at the hour
+if (modulo(this%state%current_time, 3600) == 0) then
+        call log_rfc_forecasts_diagnostic_data_hourly(this%properties%lake_number, this%state%current_time, &
+        this%properties%time_step_seconds, this%state%time_series_update_time, this%properties%lookback_seconds, &
+        this%state%time_series_index, this%properties%rfc_gage_id, this%input%inflow, this%state%water_elevation, &
+        levelpool_outflow, this%output%outflow)
+end if
+
+!#ifdef RESERVOIR_D
         ! Log diagnostic data only for development/debugging purposes
         call log_rfc_forecasts_diagnostic_data(this%properties%lake_number, this%state%current_time, &
         this%properties%time_step_seconds, this%state%time_series_update_time, this%properties%lookback_seconds, &
         this%state%time_series_index, this%properties%rfc_gage_id, this%input%inflow, this%state%water_elevation, &
         levelpool_outflow, this%output%outflow)
-#endif
+
+print *, 'finished call logs in run function for reservoir ', this%properties%lake_number, ' at ', this%state%current_time
+
+
 
     end subroutine run_rfc_forecasts_reservoir
 

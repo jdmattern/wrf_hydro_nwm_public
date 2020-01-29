@@ -82,6 +82,8 @@ contains
         this%observed_counts = 0
         this%time_step_seconds = 0
 
+print *, '1 In time series init for ', lake_number, ' ', rfc_gage_id
+
         call this%setup_read_time_series()
 
         lookback_seconds = this%current_lookback_seconds
@@ -187,9 +189,14 @@ contains
         integer :: reservoir_rfc_gage_index, time_series_rfc_gage_index
         integer :: ncid, status
 
+print *, '1 reading time series file'
+
         ! Open Time Series NetCDF file
         status = nf90_open(path = trim(time_series_file), mode = nf90_nowrite, ncid = ncid)
         if (status /= nf90_noerr) call handle_err(status, "Could not open time series file")
+
+print *, '2 reading time series file'
+
 
         call read_timeslice_netcdf_integer_variables(ncid, 'totalCounts', this%total_counts)
 
@@ -198,14 +205,27 @@ contains
         allocate (this%synthetic_values(this%total_counts))
 
         allocate (this%synthetic_values_logical(this%total_counts))
+print *, '3 reading time series file'
+
 
         call read_timeslice_netcdf_integer_variables(ncid, 'observedCounts', this%observed_counts)
 
+print *, '4 reading time series file'
+
         call read_timeslice_netcdf_integer_variables(ncid, 'timeSteps', this%time_step_seconds)
+
+print *, '5 reading time series file'
+
 
         call read_timeslice_netcdf_real_1D_variables(ncid, 'discharges', this%discharges)
 
+
+print *, '6 reading time series file'
+
         call read_timeslice_netcdf_integer_1D_variables(ncid, 'synthetic_values', this%synthetic_values)
+
+
+print *, '7 done reading time series file'
 
         this%synthetic_values_logical = this%synthetic_values
 

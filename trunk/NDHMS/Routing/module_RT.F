@@ -793,8 +793,12 @@ subroutine LandRT_ini(did)
 
    end do
 
+print *, 'starting LAKE INIT'
+
    ! For loop to cycle array of pointers to reservoirs
    do lake_index = 1, NLAKES_total
+
+print *, 'lake init index ', lake_index
 
        if (rt_domain(did)%reservoir_type(lake_index) == 1) then
           allocate( levelpool :: rt_domain(did)%reservoirs(lake_index)%ptr)
@@ -873,6 +877,8 @@ subroutine LandRT_ini(did)
            end select
 
    end do
+
+print *, 'FINISHED LAKE INIT'
 
    !ADCHANGE: Add lake reach output
 #ifdef HYDRO_D

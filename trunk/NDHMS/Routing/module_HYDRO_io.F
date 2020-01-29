@@ -4709,6 +4709,7 @@ end subroutine mpp_output_chrt
      character(len=*),                         intent(in) :: date
      integer lake_index(nlakes)
 
+        print *, 'START WRITE RESTART LAKE INFO'
 
      call write_lake_real(latlake,lake_index,nlakes)
      call write_lake_real(lonlake,lake_index,nlakes)
@@ -4716,6 +4717,9 @@ end subroutine mpp_output_chrt
      call write_lake_real(resht,lake_index,nlakes)
      call write_lake_real(qlakei,lake_index,nlakes)
      call write_lake_real(qlakeo,lake_index,nlakes)
+
+            print *, 'END WRITE RESTART LAKE INFO'
+
      if(my_id.eq. IO_id) then
         call output_lakes(igrid, split_output_count, NLAKES, &
            startdate, date, latlake, lonlake, elevlake, &
@@ -5758,6 +5762,8 @@ end subroutine mpp_output_chrt
              dimid_links, dimid_basns, dimid_soil, dimid_lakes
     integer :: iret
 
+PRINT *, 'START RESTART OUT'
+
 
 #ifdef MPP_LAND
      if(IO_id.eq.my_id) &
@@ -6140,6 +6146,9 @@ end if  ! end if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
         if(IO_id.eq.my_id) &
 #endif
         iret = nf90_close(ncid)
+
+PRINT *, 'END RESTART OUT'
+
 
         return
         end subroutine RESTART_OUT_nc
@@ -6630,6 +6639,7 @@ integer :: ierr, iret,ncid, did
 integer :: channel_only_in, channelBucket_only_in
 integer :: i, j
 
+PRINT *, 'START RESTART IN'
 
 #ifdef MPP_LAND
 if(IO_id .eq. my_id) then
@@ -6790,6 +6800,8 @@ if(nlst(did)%SUBRTSWCRT  .eq. 1 .or. &
       endif
 
       if(rt_domain(did)%NLAKES .gt. 0) then
+        print *, 'READ RESTART LAKE INFO'
+
          call read_rst_crt_nc(ncid,rt_domain(did)%RESHT,rt_domain(did)%NLAKES,"resht")
          call read_rst_crt_nc(ncid,rt_domain(did)%QLAKEO,rt_domain(did)%NLAKES,"qlakeo")
          call read_rst_crt_nc(ncid,rt_domain(did)%QLAKEI,rt_domain(did)%NLAKES,"qlakei")
@@ -6857,6 +6869,9 @@ if(my_id .eq. IO_id) &
 write(6,*) "end of RESTART_IN"
 call flush(6)
 #endif
+
+PRINT *, 'END RESTART IN'
+
 
 return
 end subroutine RESTART_IN_nc
