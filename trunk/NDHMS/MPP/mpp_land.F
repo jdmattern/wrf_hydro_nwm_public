@@ -2386,17 +2386,29 @@ MODULE MODULE_MPP_LAND
        character(len=256), dimension(nsize) :: tmp
        character(len=256), dimension(:), intent(in) :: in0
        integer tag, i, status, ierr, k, in_len
+
+print *, "updateLake_seq_char in: ", in
+
+print *, "updateLake_seq_char in0: ", in0
+
        if(nsize .le. 0) return
 
        in_len = size(in, 1)*len(in)
+print *, "nsize: ", nsize
+print *, 'in_len: ', in_len
 
        tag = 29
        if(my_id .ne. IO_id) then
+
+        print *, "Call mpi_send in updateLake_seq_char"
           call mpi_send(in,in_len,MPI_CHARACTER, IO_id,     &
                 tag,HYDRO_COMM_WORLD,ierr)
        else
           do i = 0, numprocs - 1
+            print *, "numprocs in updateLake_seq_char: ", numprocs
             if(i .ne. IO_id) then
+                print *, "Call mpi_recv in updateLake_seq_char"
+
                call mpi_recv(tmp,in_len,&
                    MPI_CHARACTER,i,tag,HYDRO_COMM_WORLD,mpp_status,ierr)
                do k = 1, nsize
@@ -2406,6 +2418,8 @@ MODULE MODULE_MPP_LAND
           end do
        end if
        call mpp_land_bcast_char1d(in)
+
+print *, "end of updateLake_seq_char"
 
      end subroutine updateLake_seq_char
 

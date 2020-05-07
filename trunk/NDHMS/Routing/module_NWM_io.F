@@ -2442,8 +2442,12 @@ subroutine output_lakes_NWM(domainId,iGrid)
       allocate(g_lakeInflow(gsize))
       allocate(g_lakeOutflow(gsize))
       allocate(g_lakeType(gsize))
+      print *, "start allocate g_lake_assimilated_value"
       allocate(g_lake_assimilated_value(gsize))
+            print *, "start allocate g_lake_assimilated_source_file"
       allocate(g_lake_assimilated_source_file(gsize))
+                  print *, "end allocate g_lake_assimilated_value and g_lake_assimilated_source_file"
+
       allocate(g_lakeid(gsize))
 
       if(myId == 0) then
@@ -2453,8 +2457,14 @@ subroutine output_lakes_NWM(domainId,iGrid)
          allocate(g_lakeInflowOut(gsize))
          allocate(g_lakeOutflowOut(gsize))
          allocate(g_lakeTypeOut(gsize))
+               print *, "start allocate g_lake_assimilated_valueOut"
+
          allocate(g_lake_assimilated_valueOut(gsize))
+                        print *, "start allocate g_lake_assimilated_source_fileOut"
+
          allocate(g_lake_assimilated_source_fileOut(gsize))
+                           print *, "end allocate g_lake_assimilated_valueOut and g_lake_assimilated_source_fileOut"
+
          allocate(g_lakeidOut(gsize))
          allocate(chIndArray(gsize))
       endif
@@ -2466,8 +2476,14 @@ subroutine output_lakes_NWM(domainId,iGrid)
       g_lakeOutflow = RT_DOMAIN(domainID)%QLAKEO
       g_lakeid = RT_DOMAIN(domainId)%LAKEIDM
       g_lakeType = RT_DOMAIN(domainID)%final_reservoir_type
+      print *, "Assign to g_lake_assimilated_value"
       g_lake_assimilated_value = RT_DOMAIN(domainID)%reservoir_assimilated_value
+            print *, "Assign to g_lake_assimilated_source_file"
+
       g_lake_assimilated_source_file = RT_DOMAIN(domainID)%reservoir_assimilated_source_file
+
+                  print *, "Done with Assign to g_lake_assimilated_value and g_lake_assimilated_source_file"
+
 
       ! Sync everything up before the next step.
       if(mppFlag .eq. 1) then
@@ -2485,8 +2501,13 @@ subroutine output_lakes_NWM(domainId,iGrid)
       call write_lake_real(g_lakeInflow,RT_DOMAIN(domainId)%lake_index,gsize)
       call write_lake_real(g_lakeOutflow,RT_DOMAIN(domainId)%lake_index,gsize)
       call write_lake_real(g_lakeType,RT_DOMAIN(domainId)%lake_index,gsize)
+
+      print *, "call write_lake_real for g_lake_assimilated_value"
       call write_lake_real(g_lake_assimilated_value,RT_DOMAIN(domainId)%lake_index,gsize)
+            print *, "done call write_lake_real for g_lake_assimilated_value"
+      print *, "call write_lake_char for g_lake_assimilated_source_file"
       call write_lake_char(g_lake_assimilated_source_file,RT_DOMAIN(domainId)%lake_index,gsize)
+      print *, "done call write_lake_char for g_lake_assimilated_source_file"
 
 #endif
    else
@@ -2505,8 +2526,12 @@ subroutine output_lakes_NWM(domainId,iGrid)
       allocate(g_lakeOutflowOut(gsize))
       allocate(g_lakeidOut(gsize))
       allocate(g_lakeTypeOut(gsize))
+      print *, "start allocate g_lake_assimilated_valueOut"
       allocate(g_lake_assimilated_valueOut(gsize))
+      print *, "start allocate g_lake_assimilated_source_fileOut"
       allocate(g_lake_assimilated_source_fileOut(gsize))
+      print *, "done  allocate g_lake_assimilated_valueOut and g_lake_assimilated_source_fileOut"
+
       allocate(chIndArray(gsize))
       g_lakeLat = RT_DOMAIN(domainID)%LATLAKE
       g_lakeLon = RT_DOMAIN(domainID)%LONLAKE
@@ -2515,8 +2540,14 @@ subroutine output_lakes_NWM(domainId,iGrid)
       g_lakeOutflow = RT_DOMAIN(domainID)%QLAKEO
       g_lakeid = RT_DOMAIN(domainId)%LAKEIDM
       g_lakeType = RT_DOMAIN(domainId)%final_reservoir_type
+      print *, "Start assign to g_lake_assimilated_value"
       g_lake_assimilated_value = RT_DOMAIN(domainID)%reservoir_assimilated_value
+            print *, "Start assign to g_lake_assimilated_source_file"
+
       g_lake_assimilated_source_file = RT_DOMAIN(domainID)%reservoir_assimilated_source_file
+
+                  print *, "Done assign to g_lake_assimilated_value and g_lake_assimilated_source_file"
+
    endif
 
    ! Sync all processes up.
@@ -2607,8 +2638,14 @@ subroutine output_lakes_NWM(domainId,iGrid)
             g_lakeLatOut(iTmp) = g_lakeLat(indTmp)
             g_lakeElevOut(iTmp) = g_lakeElev(indTmp)
             g_lakeTypeOut(iTmp) = g_lakeType(indTmp)
+            print *, "Start assign to g_lake_assimilated_valueOut iTmp"
             g_lake_assimilated_valueOut(iTmp) = g_lake_assimilated_value(indTmp)
+                        print *, "Start assign to g_lake_assimilated_source_fileOut iTmp"
+
             g_lake_assimilated_source_fileOut(iTmp) = g_lake_assimilated_source_file(indTmp)
+
+                        print *, "Done assign to g_lake_assimilated_valueOut and g_lake_assimilated_source_fileOut iTmp"
+
             g_lakeidOut(iTmp) = g_lakeid(indTmp)
          end do
       else
@@ -2618,8 +2655,12 @@ subroutine output_lakes_NWM(domainId,iGrid)
          g_lakeLatOut = g_lakeLat
          g_lakeElevOut = g_lakeElev
          g_lakeTypeOut = g_lakeType
+         print *, "start assign to g_lake_assimilated_valueOut line 2659"
          g_lake_assimilated_valueOut = g_lake_assimilated_value
+                  print *, "start assign to g_lake_assimilated_source_fileOut line 2661"
          g_lake_assimilated_source_fileOut = g_lake_assimilated_source_file
+                  print *, "done assign to g_lake_assimilated_valueOut and g_lake_assimilated_source_fileOut"
+
          g_lakeidOut = g_lakeid
       endif
       varOutReal(1,:) = g_lakeInflowOut(:)
@@ -2745,21 +2786,32 @@ subroutine output_lakes_NWM(domainId,iGrid)
       iret = nf90_put_att(ftn, reservoirTypeVarId, 'flag_meanings', trim(fileMeta%reservoirTypeFlagMeanings))
       call nwmCheck(diagFlag, iret, 'ERROR: Unable to place flag_meanings attribute into reservoir_type variable')
 
+print *, "Start Create reservoir_assimilated_value variable"
       ! Create reservoir_assimilated_value variable
       iret = nf90_def_var(ftn, "reservoir_assimilated_value", nf90_float, dimId(1), reservoirAssimilatedValueVarId)
       call nwmCheck(diagFlag, iret, 'ERROR: Unable to create reservoir_assimilated_value variable.')
+print *, "Start2 Create reservoir_assimilated_value variable"
+
       iret = nf90_put_att(ftn, reservoirAssimilatedValueVarId, 'long_name', trim(fileMeta%reservoirAssimilatedValueLName))
       call nwmCheck(diagFlag, iret, 'ERROR: Unable to place long_name attribute into reservoir_assimilated_value variable')
+print *, "Start3 Create reservoir_assimilated_value variable"
+
       iret = nf90_put_att(ftn,reservoirAssimilatedValueVarId,'units',trim(fileMeta%reservoirAssimilatedValueUnits))
       call nwmCheck(diagFlag,iret,'ERROR: Unable to place units attribute into reservoir_assimilated_value variable')
 
+print *, "Start Create reservoir_assimilated_source_file variable"
       ! Create reservoir_assimilated_source_file variable
       iret = nf90_def_var(ftn, "reservoir_assimilated_source_file", nf90_char, [dimId(4), dimId(1)], reservoirAssimilatedSourceFileVarId)
       call nwmCheck(diagFlag, iret, 'ERROR: Unable to create reservoir_assimilated_source_file variable.')
+print *, "Start2 Create reservoir_assimilated_source_file variable"
+
       iret = nf90_put_att(ftn, reservoirAssimilatedSourceFileVarId, 'long_name', trim(fileMeta%reservoirAssimilatedSourceFileLName))
       call nwmCheck(diagFlag, iret, 'ERROR: Unable to place long_name attribute into reservoir_assimilated_source_file variable')
+print *, "Start3 Create reservoir_assimilated_source_file variable"
+
       iret = nf90_def_var_fill(ftn, reservoirAssimilatedSourceFileVarId, 0, 0);
       call nwmCheck(diagFlag, iret, 'ERROR: Unable to place _FillValue attribute into reservoir_assimilated_source_file variable')
+print *, "Start4 Create reservoir_assimilated_source_file variable"
 
       ! Create lake lat/lon variables
       iret = nf90_def_var(ftn,"latitude",nf90_float,dimId(1),latVarId)
@@ -2913,19 +2965,27 @@ subroutine output_lakes_NWM(domainId,iGrid)
       iret = nf90_put_var(ftn,varId,g_lakeTypeOut)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to place data into reservoir_type output variable.')
 
+print *, "Start Place reservoir_assimilated_value values into the NetCDF file"
       ! Place reservoir_assimilated_value values into the NetCDF file
       iret = nf90_inq_varid(ftn,'reservoir_assimilated_value',varId)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to locate reservoir_assimilated_value in NetCDF file.')
+print *, "Start2 Place reservoir_assimilated_value values into the NetCDF file"
+
       iret = nf90_put_var(ftn,varId,g_lake_assimilated_valueOut)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to place data into reservoir_assimilated_value output variable.')
+print *, "Start3 Place reservoir_assimilated_value values into the NetCDF file"
 
+print *, "Start Place reservoir_assimilated_source_file values into the NetCDF file"
       ! Place reservoir_assimilated_source_file values into the NetCDF file
       iret = nf90_inq_varid(ftn,'reservoir_assimilated_source_file',varId)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to locate reservoir_assimilated_source_file in NetCDF file.')
+print *, "Start2 Place reservoir_assimilated_source_file values into the NetCDF file"
+print *, "gSize: ", gSize
       do iTmp = 1, gSize
          iret = nf90_put_var(ftn,varId,trim(g_lake_assimilated_source_fileOut(iTmp)), start=[1,iTmp])
          call nwmCheck(diagFlag,iret,'ERROR: Unable to place data into reservoir_assimilated_source_file output variable.')
       end do
+print *, "Done Place reservoir_assimilated_source_file values into the NetCDF file"
 
       ! Place lake metadata into NetCDF file
       iret = nf90_inq_varid(ftn,'water_sfc_elev',varId)
@@ -2978,8 +3038,11 @@ subroutine output_lakes_NWM(domainId,iGrid)
    deallocate(g_lakeOutflow)
    deallocate(g_lakeid)
    deallocate(g_lakeType)
+   print *, "start deallocate g_lake_assimilated_value and g_lake_assimilated_source_file"
    deallocate(g_lake_assimilated_value)
    deallocate(g_lake_assimilated_source_file)
+      print *, "done deallocate g_lake_assimilated_value and g_lake_assimilated_source_file"
+
 
    if(myId .eq. 0) then
       deallocate(g_lakeLonOut)
@@ -2989,8 +3052,13 @@ subroutine output_lakes_NWM(domainId,iGrid)
       deallocate(g_lakeOutflowOut)
       deallocate(g_lakeidOut)
       deallocate(g_lakeTypeOut)
+         print *, "start deallocate g_lake_assimilated_valueOut and g_lake_assimilated_source_fileOut"
+
       deallocate(g_lake_assimilated_valueOut)
       deallocate(g_lake_assimilated_source_fileOut)
+
+               print *, "done deallocate g_lake_assimilated_valueOut and g_lake_assimilated_source_fileOut"
+
       deallocate(chIndArray)
    endif
 

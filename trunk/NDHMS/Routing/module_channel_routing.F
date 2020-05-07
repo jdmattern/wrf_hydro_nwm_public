@@ -1686,9 +1686,12 @@ end subroutine drive_CHANNEL
             allocate(tmpQLAKEI(NLAKES))
             allocate(tmpRESHT(NLAKES))
             allocate(tmpFinalResType(nlakes))
+            print *, "Start_allocate_tmp_assim_vals_and_source_files"
             allocate(tmpAssimilatedValue(NLAKES))
             allocate(tmpAssimilatedSourceFile(NLAKES))
             tmpAssimilatedSourceFile = repeat(char(0), 256)
+            print *, "Done_allocate_tmp_assim_vals_and_source_files"
+
 #ifdef MPP_LAND
         endif
 #endif
@@ -1853,8 +1856,12 @@ do nt = 1, nsteps
       tmpQLAKEI = QLAKEI
       tmpRESHT = RESHT
       tmpFinalResType = rt_domain(did)%final_reservoir_type
+    print *, "Start_assign_allocated_assim"
+
       tmpAssimilatedValue = rt_domain(did)%reservoir_assimilated_value
       tmpAssimilatedSourceFile = rt_domain(did)%reservoir_assimilated_source_file
+
+    print *, "End_assign_allocated_assim"
 
 #ifdef MPP_LAND
    endif
@@ -1909,6 +1916,7 @@ do nt = 1, nsteps
             call rt_domain(did)%reservoirs(lakeid)%ptr%run(Qup, Quc, 0.0, &
                  RESHT(lakeid), tmpQLINK(k,2), DTRT_CH, rt_domain(did)%final_reservoir_type(lakeid), &
                  rt_domain(did)%reservoir_assimilated_value(lakeid), rt_domain(did)%reservoir_assimilated_source_file(lakeid))
+print *, "Finish calling run reservoir"
 
             ! TODO: Encapsulate the lake state variable for water elevation (RESHT(lakeid))
             !       inside the reservoir module, but it requires a redesign of the lake
@@ -1954,7 +1962,9 @@ do nt = 1, nsteps
    call updateLake_seq(QLAKEI,nlakes,tmpQLAKEI)
    call updateLake_seq(RESHT,nlakes,tmpRESHT)
    call updateLake_seqInt(rt_domain(did)%final_reservoir_type, nlakes, tmpFinalResType)
+   print *, "Call broadcast updateLake_seq in channel routing for reservoir_assimilated_value"
    call updateLake_seq(rt_domain(did)%reservoir_assimilated_value, nlakes, tmpAssimilatedValue)
+   print *, "Call broadcast updateLake_seq in channel routing for reservoir_assimilated_source_file"
    call updateLake_seq_char(rt_domain(did)%reservoir_assimilated_source_file, nlakes, tmpAssimilatedSourceFile)
 #endif
 
@@ -1985,8 +1995,10 @@ if(my_id .eq. io_id)      then
    if(allocated(tmpQLAKEI))  deallocate(tmpQLAKEI)
    if(allocated(tmpRESHT))  deallocate(tmpRESHT)
    if(allocated(tmpFinalResType)) deallocate(tmpFinalResType)
+print *, "Deallocate tmp assim source file and value arrays in channel routing"
    if(allocated(tmpAssimilatedSourceFile)) deallocate(tmpAssimilatedSourceFile)
    if(allocated(tmpAssimilatedValue)) deallocate(tmpAssimilatedValue)
+print *, "Done deallocate tmp assim source file and value arrays in channel routing"
 endif
 #endif
 
