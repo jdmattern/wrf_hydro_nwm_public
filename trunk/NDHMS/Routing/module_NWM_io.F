@@ -2983,7 +2983,9 @@ print *, "Start2 Place reservoir_assimilated_source_file values into the NetCDF 
 print *, "gSize: ", gSize
       do iTmp = 1, gSize
 
-        !print *, "iTmp: ", iTmp
+        print *, "iTmp: ", iTmp
+
+       print *, trim(g_lake_assimilated_source_fileOut(iTmp))
          iret = nf90_put_var(ftn,varId,trim(g_lake_assimilated_source_fileOut(iTmp)), start=[1,iTmp])
          call nwmCheck(diagFlag,iret,'ERROR: Unable to place data into reservoir_assimilated_source_file output variable.')
       end do
