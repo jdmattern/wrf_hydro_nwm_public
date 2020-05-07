@@ -1940,19 +1940,33 @@ MODULE MODULE_MPP_LAND
         integer i, ierr, tag, k, in_len
         integer length, node
 
+print *, "Start write_lake_char subroutine-----------------------------------------------------"
+
+
+
         in_len = size(v, 1)*len(v)
 
+print *, "in_len: ", in_len
+
+print *, "numprocs: ", numprocs
         nodelist = nodelist_in
         if(my_id .eq. IO_id) then
            do i = 0, numprocs - 1
               if(i .ne. my_id) then
                  !block receive  from other node.
                  tag = 129
+                 print *, "call mpi_recv1"
+
                  call mpi_recv(nodelist,nlakes,MPI_INTEGER,i, &
                       tag,HYDRO_COMM_WORLD,mpp_status,ierr)
                    tag = 139
+
+                print *, "call mpi_recv2"
+
                  call mpi_recv(recv(:),in_len,MPI_CHARACTER,i,  &
                    tag,HYDRO_COMM_WORLD,mpp_status,ierr)
+
+                print *, "cycle through lakes"
 
                  do k = 1,nlakes
                     if(nodelist(k) .gt. -99) then
@@ -1964,9 +1978,15 @@ MODULE MODULE_MPP_LAND
            end do
         else
            tag =  129
+
+        print *, "call mpi_send1"
+
            call mpi_send(nodelist,nlakes,MPI_INTEGER, IO_id,     &
                tag,HYDRO_COMM_WORLD,ierr)
            tag = 139
+
+                   print *, "call mpi_send2"
+
            call mpi_send(v,in_len,MPI_CHARACTER,IO_id,   &
                tag,HYDRO_COMM_WORLD,ierr)
         end if
@@ -2387,9 +2407,6 @@ MODULE MODULE_MPP_LAND
        character(len=256), dimension(:), intent(in) :: in0
        integer tag, i, status, ierr, k, in_len
 
-print *, "updateLake_seq_char in: ", in
-
-print *, "updateLake_seq_char in0: ", in0
 
        if(nsize .le. 0) return
 
