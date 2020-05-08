@@ -2340,13 +2340,13 @@ subroutine output_lakes_NWM(domainId,iGrid)
    real, allocatable, dimension(:) :: g_lakeInflow,g_lakeOutflow
    real, allocatable, dimension(:) :: g_lakeType
    real, allocatable, dimension(:) :: g_lake_assimilated_value
-   character(len=256), allocatable, dimension(:) :: g_lake_assimilated_source_file
+   character(len=128), allocatable, dimension(:) :: g_lake_assimilated_source_file
    integer, allocatable, dimension(:) :: g_lakeid
    real, allocatable, dimension(:) :: g_lakeLatOut,g_lakeLonOut,g_lakeElevOut
    real, allocatable, dimension(:) :: g_lakeInflowOut,g_lakeOutflowOut
    integer, allocatable, dimension(:) :: g_lakeTypeOut, g_lakeidOut
    real, allocatable, dimension(:) :: g_lake_assimilated_valueOut
-   character(len=256), allocatable, dimension(:) :: g_lake_assimilated_source_fileOut
+   character(len=128), allocatable, dimension(:) :: g_lake_assimilated_source_fileOut
    real, allocatable, dimension(:,:) :: varOutReal   ! Array holding output variables in real format
    integer, allocatable, dimension(:) :: varOutInt ! Array holding output variables after
                                                      ! scale_factor/add_offset

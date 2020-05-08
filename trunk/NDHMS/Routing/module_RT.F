@@ -402,7 +402,7 @@ print *, "Done_allocating_assim_source_files_array"
          rt_domain(did)%final_reservoir_type = 1
          rt_domain(did)%reservoir_assimilated_value = -9999.0
          print *, "Setting_empty_assim_source_file_array"
-         rt_domain(did)%reservoir_assimilated_source_file = repeat(char(0), 256)
+         rt_domain(did)%reservoir_assimilated_source_file = repeat(char(0), 128)
          print *, "Done_setting_empty_assim_source_file_array"
      endif
 

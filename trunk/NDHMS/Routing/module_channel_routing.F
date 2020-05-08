@@ -1677,7 +1677,7 @@ end subroutine drive_CHANNEL
        real, allocatable,dimension(:) :: tmpQLAKEO, tmpQLAKEI, tmpRESHT
        integer, allocatable, dimension(:) :: tmpFinalResType
        real, allocatable,dimension(:) :: tmpAssimilatedValue
-       character(len=256), allocatable,dimension(:) :: tmpAssimilatedSourceFile
+       character(len=128), allocatable,dimension(:) :: tmpAssimilatedSourceFile
 
 #ifdef MPP_LAND
        if(my_id .eq. io_id) then
@@ -1689,7 +1689,7 @@ end subroutine drive_CHANNEL
             print *, "Start_allocate_tmp_assim_vals_and_source_files"
             allocate(tmpAssimilatedValue(NLAKES))
             allocate(tmpAssimilatedSourceFile(NLAKES))
-            tmpAssimilatedSourceFile = repeat(char(0), 256)
+            tmpAssimilatedSourceFile = repeat(char(0), 128)
             print *, "Done_allocate_tmp_assim_vals_and_source_files"
 
 #ifdef MPP_LAND

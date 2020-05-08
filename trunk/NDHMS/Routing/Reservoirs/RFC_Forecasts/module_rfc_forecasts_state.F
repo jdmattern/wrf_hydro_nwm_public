@@ -24,10 +24,10 @@ module module_rfc_forecasts_state
         logical                         :: all_discharges_synthetic
         integer                         :: dynamic_reservoir_type    ! dynamic reservoir type sent to lake out files
         real                            :: assimilated_value
-        character(len=256)              :: assimilated_source_file
+        character(len=128)              :: assimilated_source_file
         integer                         :: levelpool_reservoir_type    ! reservoir type for levelpool
         real                            :: levelpool_assimilated_value ! levelpool assimilated sentinel value
-        character(len=256)              :: levelpool_assimilated_source_file ! empty string for levelpool assimilated source
+        character(len=128)              :: levelpool_assimilated_source_file ! empty string for levelpool assimilated source
 
         type (levelpool), pointer :: levelpool_ptr   ! pointer to levelpool object
 

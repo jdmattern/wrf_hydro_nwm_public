@@ -1935,8 +1935,8 @@ MODULE MODULE_MPP_LAND
 
      subroutine write_lake_char(v,nodelist_in,nlakes)
         implicit none
-        character(len=256) recv(nlakes)
-        character(len=256), allocatable, intent(inout) :: v(:)
+        character(len=128) recv(nlakes)
+        character(len=128), allocatable, intent(inout) :: v(:)
         integer nodelist(nlakes), nlakes, nodelist_in(nlakes)
         integer i, ierr, tag, k, in_len
         integer length, node
@@ -2403,9 +2403,9 @@ print *, "numprocs: ", numprocs
      subroutine updateLake_seq_char(in,nsize,in0)
        implicit none
        integer :: nsize
-       character(len=256), dimension(nsize), intent(inout) :: in
-       character(len=256), dimension(nsize) :: tmp
-       character(len=256), dimension(:), intent(in) :: in0
+       character(len=128), dimension(nsize), intent(inout) :: in
+       character(len=128), dimension(nsize) :: tmp
+       character(len=128), dimension(:), intent(in) :: in0
        integer tag, i, status, ierr, k, in_len
 
 

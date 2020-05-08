@@ -213,7 +213,7 @@ contains
         real, intent(in)    :: routing_period           ! seconds
         integer, intent(out):: dynamic_reservoir_type   ! dynamic reservoir type sent to lake out files
         real, intent(out)   :: assimilated_value        ! value assimilated from observation or forecast
-        character(len=256), intent(out) :: assimilated_source_file ! source file of assimilated value
+        character(len=128), intent(out) :: assimilated_source_file ! source file of assimilated value
         real                :: levelpool_outflow        ! cubic meters per second (cms)
         integer		        :: missing_outflow_index
         character(len=15)   :: lake_number_string

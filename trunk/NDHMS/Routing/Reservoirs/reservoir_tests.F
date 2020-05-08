@@ -135,7 +135,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -229,7 +229,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -320,7 +320,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -412,7 +412,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -501,7 +501,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         rv = .false.
         prev_time_inflow = 0.0
@@ -617,7 +617,7 @@ program reservoir_unit_tests
         real, allocatable, dimension(:) :: forecast_discharges
         logical :: forecast_found
         logical :: all_discharges_synthetic
-        character(len=256):: time_series_file_name
+        character(len=128):: time_series_file_name
 
         call_status = .false.
 
@@ -666,7 +666,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -748,7 +748,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -827,7 +827,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -906,7 +906,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -986,7 +986,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
@@ -1067,7 +1067,7 @@ program reservoir_unit_tests
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
         real :: assimilated_value
-        character(len=256) :: assimilated_source_file
+        character(len=128) :: assimilated_source_file
 
         prev_time_inflow = 0.0
         timestep_count = 0
