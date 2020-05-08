@@ -20,7 +20,7 @@ module module_reservoir_read_rfc_time_series_data
         character(len=19)                  :: start_date
         character(len=19)                  :: current_date
         character(len=256)                 :: time_series_path
-        character(len=256)                 :: time_series_file_name
+        character(len=128)                 :: time_series_file_name
         integer                            :: forecast_lookback_hours
         integer                            :: timeslice_offset_hours
         integer                            :: current_lookback_seconds
@@ -69,7 +69,7 @@ contains
         real, allocatable, dimension(:), intent(inout)  :: discharges
         logical,            intent(inout)               :: forecast_found
         logical,            intent(inout)               :: all_discharges_synthetic
-        character(len=256), intent(out)                 :: time_series_file_name
+        character(len=128), intent(out)                 :: time_series_file_name
         character(len=15)                               :: lake_number_string
 
         this%forecast_found = .false.

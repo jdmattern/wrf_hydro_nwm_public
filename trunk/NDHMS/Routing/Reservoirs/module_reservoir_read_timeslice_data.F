@@ -46,7 +46,7 @@ module module_reservoir_read_timeslice_data
         integer,            allocatable, dimension(:) :: gage_lookback_seconds
         character(len=15),  allocatable, dimension(:) :: reservoir_gage_ids
         real,               allocatable, dimension(:) :: reservoir_gage_discharges
-        character(len=256), allocatable, dimension(:) :: timeslice_file_names
+        character(len=128), allocatable, dimension(:) :: timeslice_file_names
         character(len=15),  allocatable, dimension(:) :: gage_id
         real,               allocatable, dimension(:) :: gage_discharge
         real,               allocatable, dimension(:) :: gage_quality
@@ -168,8 +168,8 @@ contains
         character(len=*), intent(in)  :: reservoir_gage_id
         integer, intent(out) :: gage_lookback_seconds
         real, intent(out)    :: reservoir_gage_discharge
-        character(len=256), intent(out)   :: reservoir_timeslice_file_name
-        character(len=256)   :: timeslice_file_name
+        character(len=128), intent(out)   :: reservoir_timeslice_file_name
+        character(len=128)   :: timeslice_file_name
         character(len=256)   :: timeslice_file_name_full
         character(len=19)    :: old_date, new_date
         character(len=2)     :: observation_resolution_string
@@ -275,7 +275,7 @@ contains
         implicit none
         class(timeslice_data_type), intent(inout) :: this
         character(len=256), intent(in) :: timeslice_file_full
-        character(len=256), intent(in) :: timeslice_file
+        character(len=128), intent(in) :: timeslice_file
         integer :: reservoir_gage_index, timeslice_gage_index, number_of_gages
         integer :: ncid, status
 

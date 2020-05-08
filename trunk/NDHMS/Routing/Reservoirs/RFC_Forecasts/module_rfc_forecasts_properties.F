@@ -29,7 +29,7 @@ module module_rfc_forecasts_properties
         integer           :: rfc_forecast_persist_seconds
         integer           :: rfc_timeslice_offset_hours
         integer           :: observation_hours
-        character(len=256):: time_series_file_name
+        character(len=128):: time_series_file_name
 
     contains
 
