@@ -7364,6 +7364,7 @@ real, intent(INOUT),  dimension(:)      :: ORIFICEE
 integer, intent(INOUT), dimension(:)    :: reservoir_type
 character(len=*), intent(in)            :: reservoir_parameter_file
 real, intent(INOUT),  dimension(:)      :: LATLAKE,LONLAKE,ELEVLAKE
+real,  allocatable, dimension(:)        :: LAKEMAXDEPTH, LAKEVOL, LAKEPOLYA, LAKEPOLYB
 real, intent(INOUT),  dimension(:)      :: ChSSlp, Bw, Tw
 real, intent(INOUT),  dimension(:)      :: Tw_CC, n_CC, ChannK ! channel properties of compund
 
@@ -7377,6 +7378,7 @@ integer 			             :: IOstatus, OUTLAKEID
 real                                         :: gc,n
 integer :: did
 logical :: fexist
+
 
 did = 1
 
@@ -7483,7 +7485,9 @@ if (channel_option .eq. 3) then
           call read_route_lake_netcdf(trim(route_lake_f),HRZAREA, &
                 LAKEMAXH, WEIRH, WEIRC,WEIRL, DAML, ORIFICEC,       &
                 ORIFICEA,  ORIFICEE, reservoir_type_specified, reservoir_type, &
-                reservoir_parameter_file, LAKEIDM, latlake, lonlake, ELEVLAKE, NLAKES)
+                reservoir_parameter_file, LAKEIDM, latlake, lonlake, &
+                LAKEMAXDEPTH, LAKEVOL, LAKEPOLYA, LAKEPOLYB, &
+                ELEVLAKE, NLAKES)
         else
           open(unit=79,file=trim(route_lake_f), form='formatted',status='old')
           write(6,*) "Before read LAKEPARM from text ", trim(route_lake_f)
@@ -7521,6 +7525,10 @@ if (channel_option .eq. 3) then
       call mpp_land_bcast_real(NLAKES,ORIFICEE)
       call mpp_land_bcast_real(NLAKES,LATLAKE )
       call mpp_land_bcast_real(NLAKES,LONLAKE )
+      call mpp_land_bcast_real(NLAKES,LAKEMAXDEPTH )
+      call mpp_land_bcast_real(NLAKES,LAKEVOL )
+      call mpp_land_bcast_real(NLAKES,LAKEPOLYA )
+      call mpp_land_bcast_real(NLAKES,LAKEPOLYB )
       call mpp_land_bcast_real(NLAKES,ELEVLAKE)
       call mpp_land_bcast_int(NLAKES, reservoir_type)
    endif
@@ -8316,6 +8324,7 @@ end subroutine read_routelink
         character(len=*), intent(in)        ::  reservoir_parameter_file
         REAL, intent(out), dimension(:) :: HRZAREA,LAKEMAXH, WEIRC, WEIRL, DAML, ORIFICEC, WEIRH, &
                    ORIFICEA, ORIFICEE, ELEVLAKE
+        real,  allocatable, dimension(:)        :: LAKEMAXDEPTH, LAKEVOL, LAKEPOLYA, LAKEPOLYB
 !end NLAKES
 
         INTEGER, dimension(GNLINKSL) ::  tmpLAKEIDA, tmpLINKID,  tmpTO_NODE, tmpTYPEL, tmpORDER
@@ -8402,7 +8411,9 @@ end subroutine read_routelink
              call read_route_lake_netcdf(route_lake_f,HRZAREA, &
                 LAKEMAXH, WEIRH, WEIRC, WEIRL, DAML, ORIFICEC,       &
                 ORIFICEA,  ORIFICEE, reservoir_type_specified, reservoir_type, reservoir_parameter_file, &
-                LAKEIDM, latlake, lonlake, ELEVLAKE, NLAKES)
+                LAKEIDM, latlake, lonlake, &
+                LAKEMAXDEPTH, LAKEVOL, LAKEPOLYA, LAKEPOLYB, &
+                ELEVLAKE, NLAKES)
           endif
 
 !!- initialize channel  if missing in input
@@ -8941,7 +8952,9 @@ subroutine read_route_lake_netcdf(route_lake_file,                         &
                                    HRZAREA,  LAKEMAXH, WEIRH,  WEIRC,    WEIRL, DAML,   &
                                    ORIFICEC, ORIFICEA,  ORIFICEE,  reservoir_type_specified, &
                                    reservoir_type, reservoir_parameter_file, &
-                                   LAKEIDM, lakelat, lakelon, ELEVLAKE, NLAKES)
+                                   LAKEIDM, lakelat, lakelon, &
+                                   LAKEMAXDEPTH, LAKEVOL, LAKE_POLYA, LAKE_POLYB, &
+                                   ELEVLAKE, NLAKES)
 
     implicit none
     character(len=*),        intent(in)  :: route_lake_file
@@ -8951,6 +8964,7 @@ subroutine read_route_lake_netcdf(route_lake_file,                         &
     integer, dimension(:),   intent(out) :: LAKEIDM
     real,    dimension(:),   intent(out) :: HRZAREA,  LAKEMAXH, WEIRC,    WEIRL, WEIRH, DAML
     real,    dimension(:),   intent(out) :: ORIFICEC, ORIFICEA, ORIFICEE, lakelat, lakelon
+    real,    dimension(:),   intent(out) :: LAKEVOL, LAKEMAXDEPTH, LAKE_POLYA, LAKE_POLYB
     real,    dimension(:),   intent(out) :: ELEVLAKE
     integer, dimension(:),   intent(out) :: reservoir_type
 
@@ -8982,6 +8996,10 @@ subroutine read_route_lake_netcdf(route_lake_file,                         &
     call get_1d_netcdf_real(ncid, 'OrificeE', ORIFICEE,  'read_route_lake_netcdf', .TRUE.)
     call get_1d_netcdf_real(ncid, 'lat', lakelat,        'read_route_lake_netcdf', .TRUE.)
     call get_1d_netcdf_real(ncid, 'lon', lakelon,        'read_route_lake_netcdf', .TRUE.)
+    call get_1d_netcdf_real(ncid, 'LkVol', LAKEVOL,      'read_route_lake_netcdf', .TRUE.)
+    call get_1d_netcdf_real(ncid, 'LkMxDepth', LAKEMAXDEPTH, 'read_route_lake_netcdf', .TRUE.)
+    call get_1d_netcdf_real(ncid, 'poly_a', LAKE_POLYA,  'read_route_lake_netcdf', .TRUE.)
+    call get_1d_netcdf_real(ncid, 'poly_b', LAKE_POLYB,  'read_route_lake_netcdf', .TRUE.)
     !remove the alt var. and add initial fractional depth var. LKR/DY
     call get_1d_netcdf_real(ncid, 'ifd', ELEVLAKE,         'read_route_lake_netcdf', .FALSE.)
 
