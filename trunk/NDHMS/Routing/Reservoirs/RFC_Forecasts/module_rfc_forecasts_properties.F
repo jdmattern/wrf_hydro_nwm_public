@@ -47,8 +47,8 @@ contains
     subroutine rfc_forecasts_properties_init(this, lake_number, reservoir_type, reservoir_parameter_file)
         implicit none
         class(rfc_forecasts_properties_interface), intent(inout) :: this ! the type object being initialized
-        integer, intent(in)          :: lake_number                   ! lake number
         integer, intent(in)          :: reservoir_type                ! reservoir type
+        integer(kind=8), intent(in)  :: lake_number                   ! lake number
         character(len=*), intent(in) :: reservoir_parameter_file
         integer                      :: ncid, var_id, lake_id_index
         integer                      :: status                        ! status of reading NetCDF
