@@ -22,7 +22,7 @@ module module_levelpool
     use module_reservoir, only: reservoir, reservoir_input, &
                                      reservoir_output
     use module_hydro_stop, only: HYDRO_stop
-    use config_base, only: nlst
+    !use config_base, only: nlst
 #ifdef RESERVOIR_D
     use module_reservoir_utilities, only: create_levelpool_diagnostic_log_file, &
                                           log_levelpool_diagnostic_data
@@ -53,7 +53,7 @@ contains
 
     !Level Pool Constructor
     subroutine levelpool_init(this, water_elevation,  &
-        lake_area, weir_elevation, weir_coeffecient, &
+        lake_area, weir_elevation, weir_coefficient, &
         weir_length, dam_length, orifice_elevation, orifice_coefficient, &
         orifice_area, max_depth, &
         max_depth_full_lake, lake_vol, lake_polya, lake_polyb, &
@@ -63,7 +63,7 @@ contains
         real, intent(inout) :: water_elevation           ! meters AMSL
         real, intent(in)    :: lake_area                 ! area of lake (km^2)
         real, intent(in)    :: weir_elevation            ! bottom of weir elevation (meters AMSL)
-        real, intent(in)    :: weir_coeffecient          ! weir coefficient
+        real, intent(in)    :: weir_coefficient          ! weir coefficient
         real, intent(in)    :: weir_length               ! weir length (meters)
         real, intent(in)    :: dam_length                ! dam length (meters)
         real, intent(in)    :: orifice_elevation         ! orifice elevation (meters AMSL)
@@ -117,11 +117,9 @@ contains
             else
                 ! initialize levelpool properties
                 call this%properties%init( lake_area,  &
-                    weir_elevation, weir_coeffecient, weir_length, dam_length, &
-                    orifice_elevation, orifice_coefficient, &
-                    orifice_area, max_depth, &
-                    max_depth_full_lake, lake_vol, lake_polya, lake_polyb, &
-                    lake_number )
+                    weir_elevation, weir_coefficient, weir_length, dam_length, &
+                    orifice_elevation, orifice_coefficient, orifice_area, max_depth, &
+                    max_depth_full_lake, lake_vol, lake_polya, lake_polyb, lake_number )
             end if
             this%pointer_allocation_guard = .true.
 
@@ -185,7 +183,7 @@ contains
                                this%properties%lake_area,                    &
                                this%properties%weir_elevation,               &
                                this%properties%max_depth,                    &
-                               this%properties%weir_coeffecient,             &
+                               this%properties%weir_coefficient,             &
                                this%properties%weir_length,                  &
                                this%properties%dam_length,                   &
                                this%properties%orifice_elevation,            &
@@ -279,7 +277,8 @@ contains
         !! -- determine from inflow hydrograph
 
         ! read lake shape function from hydro.namelist:
-        lake_shape_option = nlst(did)%lake_shape_option
+        !lake_shape_option = nlst(did)%lake_shape_option
+        lake_shape_option = 0
         !print *, "lake_shape_option is:", lake_shape_option
 
         Htmp = H   !temporary set of incoming lake water elevation...

@@ -136,6 +136,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -159,6 +160,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 402142
         reservoir_type = 2
@@ -168,8 +173,10 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
-        weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, &
-        initial_fractional_depth, lake_number, reservoir_type, "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", &
+        weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, &
+        initial_fractional_depth, max_depth, max_depth_full_lake, lake_volume, poly_a, poly_b, &
+        lake_number, reservoir_type, &
+        "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", &
         "2010-10-01_07:00:00", cwd_full, cwd_full, 12, 1000000000)
 
         print *, "testing data in persistence_levelpool_hybrid"
@@ -230,6 +237,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -252,6 +260,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 4672717
         reservoir_type = 3
@@ -262,7 +274,8 @@ program reservoir_unit_tests
 
         call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
         weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, &
-        max_depth, initial_fractional_depth, lake_number, reservoir_type, &
+        max_depth, max_depth_full_lake, lake_volume, poly_a, poly_b, &
+        initial_fractional_depth, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", &
         "2016-10-10_02:00:00", cwd_full, cwd_full, 12, 1000000000)
 
@@ -318,9 +331,10 @@ program reservoir_unit_tests
         real :: outflow, inflow
         real :: water_elevation
         real :: prev_time_inflow
-        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -336,13 +350,17 @@ program reservoir_unit_tests
 
         lake_area = 2.096320037841796875e+02
         weir_elevation = 1.332074047851562455e+03
-        weir_coeffecient = 4.000000000000000222e-01
+        weir_coefficient = 4.000000000000000222e-01
         weir_length = 1.000000000000000000e+01
         dam_length = 10.0
         orifice_elevation = 1.314473347981770758e+03
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 4672717
         reservoir_type = 3
@@ -352,8 +370,9 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
-        weir_coeffecient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, &
-        max_depth, initial_fractional_depth, lake_number, reservoir_type, &
+        weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, &
+        max_depth, max_depth_full_lake, lake_volume, poly_a, poly_b, &
+        initial_fractional_depth, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", &
         "2016-10-10_02:00:00", cwd_full, cwd_full, 12, 1000000000)
 
@@ -410,9 +429,10 @@ program reservoir_unit_tests
         real :: outflow, inflow
         real :: water_elevation
         real :: prev_time_inflow
-        real :: lake_area, weir_elevation, weir_coeffecient
+        real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -428,13 +448,17 @@ program reservoir_unit_tests
 
         lake_area = 2.096320037841796875e+02
         weir_elevation = 1.332074047851562455e+03
-        weir_coeffecient = 4.000000000000000222e-01
+        weir_coefficient = 4.000000000000000222e-01
         weir_length = 1.000000000000000000e+01
         dam_length = 10.0
         orifice_elevation = 1.314473347981770758e+03
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 347987  ! the corresponding USACE gage id is CA00265
         reservoir_type = 3
@@ -444,8 +468,9 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call persistence_levelpool_hybrid_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
-        weir_coeffecient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, &
-        max_depth, initial_fractional_depth, lake_number, reservoir_type, &
+        weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, &
+        max_depth, max_depth_full_lake, lake_volume, poly_a, poly_b, &
+        initial_fractional_depth, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", &
         "2016-10-12_02:00:00", cwd_full, cwd_full, 12, 1000000000)
 
@@ -501,6 +526,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation
         real :: orifice_coefficient, orifice_area, max_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number
         real :: inflow, prev_time_inflow, outflow, water_elevation
         real, dimension(108) :: inflow_array_overflow
@@ -523,6 +549,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 9.960000038146972656e+00
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         lake_number = 16944276
 
         inflow_array_overflow = (/91.27196, 91.7394, 92.15904, 92.1518, 91.84663, &
@@ -541,7 +571,8 @@ program reservoir_unit_tests
         209.53554, 205.97734, 202.51857, 199.1559, 195.88605, 192.70595, 189.61255 /)
 
         call levelpool_reservoir_data%init(water_elevation, lake_area, weir_elevation, &
-        weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, lake_number)
+        weir_coefficient, weir_length, dam_length, orifice_elevation, orifice_coefficient, &
+        orifice_area, max_depth, max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number)
 
         water_elevation = 9.73733330
 
@@ -667,6 +698,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -689,6 +721,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 3745478
         reservoir_type = 4
@@ -696,7 +732,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, 3745478, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, & 
+        max_depth_full_lake, lake_volume, poly_a, poly_b, 3745478, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-05-01_22:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
@@ -749,6 +786,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -770,6 +808,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -777,7 +819,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-08-18_09:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
@@ -829,6 +872,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -850,6 +894,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -857,7 +905,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-09-18_09:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
@@ -908,6 +957,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -929,6 +979,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -936,7 +990,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-10-18_09:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
@@ -988,6 +1043,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -1009,6 +1065,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -1016,7 +1076,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-11-18_09:00:00", cwd_full, 24)
 
         water_elevation = 1331.18005
@@ -1069,6 +1130,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -1090,6 +1152,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -1097,7 +1163,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_AnA_represents_Extended_MR.nc", &
         "2019-12-18_03:00:00", cwd_full, 24)
 
@@ -1149,6 +1216,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -1170,6 +1238,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -1177,7 +1249,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_short_range.nc", "2019-08-18_09:00:00", cwd_full, 24)
 
         !water_elevation = 1331.18005
@@ -1234,6 +1307,7 @@ program reservoir_unit_tests
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
+        real :: poly_a, poly_b, lake_volume, max_depth_full_lake
         integer :: lake_number, reservoir_type
         integer :: timestep_count
         character*256 :: cwd_full
@@ -1255,6 +1329,10 @@ program reservoir_unit_tests
         orifice_coefficient = 1.000000000000000056e-01
         orifice_area = 1.0
         max_depth = 1.335180053710937500e+03
+        poly_a = 0.0
+        poly_b = 0.0
+        lake_volume = 0.0
+        max_depth_full_lake = 0.0
         initial_fractional_depth = 8.999999761581420898e-01
         lake_number = 17609317
         reservoir_type = 4
@@ -1262,7 +1340,8 @@ program reservoir_unit_tests
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
-        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.9, lake_number, reservoir_type, &
+        weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, 0.9, max_depth, &
+        max_depth_full_lake, lake_volume, poly_a, poly_b, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_Long_Range_AnA.nc", &
         "2019-12-18_19:00:00", cwd_full, 24)
 

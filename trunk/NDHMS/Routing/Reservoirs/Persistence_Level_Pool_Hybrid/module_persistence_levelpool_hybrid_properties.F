@@ -21,6 +21,9 @@ module module_persistence_levelpool_hybrid_properties
         real    :: max_storage                  ! maximum storage (cubic meters)
         real    :: lake_area                    ! area of reservoir (meters^2)
         real    :: orifice_elevation            ! orifice elevation (meters AMSL)
+        real    :: lake_polya                   ! elevation-volume relationship coefficient a
+        real    :: lake_polyb                   ! elevation-volume relationship coefficient b
+        real    :: dead_pool_volume             ! dead/inactive reservoir storage (cubic meters)
         integer :: lake_number                  ! lake number
         integer :: reservoir_type               ! reservoir type
         character(len=15) :: gage_id
@@ -41,20 +44,28 @@ module module_persistence_levelpool_hybrid_properties
 contains
 
     ! Hybrid Properties Constructor
-    subroutine hybrid_properties_init(this, lake_area, lake_max_water_elevation, orifice_elevation, lake_number, &
-        reservoir_type, observation_lookback_hours, observation_update_time_interval_seconds, reservoir_parameter_file)
+    subroutine hybrid_properties_init(this, lake_area, orifice_elevation, max_depth, max_depth_full_lake, &
+        lake_vol, lake_polya, lake_polyb, lake_number, reservoir_type, observation_lookback_hours, &
+        observation_update_time_interval_seconds, reservoir_parameter_file)
         implicit none
         class(hybrid_properties_interface), intent(inout) :: this ! the type object being initialized
         real,    intent(in)          :: lake_area                    ! area of lake (km^2)
         real,    intent(in)          :: lake_max_water_elevation     ! max water elevation (meters)
         real,    intent(in)          :: orifice_elevation            ! orifice elevation (meters AMSL)
+        real,    intent(in)          :: max_depth                    ! max depth of reservoir before overtop (meters)
+                                                                     ! based on active reservoir depth
+        real,    intent(in)          :: max_depth_full_lake          ! max depth of reservoir before overtop (meters)
+                                                                     ! based on full lake depth
+        real,    intent(in)          :: lake_vol                     ! volume of lake based on bathymetry (km^3)
+        real,    intent(in)          :: lake_polya                   ! coefficient a in polynomial function V=a*h^b
+        real,    intent(in)          :: lake_polyb                   ! coefficient b in polynomial function V=a*h^b
         integer, intent(in)          :: lake_number                  ! lake number
         integer, intent(in)          :: reservoir_type               ! reservoir type
         integer, intent(in)          :: observation_lookback_hours
         integer, intent(in)          :: observation_update_time_interval_seconds
         character(len=*), intent(in) :: reservoir_parameter_file
         integer                      :: ncid, var_id, lake_id_index
-        integer                      :: status                        ! status of reading NetCDF
+        integer                      :: status                       ! status of reading NetCDF
         integer                      :: number_of_weights, number_of_lakes
         real, allocatable, dimension(:,:) :: temp_real_2D_array
 
@@ -75,7 +86,18 @@ contains
 
         this%min_storage = 0.0
 
-        this%max_storage = (lake_max_water_elevation - orifice_elevation) * lake_area * 1.0E6
+        reservoir_bottom_elevation = max_depth - max_depth_full_lake
+
+        ! Orifice height with respect to the bottom of the reservoir
+        orifice_height = orifice_elevation - reservoir_bottom_elevation 
+
+        this%lake_polya = lake_polya
+
+        this%lake_polyb = lake_polyb
+
+        this%dead_pool_volume = lake_polya * (orifice_height ** lake_polyb) 
+
+        this%max_storage = lake_vol - this%dead_pool_volume
 
         ! Open Reservoir Parameter NetCDF file
         status = nf90_open(path = reservoir_parameter_file, mode = nf90_nowrite, ncid = ncid)

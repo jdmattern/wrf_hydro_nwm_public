@@ -374,9 +374,9 @@ contains
         end if
         print *, " "
 
-        print *, "Checking read on weir_coeffecient"
-        print *, o%levelpool_ptr%properties%weir_coeffecient
-        if ( o%levelpool_ptr%properties%weir_coeffecient .ne. 8.0) then
+        print *, "Checking read on weir_coefficient"
+        print *, o%levelpool_ptr%properties%weir_coefficient
+        if ( o%levelpool_ptr%properties%weir_coefficient .ne. 8.0) then
             rv = .false.
             print *, "FAILED"
         end if

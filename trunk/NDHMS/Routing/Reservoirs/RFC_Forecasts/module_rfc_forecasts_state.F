@@ -42,17 +42,18 @@ module module_rfc_forecasts_state
 contains
 
     ! RFC Forecasts State Constructor
-    subroutine rfc_forecasts_state_init(this, water_elevation, lake_area, lake_max_water_elevation, orifice_elevation, initial_fractional_depth)
+    subroutine rfc_forecasts_state_init(this, water_elevation, lake_area, max_depth, orifice_elevation, initial_fractional_depth)
         implicit none
         class(rfc_forecasts_state_interface), intent(inout) :: this ! the type object being initialized
         real, intent(in) :: water_elevation           ! meters AMSL
         real, intent(in) :: lake_area                 ! area of lake (km^2)
-        real, intent(in) :: lake_max_water_elevation  ! max water elevation (meters)
+        real, intent(in) :: max_depth                 ! max depth of reservoir before overtop 
+                                                      ! (meters) based on active reservoir depth
         real, intent(in) :: orifice_elevation         ! orifice elevation (meters AMSL)
         real, intent(in) :: initial_fractional_depth  ! initial fraction water depth
 
         ! Initialize the state water elevation in same manner as in module_RT.F
-        this%water_elevation = orifice_elevation + ((lake_max_water_elevation - orifice_elevation) * initial_fractional_depth)
+        this%water_elevation = orifice_elevation + ((max_depth - orifice_elevation) * initial_fractional_depth)
         this%levelpool_water_elevation = this%water_elevation
         this%time_series_update_time = 0
         this%current_time = 0

@@ -46,11 +46,12 @@ module module_rfc_forecasts_properties
 contains
 
     ! RFC Forecasts Properties Constructor
-    subroutine rfc_forecasts_properties_init(this, lake_area, lake_max_water_elevation, lake_number, reservoir_parameter_file)
+    subroutine rfc_forecasts_properties_init(this, lake_area, max_depth, lake_number, reservoir_parameter_file)
         implicit none
         class(rfc_forecasts_properties_interface), intent(inout) :: this ! the type object being initialized
         real,    intent(in)          :: lake_area                    ! area of lake (km^2)
-        real,    intent(in)          :: lake_max_water_elevation     ! max water elevation (meters)
+        real,    intent(in)          :: max_depth                    ! max depth of reservoir before overtop 
+                                                                     ! (meters) based on active reservoir depth
         integer, intent(in)          :: lake_number                  ! lake number
         character(len=*), intent(in) :: reservoir_parameter_file
         integer                      :: ncid, var_id, lake_id_index
@@ -59,7 +60,7 @@ contains
         ! Convert from km^2 to meters^2
         this%lake_area = lake_area * 1.0E6
 
-        this%max_water_elevation = lake_max_water_elevation
+        this%max_water_elevation = max_depth
 
         this%lake_number = lake_number
 

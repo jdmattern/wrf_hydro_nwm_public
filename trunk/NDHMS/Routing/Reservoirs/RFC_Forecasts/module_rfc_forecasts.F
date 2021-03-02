@@ -52,25 +52,31 @@ contains
 
     ! RFC Forecasts Constructor
     subroutine rfc_forecasts_init(this, water_elevation,  &
-        lake_area, weir_elevation, weir_coeffecient, &
+        lake_area, weir_elevation, weir_coefficient, &
         weir_length, dam_length, orifice_elevation, orifice_coefficient, &
-        orifice_area, lake_max_water_elevation, initial_fractional_depth, &
-        lake_number, reservoir_type, reservoir_parameter_file, start_date, &
-        time_series_path, forecast_lookback_hours)
+        orifice_area, initial_fractional_depth, max_depth, max_depth_full_lake, &
+        lake_vol, lake_polya, lake_polyb, lake_number, reservoir_type, &
+        reservoir_parameter_file, start_date, time_series_path, forecast_lookback_hours)
 
         implicit none
         class(rfc_forecasts), intent(inout) :: this ! object being initialized
         real,    intent(inout) :: water_elevation           ! meters AMSL
         real,    intent(in)    :: lake_area      		    ! area of lake (km^2)
         real,    intent(in)    :: weir_elevation            ! bottom of weir elevation (meters AMSL)
-        real,    intent(in)    :: weir_coeffecient          ! weir coefficient
+        real,    intent(in)    :: weir_coefficient          ! weir coefficient
         real,    intent(in)    :: weir_length               ! weir length (meters)
         real,    intent(in)    :: dam_length                ! dam length (meters)
         real,    intent(in)    :: orifice_elevation         ! orifice elevation (meters AMSL)
         real,    intent(in)    :: orifice_coefficient       ! orifice coefficient
         real,    intent(in)    :: orifice_area              ! orifice area (meters^2)
-        real,    intent(in)    :: lake_max_water_elevation  ! max water elevation (meters)
         real,    intent(in)    :: initial_fractional_depth  ! initial fraction water depth
+        real,    intent(in)    :: max_depth                 ! max depth of reservoir before overtop
+                                                            ! (meters) based on active reservoir depth
+        real,    intent(in)    :: max_depth_full_lake       ! max depth of reservoir before overtop 
+                                                            ! (meters) based on full lake depth
+        real,    intent(in)    :: lake_vol                  ! volume of lake based on bathymetry (km^3)
+        real,    intent(in)    :: lake_polya                ! coefficient a in polynomial function V=a*h^b
+        real,    intent(in)    :: lake_polyb                ! coefficient b in polynomial function V=a*h^b
         integer, intent(in)    :: lake_number               ! lake number
         integer, intent(in)    :: reservoir_type            ! reservoir type
         character(len=*),   intent(in) :: reservoir_parameter_file
@@ -80,10 +86,6 @@ contains
         integer                        :: update_offset_seconds
         character(len=15)              :: lake_number_string
         character(len=15)              :: reservoir_type_string
-        real    :: max_depth_full_lake      ! max depth of reservoir before overtop (meters) based on full lake depth
-        real    :: lake_vol                 ! volume of lake based on bathymetry (km^3)
-        real    :: lake_polya               ! coefficient a in polynomial function V=a*h^b
-        real    :: lake_polyb               ! coefficient b in polynomial function V=a*h^b
 
 #ifdef RESERVOIR_D
         ! Create diagnostic log file only for development/debugging purposes
@@ -133,7 +135,7 @@ contains
                 // trim(ADJUSTL(lake_number_string)) // ".")
             else
                 ! initialize rfc forecasts properties
-                call this%properties%init(lake_area, lake_max_water_elevation, lake_number, reservoir_parameter_file)
+                call this%properties%init(lake_area, max_depth, lake_number, reservoir_parameter_file)
             end if
             this%pointer_allocation_guard = .true.
 
@@ -146,7 +148,7 @@ contains
                 // trim(ADJUSTL(lake_number_string)) // ".")
             else
                 ! initialize rfc forecasts state
-                call this%state%init(water_elevation, lake_area, lake_max_water_elevation, &
+                call this%state%init(water_elevation, lake_area, max_depth, &
                 orifice_elevation, initial_fractional_depth)
             end if
             this%pointer_allocation_guard = .true.
@@ -158,10 +160,9 @@ contains
 
         ! Initialize level pool reservoir
         call this%state%levelpool_ptr%init(water_elevation, lake_area, &
-        weir_elevation, weir_coeffecient, weir_length, dam_length, orifice_elevation, &
-        orifice_coefficient, orifice_area, lake_max_water_elevation, &
-        max_depth_full_lake, lake_vol, lake_polya, lake_polyb, &
-        lake_number)
+        weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, &
+        orifice_coefficient, orifice_area, max_depth, max_depth_full_lake, &
+        lake_vol, lake_polya, lake_polyb, lake_number)
 
         ! Call to initialize time series data object
         call time_series_data%init(start_date, time_series_path, forecast_lookback_hours, &

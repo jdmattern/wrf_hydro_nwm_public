@@ -14,7 +14,7 @@ module module_levelpool_properties
     type, extends(reservoir_properties) :: levelpool_properties_interface
         real :: lake_area                ! area of lake (km^2)
         real :: weir_elevation           ! bottom of weir elevation (meters AMSL)
-        real :: weir_coeffecient         ! weir coefficient
+        real :: weir_coefficient         ! weir coefficient
         real :: weir_length              ! weir length (meters)
         real :: dam_length               ! dam length (meters)
         real :: orifice_elevation        ! orifice elevation (meters AMSL)
@@ -38,15 +38,14 @@ contains
 
     !Level Pool Properties Constructor
     subroutine levelpool_properties_init(this, lake_area, &
-        weir_elevation, weir_coeffecient, weir_length, dam_length, orifice_elevation, &
-        orifice_coefficient, orifice_area, max_depth, &
-        max_depth_full_lake, lake_vol, lake_polya, lake_polyb, &
-        lake_number)
+        weir_elevation, weir_coefficient, weir_length, dam_length, orifice_elevation, &
+        orifice_coefficient, orifice_area, max_depth, max_depth_full_lake, lake_vol, &
+        lake_polya, lake_polyb, lake_number)
         implicit none
         class(levelpool_properties_interface), intent(inout) :: this ! the type object being initialized
         real, intent(in)    :: lake_area      	        ! area of lake (km^2)
         real, intent(in)    :: weir_elevation           ! bottom of weir elevation (meters AMSL)
-        real, intent(in)    :: weir_coeffecient         ! weir coefficient
+        real, intent(in)    :: weir_coefficient         ! weir coefficient
         real, intent(in)    :: weir_length              ! weir length (meters)
         real, intent(in)    :: dam_length               ! dam length (meters)
         real, intent(in)    :: orifice_elevation        ! orifice elevation (meters AMSL)
@@ -63,7 +62,7 @@ contains
         ! properties object's variables.
         this%lake_area = lake_area
         this%weir_elevation = weir_elevation
-        this%weir_coeffecient = weir_coeffecient
+        this%weir_coefficient = weir_coefficient
         this%weir_length = weir_length
         this%orifice_elevation = orifice_elevation
         this%orifice_coefficient = orifice_coefficient

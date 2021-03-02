@@ -195,9 +195,9 @@ contains
         end if
         print *, " "
 
-        print *, "Checking read on weir_coeffecient"
-        print *, o%weir_coeffecient
-        if ( o%weir_coeffecient .lt. 8.0 - epsilon(8.0) .or. o%weir_coeffecient .gt. 8.0 + epsilon(8.0) ) then
+        print *, "Checking read on weir_coefficient"
+        print *, o%weir_coefficient
+        if ( o%weir_coefficient .lt. 8.0 - epsilon(8.0) .or. o%weir_coefficient .gt. 8.0 + epsilon(8.0) ) then
             rv = .false.
             print *, "FAILED"
         end if

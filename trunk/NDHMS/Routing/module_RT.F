@@ -867,8 +867,12 @@ subroutine LandRT_ini(did)
                     rt_domain(did)%ORIFICEE(lake_index),               &
                     rt_domain(did)%ORIFICEC(lake_index),               &
                     rt_domain(did)%ORIFICEA(lake_index),               &
-                    rt_domain(did)%LAKEMAXH(lake_index),               &
                     rt_domain(did)%ELEVLAKE(lake_index),               &
+                    rt_domain(did)%LAKEMAXH(lake_index),               &
+                    rt_domain(did)%LAKEMAXDEPTH(lake_index),           &
+                    rt_domain(did)%LAKEVOL(lake_index),                &
+                    rt_domain(did)%LAKEPOLYA(lake_index),              &
+                    rt_domain(did)%LAKEPOLYB(lake_index),              &
                     rt_domain(did)%LAKEIDM(lake_index),                &
                     rt_domain(did)%reservoir_type(lake_index),         &
                     nlst(did)%reservoir_parameter_file,                &
@@ -889,8 +893,12 @@ subroutine LandRT_ini(did)
                     rt_domain(did)%ORIFICEE(lake_index),                &
                     rt_domain(did)%ORIFICEC(lake_index),                &
                     rt_domain(did)%ORIFICEA(lake_index),                &
-                    rt_domain(did)%LAKEMAXH(lake_index),                &
                     rt_domain(did)%ELEVLAKE(lake_index),                &
+                    rt_domain(did)%LAKEMAXH(lake_index),                &
+                    rt_domain(did)%LAKEMAXDEPTH(lake_index),            &
+                    rt_domain(did)%LAKEVOL(lake_index),                 &
+                    rt_domain(did)%LAKEPOLYA(lake_index),               &
+                    rt_domain(did)%LAKEPOLYB(lake_index),               &
                     rt_domain(did)%LAKEIDM(lake_index),                 &
                     rt_domain(did)%reservoir_type(lake_index),          &
                     nlst(did)%reservoir_parameter_file,                 &

@@ -45,8 +45,9 @@ module module_persistence_levelpool_hybrid_state
 contains
 
     !Hybrid State Constructor
-    subroutine hybrid_state_init(this, water_elevation, lake_area, lake_max_water_elevation, orifice_elevation, &
-        initial_fractional_depth, reservoir_type)
+    subroutine hybrid_state_init(this, water_elevation, lake_area, orifice_elevation, &
+        initial_fractional_depth, max_depth, max_depth_full_lake, lake_polya, &
+        lake_polyb, reservoir_type)
         implicit none
         class(hybrid_state_interface), intent(inout) :: this ! the type object being initialized
         real, intent(in)    :: water_elevation           ! meters AMSL
@@ -54,12 +55,25 @@ contains
         real, intent(in)    :: lake_max_water_elevation  ! max water elevation (meters)
         real, intent(in)    :: orifice_elevation         ! orifice elevation (meters AMSL)
         real, intent(in)    :: initial_fractional_depth  ! initial fraction water depth
+        real, intent(in)    :: max_depth                 ! max depth of reservoir before overtop 
+                                                         ! (meters) based on active reservoir depth
+        real, intent(in)    :: max_depth_full_lake       ! max depth of reservoir before overtop 
+                                                         ! (meters) based on full lake depth
+        real, intent(in)    :: lake_polya                ! coefficient a in polynomial function V=a*h^b
+        real, intent(in)    :: lake_polyb                ! coefficient b in polynomial function V=a*h^b
         integer, intent(in) :: reservoir_type            ! reservoir type
 
         ! Initialize the state water elevation in same manner as in module_RT.F
-        this%water_elevation = orifice_elevation + ((lake_max_water_elevation - orifice_elevation) * initial_fractional_depth)
+        this%water_elevation = orifice_elevation + ((max_depth - orifice_elevation) * initial_fractional_depth)
 
-        this%current_storage = (this%water_elevation - orifice_elevation) * lake_area * 1.0E6
+        reservoir_bottom_elevation = max_depth - max_depth_full_lake
+
+        ! Orifice height with respect to the bottom of the reservoir
+        orifice_height = orifice_elevation - reservoir_bottom_elevation
+
+        dead_pool_volume = lake_polya * (orifice_height ** lake_polyb)
+
+        this%current_storage = lake_polya * (this%water_elevation ** lake_polyb) - dead_pool_volume
 
         this%gage_discharge = 0.0
         this%persisted_outflow = 0.0
