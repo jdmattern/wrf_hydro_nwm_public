@@ -52,7 +52,6 @@ contains
         class(hybrid_state_interface), intent(inout) :: this ! the type object being initialized
         real, intent(in)    :: water_elevation           ! meters AMSL
         real, intent(in)    :: lake_area                 ! area of lake (km^2)
-        real, intent(in)    :: lake_max_water_elevation  ! max water elevation (meters)
         real, intent(in)    :: orifice_elevation         ! orifice elevation (meters AMSL)
         real, intent(in)    :: initial_fractional_depth  ! initial fraction water depth
         real, intent(in)    :: max_depth                 ! max depth of reservoir before overtop 
@@ -62,6 +61,7 @@ contains
         real, intent(in)    :: lake_polya                ! coefficient a in polynomial function V=a*h^b
         real, intent(in)    :: lake_polyb                ! coefficient b in polynomial function V=a*h^b
         integer, intent(in) :: reservoir_type            ! reservoir type
+        real                :: orifice_height, dead_pool_volume, reservoir_bottom_elevation
 
         ! Initialize the state water elevation in same manner as in module_RT.F
         this%water_elevation = orifice_elevation + ((max_depth - orifice_elevation) * initial_fractional_depth)

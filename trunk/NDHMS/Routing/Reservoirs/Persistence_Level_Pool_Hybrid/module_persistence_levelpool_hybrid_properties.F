@@ -50,7 +50,6 @@ contains
         implicit none
         class(hybrid_properties_interface), intent(inout) :: this ! the type object being initialized
         real,    intent(in)          :: lake_area                    ! area of lake (km^2)
-        real,    intent(in)          :: lake_max_water_elevation     ! max water elevation (meters)
         real,    intent(in)          :: orifice_elevation            ! orifice elevation (meters AMSL)
         real,    intent(in)          :: max_depth                    ! max depth of reservoir before overtop (meters)
                                                                      ! based on active reservoir depth
@@ -68,6 +67,7 @@ contains
         integer                      :: status                       ! status of reading NetCDF
         integer                      :: number_of_weights, number_of_lakes
         real, allocatable, dimension(:,:) :: temp_real_2D_array
+        real                         :: reservoir_bottom_elevation, orifice_height
 
         ! Convert from km^2 to meters^2
         this%lake_area = lake_area * 1.0E6
