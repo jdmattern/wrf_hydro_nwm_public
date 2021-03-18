@@ -134,7 +134,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0

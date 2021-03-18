@@ -504,8 +504,8 @@ CONTAINS
 !     rt_domain(did)%ELEVLAKE = 0.0
       rt_domain(did)%LAKENODE = 0.0
       rt_domain(did)%RESHT = 0.0
-      rt_domain(did)%QLAKEI = 0.0
-      rt_domain(did)%QLAKEO = 0.0
+      rt_domain(did)%QLAKEI = 1.0
+      rt_domain(did)%QLAKEO = 1.0
       rt_domain(did)%QLINK = 0
 #ifdef WRF_HYDRO_NUDGING
       rt_domain(did)%nudge = 0
@@ -679,7 +679,7 @@ subroutine LandRT_ini(did)
   integer, allocatable, dimension(:) :: tmp_int
   real, allocatable, dimension(:) :: tmp_real
   integer, allocatable, dimension(:) :: buf
-  real, allocatable, dimension(:) :: tmpRESHT
+  real*8, allocatable, dimension(:) :: tmpRESHT
   integer :: new_start_i, new_start_j, new_end_i, new_end_j
 
 #ifdef OUTPUT_CHAN_CONN
