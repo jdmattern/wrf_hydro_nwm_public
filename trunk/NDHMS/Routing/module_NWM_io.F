@@ -2389,18 +2389,20 @@ subroutine output_lakes_NWM(domainId,iGrid)
    integer :: ierr, myId ! MPI return status, process ID
    integer :: ascFlag ! Flag for resorting timeseries output by feature_id.
    ! Allocatable arrays to hold output variables.
-   real, allocatable, dimension(:) :: g_lakeLat,g_lakeLon,g_lakeElev
-   real, allocatable, dimension(:) :: g_lakeInflow,g_lakeOutflow
+   real, allocatable, dimension(:) :: g_lakeLat,g_lakeLon
+   real*8, allocatable, dimension(:) :: g_lakeElev
+   real*8, allocatable, dimension(:) :: g_lakeInflow,g_lakeOutflow
    real, allocatable, dimension(:) :: g_lakeType
    real, allocatable, dimension(:) :: g_lake_assimilated_value
    character(len=256), allocatable, dimension(:) :: g_lake_assimilated_source_file
    integer, allocatable, dimension(:) :: g_lakeid
-   real, allocatable, dimension(:) :: g_lakeLatOut,g_lakeLonOut,g_lakeElevOut
-   real, allocatable, dimension(:) :: g_lakeInflowOut,g_lakeOutflowOut
+   real, allocatable, dimension(:) :: g_lakeLatOut,g_lakeLonOut
+   real*8, allocatable, dimension(:) :: g_lakeElevOut
+   real*8, allocatable, dimension(:) :: g_lakeInflowOut,g_lakeOutflowOut
    integer, allocatable, dimension(:) :: g_lakeTypeOut, g_lakeidOut
    real, allocatable, dimension(:) :: g_lake_assimilated_valueOut
    character(len=256), allocatable, dimension(:) :: g_lake_assimilated_source_fileOut
-   real, allocatable, dimension(:,:) :: varOutReal   ! Array holding output variables in real format
+   real*8, allocatable, dimension(:,:) :: varOutReal8  ! Array holding output variables in doubl format
    integer, allocatable, dimension(:) :: varOutInt ! Array holding output variables after
                                                      ! scale_factor/add_offset
                                                      ! have been applied.
@@ -2534,9 +2536,9 @@ subroutine output_lakes_NWM(domainId,iGrid)
 #ifdef MPP_LAND
       call write_lake_real(g_lakeLat,RT_DOMAIN(domainId)%lake_index,gsize)
       call write_lake_real(g_lakeLon,RT_DOMAIN(domainId)%lake_index,gsize)
-      call write_lake_real(g_lakeElev,RT_DOMAIN(domainId)%lake_index,gsize)
-      call write_lake_real(g_lakeInflow,RT_DOMAIN(domainId)%lake_index,gsize)
-      call write_lake_real(g_lakeOutflow,RT_DOMAIN(domainId)%lake_index,gsize)
+      call write_lake_real8(g_lakeElev,RT_DOMAIN(domainId)%lake_index,gsize)
+      call write_lake_real8(g_lakeInflow,RT_DOMAIN(domainId)%lake_index,gsize)
+      call write_lake_real8(g_lakeOutflow,RT_DOMAIN(domainId)%lake_index,gsize)
       call write_lake_real(g_lakeType,RT_DOMAIN(domainId)%lake_index,gsize)
       call write_lake_real(g_lake_assimilated_value,RT_DOMAIN(domainId)%lake_index,gsize)
       !call write_lake_char(g_lake_assimilated_source_file,RT_DOMAIN(domainId)%lake_index,gsize)
@@ -2646,7 +2648,7 @@ subroutine output_lakes_NWM(domainId,iGrid)
 
       ! Place all output arrays into one real array that will be looped over
       ! during conversion to compressed integer format.
-      allocate(varOutReal(fileMeta%numVars,gSize))
+      allocate(varOutReal8(fileMeta%numVars,gSize))
       allocate(varOutInt(gSize))
       if(ascFlag .eq. 1) then
          ! Sort feature_id values by ascending values using the index array
@@ -2675,11 +2677,12 @@ subroutine output_lakes_NWM(domainId,iGrid)
          g_lake_assimilated_source_fileOut = g_lake_assimilated_source_file
          g_lakeidOut = g_lakeid
       endif
-      varOutReal(1,:) = g_lakeInflowOut(:)
-      varOutReal(2,:) = g_lakeOutflowOut(:)
+
+      varOutReal8(1,:) = g_lakeInflowOut(:)
+      varOutReal8(2,:) = g_lakeOutflowOut(:)
 
       ! Mask out missing values
-      where ( varOutReal == fileMeta%modelNdv ) varOutReal = -9999.0
+      where ( varOutReal8 == fileMeta%modelNdv ) varOutReal8 = -9999.0
 
       iret = nf90_create(trim(output_flnm),cmode=NF90_NETCDF4,ncid = ftn)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to create LAKEOUT NetCDF file.')
@@ -2833,7 +2836,7 @@ subroutine output_lakes_NWM(domainId,iGrid)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to place units attribute into longitude variable')
 
       ! Create channel elevation variable
-      iret = nf90_def_var(ftn,"water_sfc_elev",nf90_float,dimId(1),elevVarId)
+      iret = nf90_def_var(ftn,"water_sfc_elev",nf90_double,dimId(1),elevVarId)
       call nwmCheck(diagFlag,iret,'ERROR: Unable to create water_sfc_elev variable.')
       iret = nf90_put_att(ftn,elevVarId,'long_name',trim(fileMeta%elevLName))
       call nwmCheck(diagFlag,iret,'ERROR: Unable to place long_name attribute into water_sfc_elev variable')
@@ -2936,9 +2939,9 @@ subroutine output_lakes_NWM(domainId,iGrid)
             ! need to fill in with NDV values.
             if(minSinceSim .eq. 0 .and. fileMeta%timeZeroFlag(iTmp) .eq. 0) then
                varOutInt(:) = fileMeta%fillComp(iTmp)
-               varOutReal(iTmp,:) = fileMeta%fillReal(iTmp)
+               varOutReal8(iTmp,:) = fileMeta%fillReal(iTmp)
             else
-               varOutInt(:) = NINT((varOutReal(iTmp,:)-fileMeta%addOffset(iTmp))/fileMeta%scaleFactor(iTmp))
+               varOutInt(:) = NINT((varOutReal8(iTmp,:)-fileMeta%addOffset(iTmp))/fileMeta%scaleFactor(iTmp))
             endif
             ! Get NetCDF variable id.
             iret = nf90_inq_varid(ftn,trim(fileMeta%varNames(iTmp)),varId)
@@ -2948,7 +2951,13 @@ subroutine output_lakes_NWM(domainId,iGrid)
             if((nlst(1)%io_form_outputs .eq. 1) .or. (nlst(1)%io_form_outputs .eq. 2)) then
                iret = nf90_put_var(ftn,varId,varOutInt)
             else
-               iret = nf90_put_var(ftn,varId,varOutReal(iTmp,:))
+              !!!  not sure of the purpose this iTmp gt than 2 check?
+              !if(iTmp .gt. 2) then 
+               !iret = nf90_put_var(ftn,varId,varOutReal(iTmp,:))
+              !  iret = nf90_put_var(ftn,varId,varOutReal8(iTmp,:))
+              !else
+                iret = nf90_put_var(ftn,varId,varOutReal8(iTmp,:))
+              !endif
             endif
             call nwmCheck(diagFlag,iret,'ERROR: Unable to place data into output variable: '//trim(fileMeta%varNames(iTmp)))
          endif
@@ -3021,7 +3030,8 @@ subroutine output_lakes_NWM(domainId,iGrid)
 
    ! Deallocate all memory
    if(myId .eq. 0) then
-      deallocate(varOutReal)
+      deallocate(varOutReal8)
+      !deallocate(varOutReal)
       deallocate(varOutInt)
    endif
    deallocate(g_lakeLon)
