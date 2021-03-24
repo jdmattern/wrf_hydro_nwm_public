@@ -716,9 +716,9 @@ contains
     ! Log data to Levelpool Reservoir Function Diagnostic Log CSV File
     subroutine log_levelpool_diagnostic_data(lake_number, inflow, water_elevation, outflow)
         integer, intent(in) :: lake_number
-        real,    intent(in) :: inflow
-        real,    intent(in) :: water_elevation
-        real,    intent(in) :: outflow
+        real*8,    intent(in) :: inflow
+        real*8,    intent(in) :: water_elevation
+        real*8,    intent(in) :: outflow
         character(len=15)   :: lake_number_string, lake_number_string_trimmed
         character(len=50)   :: filename_string
 

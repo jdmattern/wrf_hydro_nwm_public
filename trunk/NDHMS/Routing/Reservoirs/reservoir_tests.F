@@ -29,7 +29,7 @@ program reservoir_unit_tests
     logical :: rv16= .false.
 
 
-    real, dimension(120) :: inflow_array
+    real*8, dimension(120) :: inflow_array
 
     inflow_array = (/189.22899, 189.27005, 189.31049, 189.35042, 189.38965, 189.42819, 189.46588, 189.50273, &
     189.53859, 189.57346, 189.60719, 189.63979, 189.6711, 189.7011, 189.72968, &
@@ -106,7 +106,7 @@ program reservoir_unit_tests
         logical :: call_status
 
         type (levelpool) :: levelpool_reservoir_data
-        real :: water_elevation = 2.
+        real*8 :: water_elevation = 2.
 
         call_status = .false.
 
@@ -130,9 +130,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (persistence_levelpool_hybrid) :: persistence_levelpool_hybrid_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -224,9 +224,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (persistence_levelpool_hybrid) :: persistence_levelpool_hybrid_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -234,7 +234,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -315,9 +315,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (persistence_levelpool_hybrid) :: persistence_levelpool_hybrid_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coeffecient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -325,7 +325,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -376,10 +376,9 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 229.226059 - epsilon(229.226059) .and. outflow .le. 229.226059 + epsilon(229.226059) &
-        .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
-        .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
-        assimilated_source_file == "") then
+        if (outflow .ge. 77.3728 - epsilon(77.3728) .and. outflow &
+        .le. 77.3729 + epsilon(77.3729) &
+        .and. dynamic_reservoir_type == 1) then
             rv2 = .true.
             print *, "========================================================================"
             print *, 'Persistence Levelpool Hybrid Run USACE Reservoir Overflow Max Height Test Passed'
@@ -387,7 +386,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'Persistence Levelpool Hybrid Run USACE Reservoir Overflow Max Height Test Failed'
-            print *, 'Outflow should be 16.08207'
+            print *, 'Outflow should be 77.372881659949414'
             print *, 'dynamic_reservoir_type needs to be 1 because reservoir outputs level pool instead of USACE persistence'
             print *, "========================================================================"
             print *, outflow
@@ -407,9 +406,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (persistence_levelpool_hybrid) :: persistence_levelpool_hybrid_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coeffecient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -417,7 +416,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -467,7 +466,8 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 1.81549609 - epsilon(1.81549609) .and. outflow .le. 1.81549609 + epsilon(1.81549609) &
+        if (outflow .ge. 1.8153857447942996 - epsilon(1.8153857447942996) &
+        .and. outflow .le. 1.8153857447942996 + epsilon(1.8153857447942996) &
         .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
         .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
         assimilated_source_file == "") then
@@ -478,7 +478,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'Persistence Levelpool Hybrid Run USACE Reservoir No Timeslice Available Test Failed'
-            print *, 'Outflow should be 1.81549609'
+            print *, 'Outflow should be 1.8153857447942996'
             print *, 'dynamic_reservoir_type needs to be 1 because reservoir outputs level pool instead of USACE persistence'
             print *, "========================================================================"
             print *, outflow
@@ -502,11 +502,11 @@ program reservoir_unit_tests
         real :: weir_length, dam_length, orifice_elevation
         real :: orifice_coefficient, orifice_area, max_depth
         integer :: lake_number
-        real :: inflow, prev_time_inflow, outflow, water_elevation
+        real*8 :: inflow, prev_time_inflow, outflow, water_elevation
         real, dimension(108) :: inflow_array_overflow
         integer :: timestep_count
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         rv = .false.
@@ -559,7 +559,8 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 17.0451450 - epsilon(17.0451450) .and. outflow .le. 17.0451450 + epsilon(17.0451450) &
+        if (outflow .ge. 5.483861 - epsilon(5.483861) .and. &
+        outflow .le. 5.483862 + epsilon(5.483862) &
         .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
         .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
         assimilated_source_file == "") then
@@ -570,7 +571,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'Levelpool Overflow Max Height Test Failed'
-            print *, 'Final outflow should be 17.0451450'
+            print *, 'Final outflow should be 5.4838615752863618'
              print *, 'dynamic_reservoir_type needs to be 1 for level pool type'
             print *, "========================================================================"
         end if
@@ -589,7 +590,7 @@ program reservoir_unit_tests
         type (time_series_data_type) :: time_series_data
         character*256 :: cwd_full
 
-        real :: water_elevation = 2.
+        real*8 :: water_elevation = 2.
 
         cwd_full = "../../../../tests/local/reservoir_testing_files/"
 
@@ -661,9 +662,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -671,7 +672,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -715,7 +716,8 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 1.81549609 - epsilon(1.81549609) .and. outflow .le. 1.81549609 + epsilon(1.81549609) &
+        if (outflow .ge. 1.8153857453375499 - epsilon(1.8153857453375499) .and. &
+        outflow .le. 1.8153857453375499 + epsilon(1.8153857453375499) &
         .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
         .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
         assimilated_source_file == "") then
@@ -726,7 +728,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'RFC Forecasts Levelpool Fallback Test Failed'
-            print *, 'Outflow should be 1.81549609'
+            print *, 'Outflow should be 1.8153857453375499'
             print *, 'dynamic_reservoir_type needs to be 1 because reservoir outputs level pool instead of RFC forecast'
             print *, "========================================================================"
 
@@ -743,9 +745,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -753,7 +755,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -796,11 +798,14 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 3.6 - epsilon(3.6) .and. outflow .le. 3.6 + epsilon(3.6) .and. &
-        water_elevation .ge. 1331.43604 - epsilon(1331.43604) .and. water_elevation .le. 1331.43604 + epsilon(1331.43604) .and. &
-        dynamic_reservoir_type == 4 .and. assimilated_value .ge. 3.6 - epsilon(3.6) &
-        .and. assimilated_value .le. 3.6 + epsilon(3.6) .and. &
-        assimilated_source_file == "2019-08-18_00.60min.CCHC1.RFCTimeSeries.ncdf") then
+        if (outflow .ge. 3.59999990 - epsilon (3.59999990) .and. &
+        outflow .le. 3.59999991 + epsilon (3.59999991) .and. &
+        water_elevation .ge. 1331.4345 - epsilon(1331.4345) .and. water_elevation &
+        .le. 1331.4346 + epsilon(1331.4346) .and. &
+        dynamic_reservoir_type == 4 & 
+        .and. assimilated_value .ge. 3.59999990 - epsilon(3.59999990) &
+        .and. assimilated_value .le. 3.59999991 + epsilon(3.59999991) &
+        .and. assimilated_source_file == "2019-08-18_00.60min.CCHC1.RFCTimeSeries.ncdf") then
             rv = .true.
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output Test Passed'
@@ -808,10 +813,9 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output Test Failed'
-            print *, 'Outflow should be 3.6'
+            print *, 'Outflow should be 3.5999999046325684'
             print *, 'dynamic_reservoir_type needs to be 4 for RFC forecast output'
             print *, "========================================================================"
-
         end if
 
     end function test_rfc_forecasts_time_series_output_with_lookback_and_offset
@@ -823,9 +827,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -833,7 +837,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -876,7 +880,8 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 1.81549609 - epsilon(1.81549609) .and. outflow .le. 1.81549609 + epsilon(1.81549609) &
+        if (outflow .ge. 1.8153857453375499 - epsilon(1.8153857453375499) .and. &
+        outflow .le. 1.8153857453375499 + epsilon(1.8153857453375499) &
         .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
         .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
         assimilated_source_file == "") then
@@ -887,7 +892,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output Negative Data Test Failed'
-            print *, 'Outflow should be 1.81549609'
+            print *, 'Outflow should be 1.8153857453375499'
             print *, 'dynamic_reservoir_type needs to be 1 because reservoir outputs level pool instead of RFC forecast'
             print *, "========================================================================"
 
@@ -902,9 +907,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -912,7 +917,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -955,7 +960,8 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 1.81549609 - epsilon(1.81549609) .and. outflow .le. 1.81549609 + epsilon(1.81549609) &
+        if (outflow .ge.  1.8153857453375499 - epsilon(1.8153857453375499) .and. &
+        outflow .le.  1.8153857453375499 + epsilon(1.8153857453375499) &
         .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
         .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
         assimilated_source_file == "") then
@@ -966,7 +972,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output All Synthetic Data Test Failed'
-            print *, 'Outflow should be 1.81549609'
+            print *, 'Outflow should be 1.8153857453375499'
             print *, 'dynamic_reservoir_type needs to be 1 because reservoir outputs level pool instead of RFC forecast'
             print *, "========================================================================"
 
@@ -982,9 +988,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -992,7 +998,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -1035,7 +1041,8 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 1.81549609 - epsilon(1.81549609) .and. outflow .le. 1.81549609 + epsilon(1.81549609) &
+        if (outflow .ge. 1.8153857453375499 - epsilon(1.8153857453375499) .and. &
+        outflow .le. 1.8153857453375499 + epsilon(1.8153857453375499) &
         .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
         .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
         assimilated_source_file == "") then
@@ -1046,7 +1053,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'RFC Forecasts Time Series Output Data Exceeding Max Test Failed'
-            print *, 'Outflow should be 1.81549609'
+            print *, 'Outflow should be 1.8153857453375499'
             print *, 'dynamic_reservoir_type needs to be 1 because reservoir outputs level pool instead of RFC forecast'
             print *, "========================================================================"
 
@@ -1063,9 +1070,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -1073,7 +1080,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -1143,9 +1150,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -1153,7 +1160,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
@@ -1228,9 +1235,9 @@ program reservoir_unit_tests
         implicit none
         logical rv, rv1, rv2                        ! test result
         type (rfc_forecasts) :: rfc_forecasts_reservoir_data
-        real :: outflow, inflow
-        real :: water_elevation
-        real :: prev_time_inflow
+        real*8 :: outflow, inflow
+        real*8 :: water_elevation
+        real*8 :: prev_time_inflow
         real :: lake_area, weir_elevation, weir_coefficient
         real :: weir_length, dam_length, orifice_elevation, orifice_coefficient
         real :: orifice_area, max_depth, initial_fractional_depth
@@ -1238,7 +1245,7 @@ program reservoir_unit_tests
         integer :: timestep_count
         character*256 :: cwd_full
         integer :: dynamic_reservoir_type
-        real :: assimilated_value
+        real*8 :: assimilated_value
         character(len=256) :: assimilated_source_file
 
         prev_time_inflow = 0.0
