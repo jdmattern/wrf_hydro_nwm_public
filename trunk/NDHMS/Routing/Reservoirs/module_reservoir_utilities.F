@@ -17,7 +17,7 @@ contains
     ! Checks and warns for boundary conditions of negative inflow
     subroutine warn_negative_inflow(inflow, lake_number, current_time)
         real*8, intent(in)    :: inflow
-        integer, intent(in) :: lake_number, current_time
+        integer, intent(in)   :: lake_number, current_time
 
         if (inflow < 0.0) then
             write(log_warning,*) "WARNING: Current inflow ", inflow, &
@@ -30,7 +30,7 @@ contains
 
     ! Checks and warns for boundary conditions of exceeding max or min storage
     subroutine warn_storage_boundaries(inflow, end_time_storage, min_storage, max_storage, lake_number, current_time)
-        real, intent(in)    :: end_time_storage, min_storage, max_storage
+        real*8, intent(in)    :: end_time_storage, min_storage, max_storage
         real*8, intent(in)  :: inflow
         integer, intent(in) :: lake_number, current_time
 
@@ -58,10 +58,11 @@ contains
     ! Checks and modifies for boundary conditions of negative storage
     subroutine modify_negative_storage(inflow, previous_time_storage, routing_period, lake_number, current_time, &
         update_time, end_time_storage, outflow)
-        real, intent(in)    :: previous_time_storage, routing_period
-        real*8, intent(in)  :: inflow
-        integer, intent(in) :: lake_number, current_time, update_time
-        real, intent(inout) :: end_time_storage
+        real*8, intent(in)    :: previous_time_storage
+        real, intent(in)      :: routing_period
+        real*8, intent(in)    :: inflow
+        integer, intent(in)   :: lake_number, current_time, update_time
+        real*8, intent(inout) :: end_time_storage
         real*8, intent(inout) :: outflow
 
 
@@ -120,12 +121,12 @@ contains
     ! Checks and modifies for boundary conditions of negative outflow or exceeding min or max storage
     subroutine modify_for_projected_storage(inflow, previous_time_storage, min_storage, max_storage, &
         lake_number, current_time, time_interval, outflow, max_storage_reached)
-        real, intent(in)        :: previous_time_storage, min_storage, max_storage
+        real*8, intent(in)      :: previous_time_storage, min_storage, max_storage
         real*8, intent(in)      :: inflow
         integer, intent(in)     :: lake_number, current_time, time_interval
-        real*8, intent(inout)     :: outflow
+        real*8, intent(inout)   :: outflow
         logical, intent(inout)  :: max_storage_reached
-        real                    :: excess, projected_next_time_interval_storage
+        real*8                  :: excess, projected_next_time_interval_storage
 
         if (outflow < 0.0) then
             write(log_warning,*) "WARNING: Calculations return a negative outflow for reservoir ", lake_number
@@ -618,9 +619,12 @@ contains
         integer, intent(in) :: lake_number, current_time, timeslice_update_time
         integer, intent(in) :: weight_update_time, gage_lookback_seconds
         integer, intent(in) :: persistence_weight_index
-        real,    intent(in) :: persistence_current_weight, inflow, current_storage
-        real,    intent(in) :: water_elevation, gage_discharge, persisted_outflow
-        real,    intent(in) :: levelpool_outflow, outflow
+        real,    intent(in) :: persistence_current_weight
+        real*8,  intent(in) :: inflow, current_storage
+        real*8,  intent(in) :: water_elevation 
+        real,    intent(in) :: gage_discharge 
+        real*8,  intent(in) ::persisted_outflow
+        real*8,  intent(in) :: levelpool_outflow, outflow
         character(len=*), intent(in) :: gage_id
         character(len=15)   :: lake_number_string, lake_number_string_trimmed
         character(len=50)   :: filename_string
@@ -672,7 +676,7 @@ contains
         integer, intent(in) :: lake_number, current_time, time_step, time_series_update_time
         integer, intent(in) :: lookback_seconds, time_series_index
         character(len=*), intent(in) :: gage_id
-        real,    intent(in) :: inflow, water_elevation, levelpool_outflow, outflow
+        real*8,  intent(in) :: inflow, water_elevation, levelpool_outflow, outflow
         character(len=15)   :: lake_number_string, lake_number_string_trimmed
         character(len=50)   :: filename_string
 

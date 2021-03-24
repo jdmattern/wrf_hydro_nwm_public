@@ -238,7 +238,7 @@ contains
 
         print *, "Checking read on current_storage"
         print *, o%current_storage
-        if ( o%current_storage .lt. 3.90669926E+09 - epsilon(3.90669926E+09) .or. o%current_storage .gt. 3.90669926E+09 + epsilon(3.90669926E+09) )then
+        if ( o%current_storage .lt. 3.9066991E+09 - epsilon(3.9066991E+09) .or. o%current_storage .gt. 3.9066992E+09 + epsilon(3.9066992E+09) )then
             rv = .false.
             print *, "FAILED"
         end if

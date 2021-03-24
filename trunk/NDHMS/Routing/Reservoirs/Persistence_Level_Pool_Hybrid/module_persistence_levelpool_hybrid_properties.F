@@ -17,12 +17,12 @@ module module_persistence_levelpool_hybrid_properties
     ! Extend/derive hybrid properties from the abstract base
     ! type for reservoir properties.
     type, extends(reservoir_properties) :: hybrid_properties_interface
-        real    :: min_storage                  ! minimum storage (cubic meters)
-        real    :: max_storage                  ! maximum storage (cubic meters)
-        real    :: lake_area                    ! area of reservoir (meters^2)
-        real    :: orifice_elevation            ! orifice elevation (meters AMSL)
-        integer :: lake_number                  ! lake number
-        integer :: reservoir_type               ! reservoir type
+        real*8    :: min_storage                  ! minimum storage (cubic meters)
+        real*8    :: max_storage                  ! maximum storage (cubic meters)
+        real      :: lake_area                    ! area of reservoir (meters^2)
+        real      :: orifice_elevation            ! orifice elevation (meters AMSL)
+        integer   :: lake_number                  ! lake number
+        integer   :: reservoir_type               ! reservoir type
         character(len=15) :: gage_id
         integer :: observation_lookback_hours
         integer :: observation_update_time_interval_seconds

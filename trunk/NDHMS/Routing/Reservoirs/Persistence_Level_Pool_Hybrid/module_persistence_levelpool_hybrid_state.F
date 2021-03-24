@@ -15,9 +15,9 @@ module module_persistence_levelpool_hybrid_state
     ! type for reservoir state.
     type, extends(reservoir_state) :: hybrid_state_interface
         real*8  :: water_elevation              ! meters AMSL
-        real*4  :: current_storage              ! cubic meters
+        real*8  :: current_storage              ! cubic meters
         real    :: gage_discharge               ! cubic meters per second (cms)
-        real    :: persisted_outflow            ! cubic meters per second (cms)
+        real*8  :: persisted_outflow            ! cubic meters per second (cms)
         integer :: weight_update_time           ! seconds
         integer :: timeslice_update_time        ! seconds
         integer :: current_time                 ! seconds

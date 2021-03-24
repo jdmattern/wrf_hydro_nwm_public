@@ -46,10 +46,10 @@ contains
         implicit none
         class(rfc_forecasts_state_interface), intent(inout) :: this ! the type object being initialized
         real*8, intent(in) :: water_elevation         ! meters AMSL
-        real, intent(in) :: lake_area                 ! area of lake (km^2)
-        real, intent(in) :: lake_max_water_elevation  ! max water elevation (meters)
-        real, intent(in) :: orifice_elevation         ! orifice elevation (meters AMSL)
-        real, intent(in) :: initial_fractional_depth  ! initial fraction water depth
+        real, intent(in)   :: lake_area                 ! area of lake (km^2)
+        real, intent(in)   :: lake_max_water_elevation  ! max water elevation (meters)
+        real, intent(in)   :: orifice_elevation         ! orifice elevation (meters AMSL)
+        real, intent(in)   :: initial_fractional_depth  ! initial fraction water depth
 
         ! Initialize the state water elevation in same manner as in module_RT.F
         this%water_elevation = orifice_elevation + ((lake_max_water_elevation - orifice_elevation) * initial_fractional_depth)

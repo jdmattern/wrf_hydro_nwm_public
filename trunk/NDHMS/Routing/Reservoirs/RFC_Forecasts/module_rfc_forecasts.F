@@ -60,7 +60,7 @@ contains
 
         implicit none
         class(rfc_forecasts), intent(inout) :: this ! object being initialized
-        real*8,    intent(inout) :: water_elevation           ! meters AMSL
+        real*8,  intent(inout) :: water_elevation           ! meters AMSL
         real,    intent(in)    :: lake_area                 ! area of lake (km^2)
         real,    intent(in)    :: weir_elevation            ! bottom of weir elevation (meters AMSL)
         real,    intent(in)    :: weir_coeffecient          ! weir coefficient
@@ -207,16 +207,16 @@ contains
         class(rfc_forecasts), intent(inout) :: this
         real*8, intent(in)    :: previous_timestep_inflow ! cubic meters per second (cms)
         real*8, intent(in)    :: inflow                   ! cubic meters per second (cms)
-        real, intent(in)    :: lateral_inflow           ! cubic meters per second (cms)
+        real, intent(in)      :: lateral_inflow           ! cubic meters per second (cms)
         real*8, intent(inout) :: water_elevation          ! meters
         real*8, intent(out)   :: outflow                  ! cubic meters per second (cms)
-        real, intent(in)    :: routing_period           ! seconds
-        integer, intent(out):: dynamic_reservoir_type   ! dynamic reservoir type sent to lake out files
+        real, intent(in)      :: routing_period           ! seconds
+        integer, intent(out)  :: dynamic_reservoir_type   ! dynamic reservoir type sent to lake out files
         real*8, intent(out)   :: assimilated_value        ! value assimilated from observation or forecast
         character(len=256), intent(out) :: assimilated_source_file ! source file of assimilated value
-        real*8              :: levelpool_outflow        ! cubic meters per second (cms)
-        integer		        :: missing_outflow_index
-        character(len=15)   :: lake_number_string
+        real*8                :: levelpool_outflow        ! cubic meters per second (cms)
+        integer               :: missing_outflow_index
+        character(len=15)     :: lake_number_string
 
         ! If first timestep, then check forecast aspects
         if (this%state%current_time == 0) then

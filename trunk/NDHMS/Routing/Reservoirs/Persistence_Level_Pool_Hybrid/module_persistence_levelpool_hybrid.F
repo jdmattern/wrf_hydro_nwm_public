@@ -221,16 +221,16 @@ contains
         class(persistence_levelpool_hybrid), intent(inout) :: this
         real*8, intent(in)    :: previous_timestep_inflow ! cubic meters per second (cms)
         real*8, intent(in)    :: inflow                   ! cubic meters per second (cms)
-        real, intent(in)    :: lateral_inflow           ! cubic meters per second (cms)
+        real, intent(in)      :: lateral_inflow           ! cubic meters per second (cms)
         real*8, intent(inout) :: water_elevation          ! meters
         real*8, intent(out)   :: outflow                  ! cubic meters per second (cms)
-        real, intent(in)    :: routing_period           ! seconds
-        integer, intent(out):: dynamic_reservoir_type   ! dynamic reservoir type sent to lake out files
+        real, intent(in)      :: routing_period           ! seconds
+        integer, intent(out)  :: dynamic_reservoir_type   ! dynamic reservoir type sent to lake out files
         real*8, intent(out)   :: assimilated_value        ! value assimilated from observation
         character(len=256), intent(out) :: assimilated_source_file ! source file of assimilated value
-        real                :: delta_storage            ! timestep change in storage (cubic meters)
-        real*8              :: local_water_elevation    ! water elevation passed to levelpool (meters AMSL)
-        real*8              :: levelpool_outflow        ! cubic meters per second (cms)
+        real*8                :: delta_storage            ! timestep change in storage (cubic meters)
+        real*8                :: local_water_elevation    ! water elevation passed to levelpool (meters AMSL)
+        real*8                :: levelpool_outflow        ! cubic meters per second (cms)
         logical             :: max_storage_reached      ! flag for when max storage is reached
         integer             :: gage_lookback_seconds    ! seconds between current model
                                                         ! time and the time a gage
