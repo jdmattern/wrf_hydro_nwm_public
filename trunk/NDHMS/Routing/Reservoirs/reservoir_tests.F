@@ -378,7 +378,10 @@ program reservoir_unit_tests
 
         if (outflow .ge. 77.3728 - epsilon(77.3728) .and. outflow &
         .le. 77.3729 + epsilon(77.3729) &
-        .and. dynamic_reservoir_type == 1) then
+        .and. dynamic_reservoir_type == 1 .and. assimilated_value .ge. -9999.0 - epsilon(-9999.0) &
+        .and. assimilated_value .le. -9999.0 + epsilon(-9999.0) .and. &
+        assimilated_source_file == "") then
+
             rv2 = .true.
             print *, "========================================================================"
             print *, 'Persistence Levelpool Hybrid Run USACE Reservoir Overflow Max Height Test Passed'
