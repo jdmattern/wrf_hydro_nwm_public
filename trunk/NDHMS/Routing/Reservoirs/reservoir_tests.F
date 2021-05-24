@@ -1179,7 +1179,11 @@ program reservoir_unit_tests
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
         weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.0, lake_number, reservoir_type, &
+<<<<<<< HEAD
         "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2021-06-11_22:00:00", cwd_full, 24)
+=======
+        "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2019-05-01_22:00:00", cwd_full, 24)
+>>>>>>> Alaska RFC GDL reservoir implemenation and unit tests
 
         water_elevation = 0.0
 
@@ -1262,6 +1266,9 @@ program reservoir_unit_tests
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
         weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.0, lake_number, reservoir_type, &
         "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2021-06-14_20:00:00", cwd_full, 24)
+=======
+        "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2019-08-18_09:00:00", cwd_full, 24)
+>>>>>>> Alaska RFC GDL reservoir implemenation and unit tests
 
         water_elevation = 0.0
 
@@ -1279,11 +1286,18 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
+<<<<<<< HEAD
         if (outflow .ge. 583.262085 - epsilon(583.262085) .and. outflow .le. 583.262085 + epsilon(583.262085) &
         .and. water_elevation .ge. 0.0 - epsilon(0.0) .and. water_elevation .le. 0.0 + epsilon(0.0) &
         .and. dynamic_reservoir_type == 5 .and. assimilated_value .ge. 406.470001 - epsilon(406.470001) &
         .and. assimilated_value .le. 406.470001 + epsilon(406.470001) .and. &
         assimilated_source_file == "2021-06-14_12.60min.SNOA2.RFCTimeSeries.ncdf") then
+=======
+        if (outflow .ge. 3.6 - epsilon(3.6) .and. outflow .le. 3.6 + epsilon(3.6) .and. &
+        dynamic_reservoir_type == 5 .and. assimilated_value .ge. 3.6 - epsilon(3.6) &
+        .and. assimilated_value .le. 3.6 + epsilon(3.6) .and. &
+        assimilated_source_file == "2019-08-18_00.60min.SNOA2.RFCTimeSeries.ncdf") then
+>>>>>>> Alaska RFC GDL reservoir implemenation and unit tests
             rv = .true.
             print *, "========================================================================"
             print *, 'AK RFC Forecasts Time Series Output Test Passed'
@@ -1291,7 +1305,11 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'AK RFC Forecasts Time Series Output Test Failed'
+<<<<<<< HEAD
             print *, 'Outflow should be 583.262085'
+=======
+            print *, 'Outflow should be 3.6'
+>>>>>>> Alaska RFC GDL reservoir implemenation and unit tests
             print *, 'dynamic_reservoir_type needs to be 5 for AK RFC forecast output'
             print *, "========================================================================"
 
