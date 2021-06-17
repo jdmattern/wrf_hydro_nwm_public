@@ -22,7 +22,7 @@ module module_levelpool_properties
         real :: orifice_coefficient      ! orifice coefficient
         real :: orifice_area             ! orifice area (meters^2)
         real :: max_depth                ! max depth of reservoir before overtop (meters)
-        integer(kind=int64) :: lake_number           ! lake number
+        integer(kind=int64) :: lake_number ! lake number
 
     contains
 

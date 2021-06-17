@@ -22,7 +22,7 @@ module module_persistence_levelpool_hybrid_properties
         real    :: max_storage                  ! maximum storage (cubic meters)
         real    :: lake_area                    ! area of reservoir (km^2)
         real    :: orifice_elevation            ! orifice elevation (meters AMSL)
-        integer :: lake_number                  ! lake number
+        integer(kind=int64) :: lake_number      ! lake number
         integer :: reservoir_type               ! reservoir type
         character(len=15) :: gage_id
         integer :: observation_lookback_hours

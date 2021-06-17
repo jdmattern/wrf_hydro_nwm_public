@@ -633,7 +633,7 @@ program reservoir_unit_tests
         logical :: forecast_found
         logical :: all_discharges_synthetic
         character(len=256):: time_series_file_name
-        integer :: lake_number
+        integer(kind=int64) :: lake_number
 
         lake_number = 3745478
 

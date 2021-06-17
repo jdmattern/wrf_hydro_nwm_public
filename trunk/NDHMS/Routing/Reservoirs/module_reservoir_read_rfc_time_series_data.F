@@ -13,6 +13,7 @@ module module_reservoir_read_rfc_time_series_data
                                           geth_newdate, &
                                           handle_err
     use netcdf
+    use iso_fortran_env, only: int64
     implicit none
 
     type :: time_series_data_type
@@ -61,7 +62,7 @@ contains
         integer,            intent(in)                  :: forecast_lookback_hours
         integer,            intent(in)                  :: timeslice_offset_hours
         character(len=5),   intent(in)                  :: rfc_gage_id
-        integer,            intent(in)                  :: lake_number
+        integer(kind=int64),intent(in)                  :: lake_number
         integer,            intent(out)                 :: lookback_seconds
         integer,            intent(out)                 :: total_counts
         integer,            intent(out)                 :: observed_counts
