@@ -12,6 +12,7 @@ module module_rfc_forecasts_properties
                                           handle_err
     use module_reservoir, only: reservoir_properties
     use netcdf
+    use iso_fortran_env, only: int64
 
     implicit none
 
