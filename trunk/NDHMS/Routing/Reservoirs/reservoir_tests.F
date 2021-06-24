@@ -1179,7 +1179,7 @@ program reservoir_unit_tests
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
         weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.0, lake_number, reservoir_type, &
-        "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2019-05-01_22:00:00", cwd_full, 24)
+        "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2021-06-11_22:00:00", cwd_full, 24)
 
         water_elevation = 0.0
 
@@ -1261,7 +1261,7 @@ program reservoir_unit_tests
 
         call rfc_forecasts_reservoir_data%init(water_elevation, lake_area, weir_elevation, weir_coefficient, &
         weir_length, dam_length, orifice_elevation, orifice_coefficient, orifice_area, max_depth, 0.0, lake_number, reservoir_type, &
-        "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2019-08-18_09:00:00", cwd_full, 24)
+        "../../../../tests/local/reservoir_testing_files/reservoir_index_Standard_AnA_APRFC_GDLs.nc", "2021-06-14_20:00:00", cwd_full, 24)
 
         water_elevation = 0.0
 
@@ -1279,11 +1279,11 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 3.6 - epsilon(3.6) .and. outflow .le. 3.6 + epsilon(3.6) &
+        if (outflow .ge. 406.470001 - epsilon(406.470001) .and. outflow .le. 406.470001 + epsilon(406.470001) &
         .and. water_elevation .ge. 0.0 - epsilon(0.0) .and. water_elevation .le. 0.0 + epsilon(0.0) &
-        .and. dynamic_reservoir_type == 5 .and. assimilated_value .ge. 3.6 - epsilon(3.6) &
-        .and. assimilated_value .le. 3.6 + epsilon(3.6) .and. &
-        assimilated_source_file == "2019-08-18_00.60min.SNOA2.RFCTimeSeries.ncdf") then
+        .and. dynamic_reservoir_type == 5 .and. assimilated_value .ge. 406.470001 - epsilon(406.470001) &
+        .and. assimilated_value .le. 406.470001 + epsilon(406.470001) .and. &
+        assimilated_source_file == "2021-06-14_12.60min.SNOA2.RFCTimeSeries.ncdf") then
             rv = .true.
             print *, "========================================================================"
             print *, 'AK RFC Forecasts Time Series Output Test Passed'
