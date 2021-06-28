@@ -807,6 +807,10 @@ subroutine LandRT_ini(did)
 
    end do
 
+   print *, "LAKEIDM in module RT"
+   print *, rt_domain(did)%LAKEIDM(lake_index)
+
+
    ! For loop to cycle array of pointers to reservoirs
    do lake_index = 1, NLAKES_total
 

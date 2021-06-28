@@ -2525,6 +2525,9 @@ subroutine output_lakes_NWM(domainId,iGrid)
       g_lakeInflow = RT_DOMAIN(domainID)%QLAKEI
       g_lakeOutflow = RT_DOMAIN(domainID)%QLAKEO
       g_lakeid = RT_DOMAIN(domainId)%LAKEIDM
+      print *, "LAKEIDM in nwm io section 1:" 
+      print *, RT_DOMAIN(domainId)%LAKEIDM
+
       g_lakeType = RT_DOMAIN(domainID)%final_reservoir_type
       g_lake_assimilated_value = RT_DOMAIN(domainID)%reservoir_assimilated_value
       g_lake_assimilated_source_file = RT_DOMAIN(domainID)%reservoir_assimilated_source_file
@@ -2574,6 +2577,8 @@ subroutine output_lakes_NWM(domainId,iGrid)
       g_lakeInflow = RT_DOMAIN(domainID)%QLAKEI
       g_lakeOutflow = RT_DOMAIN(domainID)%QLAKEO
       g_lakeid = RT_DOMAIN(domainId)%LAKEIDM
+      print *, "LAKEIDM in nwm io section 2:" 
+      print *, RT_DOMAIN(domainId)%LAKEIDM
       g_lakeType = RT_DOMAIN(domainId)%final_reservoir_type
       g_lake_assimilated_value = RT_DOMAIN(domainID)%reservoir_assimilated_value
       g_lake_assimilated_source_file = RT_DOMAIN(domainID)%reservoir_assimilated_source_file
