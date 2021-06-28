@@ -1279,7 +1279,7 @@ program reservoir_unit_tests
 
         print *, 'dynamic_reservoir_type: ', dynamic_reservoir_type
 
-        if (outflow .ge. 406.470001 - epsilon(406.470001) .and. outflow .le. 406.470001 + epsilon(406.470001) &
+        if (outflow .ge. 583.262085 - epsilon(583.262085) .and. outflow .le. 583.262085 + epsilon(583.262085) &
         .and. water_elevation .ge. 0.0 - epsilon(0.0) .and. water_elevation .le. 0.0 + epsilon(0.0) &
         .and. dynamic_reservoir_type == 5 .and. assimilated_value .ge. 406.470001 - epsilon(406.470001) &
         .and. assimilated_value .le. 406.470001 + epsilon(406.470001) .and. &
@@ -1291,7 +1291,7 @@ program reservoir_unit_tests
         else
             print *, "========================================================================"
             print *, 'AK RFC Forecasts Time Series Output Test Failed'
-            print *, 'Outflow should be 3.6'
+            print *, 'Outflow should be 583.262085'
             print *, 'dynamic_reservoir_type needs to be 5 for AK RFC forecast output'
             print *, "========================================================================"
 
